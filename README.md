@@ -4,6 +4,8 @@
 
 Hipofiz adenomlarında (PitNET) kavernöz sinüs uzanımını değerlendiren **Knosp sınıflamasını** ve ilgili sellar/parasellar anatomiyi anlatan, tarayıcıda çalışan etkileşimli bir 3B ders. Three.js ile yazıldı; Türkçe ve İngilizce arasında tek tıkla geçilebilir.
 
+**▶ Canlı sürüm: [opisthion06.github.io/knosp-sellar-atlas](https://opisthion06.github.io/knosp-sellar-atlas/)**. Kurulum gerekmez, tarayıcıda açılır.
+
 ![Koronal kesit, Knosp derece 3B](docs/coronal-grade-3b.jpg)
 
 | Genel görünüm | Endonazal perspektif | Sentetik koronal T1+C MR |
@@ -87,6 +89,8 @@ Bu çalışma [Creative Commons Atıf 4.0 Uluslararası (CC BY 4.0)](https://cre
 ## English
 
 An interactive, browser-based 3D lesson on the **Knosp classification** of cavernous sinus extension in pituitary adenomas (PitNETs) and the surrounding sellar/parasellar anatomy. Built with Three.js; switch between Turkish and English with one click.
+
+**▶ Live version: [opisthion06.github.io/knosp-sellar-atlas](https://opisthion06.github.io/knosp-sellar-atlas/)**. Nothing to install; it runs in the browser.
 
 ### Features
 
