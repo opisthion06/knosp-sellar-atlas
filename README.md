@@ -70,6 +70,18 @@ Hazır bir 3B model kullanılmadı. Anatomi, literatürdeki ortalama ölçülere
 
 Bu proje eğitim amaçlıdır. Model şematik-gerçekçidir ve tek bir hastanın anatomisini temsil etmez; MR görüntüsü sentetiktir. Klinik karar için kullanılmamalıdır. Tümör **sol** tarafta derecelendirilir (radyolojik düzende ekranın sağı).
 
+## Lisans
+
+[![CC BY 4.0](https://img.shields.io/badge/Lisans-CC%20BY%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by/4.0/)
+
+Bu çalışma [Creative Commons Atıf 4.0 Uluslararası (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/deed.tr) lisansıyla sunulmaktadır. İndirebilir, kullanabilir, değiştirebilir, derslerde ve sunumlarda gösterebilir, ticari amaçla da dahil olmak üzere paylaşabilirsiniz. Tek şart **atıf** yapmanızdır: eser adını, yazarı ve bu depoya bağlantıyı belirtin, değişiklik yaptıysanız bunu da not edin.
+
+Önerilen atıf:
+
+> Knosp Sellar Atlas — opisthion06, https://github.com/opisthion06/knosp-sellar-atlas, CC BY 4.0
+
+Çalışma sırasında CDN'den yüklenen üçüncü taraf kütüphaneler (three.js, three-mesh-bvh) bu esere dahil değildir ve kendi MIT lisanslarına tabidir. Tam metin: [LICENSE](LICENSE).
+
 ---
 
 ## English
@@ -106,3 +118,15 @@ No prebuilt 3D model is used. The anatomy is defined as **signed distance fields
 ### Disclaimer
 
 For educational use only. The model is schematic-realistic and does not represent any individual patient; the MRI image is synthetic. Not intended for clinical decision-making. The tumor is graded on the **left** side (the right side of the screen in radiological convention).
+
+### License
+
+[![CC BY 4.0](https://img.shields.io/badge/License-CC%20BY%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by/4.0/)
+
+This work is licensed under the [Creative Commons Attribution 4.0 International License (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/). You may download, use, adapt, present in lectures and redistribute it, including commercially, as long as you give **attribution**: name the work and the author, link to this repository, and indicate if changes were made.
+
+Suggested attribution:
+
+> Knosp Sellar Atlas — opisthion06, https://github.com/opisthion06/knosp-sellar-atlas, CC BY 4.0
+
+Third-party libraries loaded from a CDN at runtime (three.js, three-mesh-bvh) are not part of this work and remain under their own MIT licenses. Full text: [LICENSE](LICENSE).
