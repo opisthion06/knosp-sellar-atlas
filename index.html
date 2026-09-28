@@ -1,0 +1,2513 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+</head>
+<body>
+<title>Knosp Sellar Atlası</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@500;600;700&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap">
+<style>
+:root {
+  color-scheme: dark;
+  --bg: #0a0f14; --panel: #10181f; --panel-2: #16212b; --line: #1f2d3a; --line-2: #2b3d4f;
+  --text: #e6edf2; --muted: #93a4b5; --faint: #62768a;
+  --accent: #e3a857; --accent-ink: #1d1407;
+  --k-med: #5fcbe3; --k-cen: #f0c75e; --k-lat: #ec7ba2;
+  --g0: #6cc49a; --g1: #a9cf6a; --g2: #e5c55a; --g3a: #eb9a58; --g3b: #e2685a; --g4: #cf4a72;
+  --ok: #6cc49a; --bad: #ec6f6f;
+  --font: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --cond: "IBM Plex Sans Condensed", "Arial Narrow", system-ui, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Consolas, monospace;
+}
+[hidden] { display: none !important; }
+html, body { height: 100%; }
+body { background: var(--bg); color: var(--text); font: 14px/1.55 var(--font); overflow: hidden; }
+button { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.app { display: grid; grid-template-columns: minmax(330px, 400px) 1fr; height: 100%; }
+.panel { display: flex; flex-direction: column; min-height: 0; background: var(--panel); border-right: 1px solid var(--line); }
+.brand { padding: 18px 20px 12px; display: flex; flex-direction: column; gap: 4px; }
+.brand h1 { margin: 0; font: 700 21px/1.15 var(--cond); letter-spacing: 0.005em; text-wrap: balance; }
+.brand h1 span { color: var(--accent); }
+.brand p { margin: 0; color: var(--muted); font-size: 12.5px; }
+.brand-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+.lang { display: flex; flex: none; border: 1px solid var(--line-2); border-radius: 5px; overflow: hidden; }
+.lang button { background: none; border: 0; padding: 5px 9px; cursor: pointer; font: 600 11.5px/1 var(--mono); letter-spacing: 0.06em; color: var(--muted); }
+.lang button + button { border-left: 1px solid var(--line-2); }
+.lang button[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); }
+.lang button:hover:not([aria-pressed="true"]) { color: var(--text); }
+.stepbody .def span:last-child { flex: 1; }
+.lines-key li span { min-width: 0; }
+
+.tabs { display: flex; gap: 4px; padding: 0 14px; border-bottom: 1px solid var(--line); overflow-x: auto; }
+.tabs button { background: none; border: 0; padding: 10px 8px 9px; font: 600 12px/1 var(--cond); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); border-bottom: 2px solid transparent; cursor: pointer; white-space: nowrap; }
+.tabs button[aria-selected="true"] { color: var(--text); border-bottom-color: var(--accent); }
+.tabs button:hover { color: var(--text); }
+.tabpane { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+.scroll { flex: 1; min-height: 0; overflow: auto; padding: 16px 20px 20px; }
+
+/* lesson */
+.steps { display: flex; flex-wrap: wrap; gap: 5px; padding: 14px 20px 4px; }
+.steps button { width: 26px; height: 26px; border-radius: 4px; border: 1px solid var(--line-2); background: var(--panel-2); color: var(--muted); font: 500 11px/1 var(--mono); cursor: pointer; padding: 0; }
+.steps button.done { color: var(--text); border-color: #3a5064; }
+.steps button.on { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); font-weight: 600; }
+.steps button.gdot:not(.on) { border-color: currentColor; }
+.steps button.gdot.g-g0:not(.on) { color: var(--g0); } .steps button.gdot.g-g1:not(.on) { color: var(--g1); }
+.steps button.gdot.g-g2:not(.on) { color: var(--g2); } .steps button.gdot.g-g3a:not(.on) { color: var(--g3a); }
+.steps button.gdot.g-g3b:not(.on) { color: var(--g3b); } .steps button.gdot.g-g4:not(.on) { color: var(--g4); }
+.kicker { font: 600 11px/1 var(--cond); letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); margin: 6px 0 6px; }
+.step-title { margin: 0 0 10px; font: 600 24px/1.15 var(--cond); text-wrap: balance; }
+.stepbody { max-width: 62ch; color: #d5dee6; }
+.stepbody p { margin: 0 0 11px; }
+.stepbody b { color: var(--text); font-weight: 600; }
+.stepbody .def { display: flex; gap: 10px; align-items: flex-start; padding: 10px 12px; background: var(--panel-2); border: 1px solid var(--line-2); border-radius: 6px; }
+.facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 6px; overflow: hidden; margin: 14px 0 0; }
+.facts div { background: var(--panel-2); padding: 9px 11px; }
+.facts dt { font: 600 10.5px/1.3 var(--cond); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.facts dd { margin: 3px 0 0; font: 500 14px/1.3 var(--mono); font-variant-numeric: tabular-nums; }
+.lines-key { list-style: none; padding: 0; margin: 0 0 12px; display: flex; flex-direction: column; gap: 7px; }
+.lines-key li { display: grid; grid-template-columns: 22px 1fr; gap: 8px; align-items: baseline; }
+.lines-key i { height: 3px; border-radius: 2px; align-self: center; }
+.k-med { background: var(--k-med); } .k-cen { background: var(--k-cen); } .k-lat { background: var(--k-lat); }
+.bul { padding-left: 18px; margin: 14px 0 0; display: flex; flex-direction: column; gap: 8px; }
+table.sum { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; margin-bottom: 4px; }
+table.sum th { text-align: left; font: 600 11px/1.25 var(--cond); letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); padding: 6px 6px 8px; border-bottom: 1px solid var(--line-2); vertical-align: bottom; }
+table.sum th small { text-transform: none; letter-spacing: 0; font-weight: 500; color: var(--faint); }
+table.sum td { padding: 6px; border-bottom: 1px solid var(--line); font-family: var(--mono); font-size: 13px; }
+.stepnav { display: flex; align-items: center; gap: 10px; padding: 12px 20px; border-top: 1px solid var(--line); background: var(--panel); }
+.stepnav span { flex: 1; text-align: center; font: 500 12px var(--mono); color: var(--muted); }
+.btn { border: 1px solid var(--line-2); background: var(--panel-2); border-radius: 5px; padding: 8px 14px; cursor: pointer; font-weight: 500; }
+.btn:hover:not(:disabled) { border-color: #45607a; }
+.btn:disabled { opacity: 0.4; cursor: default; }
+.btn.primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); font-weight: 600; }
+.btn.primary:hover { filter: brightness(1.07); }
+
+.gchip { display: inline-grid; place-items: center; min-width: 30px; height: 26px; padding: 0 6px; border-radius: 4px; font: 600 13px/1 var(--mono); color: #10161c; flex: none; }
+.g-none { background: #3a4a5a; color: #d6dee6; } .g-g0 { background: var(--g0); } .g-g1 { background: var(--g1); } .g-g2 { background: var(--g2); }
+.g-g3a { background: var(--g3a); } .g-g3b { background: var(--g3b); } .g-g4 { background: var(--g4); color: #fff; } .g-q { background: var(--accent); }
+
+/* layers */
+.group-h { font: 600 11px/1 var(--cond); letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin: 4px 0 8px; }
+.toggles { display: flex; flex-direction: column; gap: 2px; margin-bottom: 18px; }
+.tg { display: flex; align-items: center; gap: 10px; padding: 7px 4px; border-radius: 4px; cursor: pointer; }
+.tg:hover { background: var(--panel-2); }
+.tg input { appearance: none; width: 30px; height: 17px; border-radius: 9px; background: #2a3a4a; position: relative; cursor: pointer; flex: none; margin: 0; transition: background .15s; }
+.tg input::after { content: ""; position: absolute; top: 2px; left: 2px; width: 13px; height: 13px; border-radius: 50%; background: #c8d3dd; transition: transform .15s; }
+.tg input:checked { background: var(--accent); }
+.tg input:checked::after { transform: translateX(13px); background: #1d1407; }
+.tg .sw { width: 10px; height: 10px; border-radius: 2px; flex: none; }
+.tg .nm { flex: 1; }
+.range { display: grid; grid-template-columns: 1fr 44px; align-items: center; gap: 10px; padding: 2px 4px 10px 44px; }
+.range output { font: 500 12px var(--mono); color: var(--muted); text-align: right; }
+input[type=range] { accent-color: var(--accent); width: 100%; }
+.seg { display: flex; border: 1px solid var(--line-2); border-radius: 5px; overflow: hidden; margin-bottom: 18px; }
+.seg label { flex: 1; text-align: center; padding: 7px 4px; cursor: pointer; font-size: 12.5px; color: var(--muted); border-right: 1px solid var(--line-2); }
+.seg label:last-child { border-right: 0; }
+.seg input { position: absolute; opacity: 0; pointer-events: none; }
+.seg label:has(input:checked) { background: var(--panel-2); color: var(--text); }
+.seg label:has(input:focus-visible) { outline: 2px solid var(--accent); outline-offset: -2px; }
+.help { color: var(--muted); font-size: 12.5px; display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; }
+.help kbd { font: 500 11px var(--mono); color: var(--text); background: var(--panel-2); border: 1px solid var(--line-2); border-radius: 3px; padding: 1px 5px; white-space: nowrap; }
+
+/* quiz */
+.quiz-intro { color: #d5dee6; margin: 0 0 14px; max-width: 60ch; }
+.answers { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 14px; }
+.answers button { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px 6px; border-radius: 6px; border: 1px solid var(--line-2); background: var(--panel-2); cursor: pointer; font: 600 15px var(--mono); }
+.answers button:hover:not(:disabled) { border-color: var(--accent); }
+.answers button.right { border-color: var(--ok); box-shadow: inset 0 0 0 1px var(--ok); }
+.answers button.wrong { border-color: var(--bad); box-shadow: inset 0 0 0 1px var(--bad); }
+.answers button:disabled { cursor: default; }
+.answers .gchip { min-width: 12px; width: 12px; height: 12px; padding: 0; border-radius: 3px; }
+#quizFeedback p { margin: 0 0 8px; }
+#quizFeedback .ok b { color: var(--ok); } #quizFeedback .bad b { color: var(--bad); }
+.muted { color: var(--muted); }
+
+/* references */
+.refs { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 14px; }
+.refs li { font-size: 13px; color: #cdd7e0; }
+.refs a { color: var(--k-med); text-decoration: none; border-bottom: 1px solid rgba(95,203,227,.35); }
+.refs a:hover { border-bottom-color: var(--k-med); }
+.note { margin-top: 18px; padding: 10px 12px; border: 1px dashed var(--line-2); border-radius: 6px; font-size: 12.5px; color: var(--muted); }
+
+/* stage */
+.stage { position: relative; overflow: hidden; min-height: 0; background: radial-gradient(110% 85% at 58% 38%, #1a2530 0%, #0e141b 52%, #07090c 100%); }
+canvas.gl { position: absolute; inset: 0; width: 100%; height: 100%; display: block; touch-action: none; }
+.labels { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+.lbl { width: 0; height: 0; transition: opacity .25s; }
+.lbl .dot { position: absolute; left: -3.5px; top: -3.5px; width: 7px; height: 7px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 2px rgba(8,12,16,.75); }
+.lbl .txt { position: absolute; left: 11px; top: -11px; white-space: nowrap; font: 500 11.5px/1 var(--cond); letter-spacing: 0.02em; color: #f4efe4; background: rgba(9,14,19,.74); border: 1px solid rgba(255,255,255,.09); padding: 5px 7px; border-radius: 3px; }
+.lbl.left .txt { left: auto; right: 11px; }
+.lbl.occ { opacity: 0.3; }
+.zone { width: 22px; height: 22px; border-radius: 50%; display: grid; place-items: center; font: 600 12px/1 var(--mono); color: #fff; background: rgba(6,9,12,.7); border: 1px solid rgba(255,255,255,.3); }
+.axis { font: 600 10px/1 var(--cond); letter-spacing: 0.22em; color: rgba(190,208,226,.36); white-space: nowrap; }
+
+.hud { position: absolute; pointer-events: none; }
+.hud > * { pointer-events: auto; }
+.glass { background: rgba(11,17,23,.8); border: 1px solid var(--line-2); border-radius: 7px; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+.hud-tl { top: 16px; left: 16px; display: flex; flex-direction: column; gap: 10px; width: min(330px, calc(100% - 32px)); }
+.badge { display: flex; align-items: center; gap: 11px; padding: 7px 13px 7px 7px; align-self: flex-start; }
+.bg-num { display: grid; place-items: center; min-width: 38px; height: 38px; padding: 0 6px; border-radius: 5px; font: 600 17px/1 var(--mono); color: #10161c; }
+.badge .bt { display: flex; flex-direction: column; }
+.badge .bt small { font: 600 10px/1.2 var(--cond); letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
+.badge .bt span { font-weight: 500; font-size: 13px; }
+.info { padding: 12px 14px; }
+.info h3 { margin: 0; font: 600 16px/1.25 var(--cond); }
+.info .lat { margin: 2px 0 6px; font-style: italic; color: var(--muted); font-size: 12.5px; }
+.info p { margin: 0 0 10px; font-size: 13px; color: #d3dde6; }
+.info .row { display: flex; gap: 8px; }
+.info .row .btn { padding: 5px 10px; font-size: 12.5px; }
+
+.hud-tr { top: 16px; right: 16px; display: flex; gap: 8px; align-items: flex-start; }
+.views { display: flex; padding: 3px; gap: 2px; }
+.views button { background: none; border: 0; padding: 6px 9px; border-radius: 4px; cursor: pointer; font: 500 12px/1 var(--cond); letter-spacing: 0.04em; color: #c9d4de; }
+.views button:hover { background: var(--panel-2); color: #fff; }
+.iconbtn { padding: 8px 10px; font: 500 12px/1 var(--cond); cursor: pointer; color: #c9d4de; }
+.iconbtn[aria-pressed="true"] { color: var(--accent); }
+
+.hud-bottom { left: 16px; right: 16px; bottom: 16px; display: flex; flex-wrap: wrap; gap: 8px; align-items: flex-end; }
+.gradebar { display: flex; align-items: center; gap: 4px; padding: 5px; max-width: 100%; overflow-x: auto; }
+.gradebar .gl-l { font: 600 10.5px/1.15 var(--cond); letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); padding: 0 6px 0 4px; white-space: nowrap; }
+.gradebar button { border: 1px solid transparent; background: none; border-radius: 4px; padding: 6px 9px; min-width: 36px; cursor: pointer; font: 600 13px/1 var(--mono); color: #cdd7e0; display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
+.gradebar button i { width: 8px; height: 8px; border-radius: 2px; }
+.gradebar button:hover { background: var(--panel-2); }
+.gradebar button.on { background: #22303d; border-color: var(--line-2); color: #fff; }
+.gradebar button[data-g="none"] { font-family: var(--cond); font-weight: 500; font-size: 12px; }
+.app.quiz .gradebar button.on { background: none; border-color: transparent; color: #cdd7e0; }
+.app.quiz .gradebar { opacity: .45; }
+.cutbar { display: flex; align-items: center; gap: 10px; padding: 7px 12px; }
+.cutbar label.chk { display: flex; align-items: center; gap: 7px; font: 500 12.5px var(--cond); cursor: pointer; white-space: nowrap; }
+.cutbar input[type=checkbox] { accent-color: var(--accent); }
+.cutbar input[type=range] { width: 150px; }
+.cutbar output { font: 500 12px var(--mono); color: var(--muted); min-width: 64px; }
+.knote { font-size: 11.5px; color: var(--g3a); }
+
+.inset { position: absolute; right: 16px; bottom: 76px; width: 300px; padding: 8px; }
+.inset { z-index: 3; overflow: hidden; resize: horizontal; min-width: 180px; max-width: min(640px, 70vw); }
+.inset header { display: flex; align-items: center; gap: 6px; padding: 0 2px 6px; cursor: grab; touch-action: none; user-select: none; -webkit-user-select: none; border-radius: 4px; }
+.inset.dragging { box-shadow: 0 10px 34px rgba(0,0,0,.55); border-color: #45607a; }
+.inset.dragging header { cursor: grabbing; }
+.inset header .grip { color: var(--faint); font-size: 13px; line-height: 1; }
+.inset header b { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font: 600 11px/1 var(--cond); letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+.inset .ibtns { display: flex; gap: 2px; flex: none; }
+.inset header button { background: none; border: 0; color: var(--muted); cursor: pointer; font-size: 16px; line-height: 1; padding: 2px 6px; border-radius: 3px; }
+.inset header button:hover { color: var(--text); background: var(--panel-2); }
+.inset.min { resize: none; }
+.inset.min canvas, .inset.min .legend { display: none; }
+.inset.min header { padding-bottom: 0; }
+.inset canvas { width: 100%; height: auto; display: block; border-radius: 4px; background: #000; }
+.inset .legend { display: flex; gap: 10px; flex-wrap: wrap; padding: 6px 2px 0; font-size: 11px; color: var(--muted); }
+.inset .legend span { display: inline-flex; align-items: center; gap: 5px; }
+.inset .legend i { width: 14px; height: 3px; border-radius: 2px; }
+
+.tip { position: absolute; top: 0; left: 0; pointer-events: none; padding: 6px 9px; font-size: 12.5px; max-width: 260px; }
+.tip b { font-weight: 600; display: block; }
+.tip span { color: var(--muted); font-size: 11.5px; font-family: var(--mono); }
+
+.loader { position: absolute; inset: 0; display: grid; place-items: center; background: radial-gradient(90% 80% at 50% 45%, #121b24, #07090c); transition: opacity .6s; z-index: 5; }
+.loader.done { opacity: 0; pointer-events: none; }
+.loader .box { width: min(340px, calc(100% - 48px)); display: flex; flex-direction: column; gap: 10px; }
+.loader h2 { margin: 0; font: 600 18px/1.2 var(--cond); }
+.loader .bar { height: 3px; background: #1d2934; border-radius: 2px; overflow: hidden; }
+.loader .bar i { display: block; height: 100%; width: 0; background: var(--accent); transition: width .2s; }
+.loader p { margin: 0; font: 500 12px var(--mono); color: var(--muted); }
+
+@media (max-width: 860px) {
+  body { overflow: auto; }
+  .app { grid-template-columns: 1fr; grid-template-rows: 66vh auto; height: auto; min-height: 100%; }
+  .views { display: none; }
+  .zone { width: 18px; height: 18px; font-size: 10.5px; }
+  .lbl .txt { font-size: 10.5px; padding: 4px 6px; }
+  .gradebar { width: 100%; }
+  .gradebar button { padding: 6px 7px; min-width: 30px; }
+  .panel { border-right: 0; border-top: 1px solid var(--line); order: 2; }
+  .stage { order: 1; }
+  .scroll { overflow: visible; }
+  .brand { padding: 14px 16px 10px; }
+  .steps, .scroll { padding-left: 16px; padding-right: 16px; }
+  .stepnav { position: sticky; bottom: 0; padding: 10px 16px calc(10px + env(safe-area-inset-bottom, 0px)); }
+  .hud-tl { top: 12px; left: 12px; width: calc(100% - 24px); }
+  .hud-tr { top: auto; bottom: 116px; right: 12px; }
+  .views button { padding: 6px 7px; font-size: 11px; }
+  .hud-bottom { left: 12px; right: 12px; bottom: 12px; }
+  .cutbar input[type=range] { width: 100%; flex: 1; min-width: 80px; }
+  .cutbar { flex: 1; }
+  .inset { width: 150px; right: 12px; bottom: auto; top: 12px; padding: 5px; }
+  .inset .legend, .inset header b { display: none; }
+  .info { max-width: calc(100% - 170px); }
+  .badge .bt small { display: none; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<div class="app" id="app">
+  <aside class="panel">
+    <header class="brand">
+      <div class="brand-row">
+        <h1 data-i18n-html="brand.title">Knosp <span>Sellar</span> Atlası</h1>
+        <div class="lang" role="group" aria-label="Dil / Language">
+          <button type="button" data-lang="tr" aria-pressed="true" lang="tr">TR</button>
+          <button type="button" data-lang="en" aria-pressed="false" lang="en">EN</button>
+        </div>
+      </div>
+      <p data-i18n="brand.sub">Hipofiz adenomlarında kavernöz sinüs uzanımı · 3B etkileşimli ders</p>
+    </header>
+    <nav class="tabs" role="tablist">
+      <button role="tab" aria-selected="true" data-tab="tab-ders" data-i18n="tab.ders">Ders</button>
+      <button role="tab" aria-selected="false" data-tab="tab-katman" data-i18n="tab.katman">Katmanlar</button>
+      <button role="tab" aria-selected="false" data-tab="tab-test" data-i18n="tab.test">Kendini sına</button>
+      <button role="tab" aria-selected="false" data-tab="tab-kaynak" data-i18n="tab.kaynak">Kaynaklar</button>
+    </nav>
+
+    <section class="tabpane" id="tab-ders">
+      <div class="steps" id="stepDots"></div>
+      <div class="scroll" id="stepScroll">
+        <div class="kicker" id="stepKicker"></div>
+        <h2 class="step-title" id="stepTitle"></h2>
+        <div class="stepbody" id="stepBody"></div>
+      </div>
+      <div class="stepnav">
+        <button class="btn" id="prev" type="button">← Önceki</button>
+        <span id="stepCount">1 / 15</span>
+        <button class="btn primary" id="next" type="button">Sonraki →</button>
+      </div>
+    </section>
+
+    <section class="tabpane" id="tab-katman" hidden>
+      <div class="scroll">
+        <div class="group-h" data-i18n="g.structures">Yapılar</div>
+        <div class="toggles">
+          <label class="tg"><input type="checkbox" id="ly-bone" data-layer="bone" checked><i class="sw" style="background:#e5d8bd"></i><span class="nm" data-i18n="ly.bone"></span></label>
+          <div class="range"><input type="range" id="boneOp" min="10" max="100" value="100" data-i18n-aria="aria.boneOp"><output id="boneOpVal">100%</output></div>
+          <label class="tg"><input type="checkbox" id="ly-gland" data-layer="gland" checked><i class="sw" style="background:#d98a6c"></i><span class="nm" data-i18n="ly.gland"></span></label>
+          <label class="tg"><input type="checkbox" id="ly-tumor" data-layer="tumor" checked><i class="sw" style="background:#a98aa0"></i><span class="nm" data-i18n="ly.tumor"></span></label>
+          <label class="tg"><input type="checkbox" id="ly-ica" data-layer="ica" checked><i class="sw" style="background:#b3262e"></i><span class="nm" data-i18n="ly.ica"></span></label>
+          <label class="tg"><input type="checkbox" id="ly-vessels" data-layer="vessels" checked><i class="sw" style="background:#8c2a30"></i><span class="nm" data-i18n="ly.vessels"></span></label>
+          <label class="tg"><input type="checkbox" id="ly-nerves" data-layer="nerves" checked><i class="sw" style="background:#efd9a0"></i><span class="nm" data-i18n="ly.nerves"></span></label>
+          <label class="tg"><input type="checkbox" id="ly-cs" data-layer="cs" checked><i class="sw" style="background:#6a5cc8"></i><span class="nm" data-i18n="ly.cs"></span></label>
+          <label class="tg"><input type="checkbox" id="ly-optic" data-layer="optic" checked><i class="sw" style="background:#efe6cf"></i><span class="nm" data-i18n="ly.optic"></span></label>
+          <label class="tg"><input type="checkbox" id="ly-dia" data-layer="diaphragma" checked><i class="sw" style="background:#c9b8a8"></i><span class="nm" data-i18n="ly.dia"></span></label>
+        </div>
+        <div class="group-h" data-i18n="g.coronal">Koronal kesit</div>
+        <div class="toggles">
+          <label class="tg"><input type="checkbox" id="ly-lines" data-layer="lines" checked><i class="sw" style="background:linear-gradient(90deg,var(--k-med) 33%,var(--k-cen) 33% 66%,var(--k-lat) 66%)"></i><span class="nm" data-i18n="ly.lines"></span></label>
+          <label class="tg"><input type="checkbox" id="ly-mr" data-layer="mrplane"><i class="sw" style="background:#9aa4ad"></i><span class="nm" data-i18n="ly.mr"></span></label>
+          <div class="range"><input type="range" id="mrOp" min="20" max="100" value="96" data-i18n-aria="aria.mrOp"><output id="mrOpVal">96%</output></div>
+        </div>
+        <div class="group-h" data-i18n="g.labels">Etiketler</div>
+        <div class="seg" role="radiogroup">
+          <label><input type="radio" name="lblmode" id="lbl-step" value="step" checked><span data-i18n="lbl.step"></span></label>
+          <label><input type="radio" name="lblmode" id="lbl-all" value="all"><span data-i18n="lbl.all"></span></label>
+          <label><input type="radio" name="lblmode" id="lbl-off" value="off"><span data-i18n="lbl.off"></span></label>
+        </div>
+        <div class="toggles">
+          <label class="tg"><input type="checkbox" id="autoRot"><span class="nm" data-i18n="autorot"></span></label>
+        </div>
+        <div class="group-h" data-i18n="g.controls">Kontroller</div>
+        <div class="help">
+          <kbd data-i18n="help.1k"></kbd><span data-i18n="help.1v"></span>
+          <kbd data-i18n="help.2k"></kbd><span data-i18n="help.2v"></span>
+          <kbd data-i18n="help.3k"></kbd><span data-i18n="help.3v"></span>
+          <kbd data-i18n="help.4k"></kbd><span data-i18n="help.4v"></span>
+          <kbd data-i18n="help.5k"></kbd><span data-i18n="help.5v"></span>
+          <kbd data-i18n="help.6k"></kbd><span data-i18n="help.6v"></span>
+        </div>
+      </div>
+    </section>
+
+    <section class="tabpane" id="tab-test" hidden>
+      <div class="scroll">
+        <div class="kicker" data-i18n="quiz.kicker"></div>
+        <h2 class="step-title" data-i18n="quiz.title"></h2>
+        <p class="quiz-intro" data-i18n-html="quiz.intro"></p>
+        <div class="answers" id="quizAnswers">
+          <button type="button" data-g="g0"><i class="gchip g-g0"></i>0</button>
+          <button type="button" data-g="g1"><i class="gchip g-g1"></i>1</button>
+          <button type="button" data-g="g2"><i class="gchip g-g2"></i>2</button>
+          <button type="button" data-g="g3a"><i class="gchip g-g3a"></i>3A</button>
+          <button type="button" data-g="g3b"><i class="gchip g-g3b"></i>3B</button>
+          <button type="button" data-g="g4"><i class="gchip g-g4"></i>4</button>
+        </div>
+        <div id="quizFeedback"></div>
+        <button class="btn primary" id="quizNext" type="button" data-i18n="quiz.next" hidden></button>
+      </div>
+    </section>
+
+    <section class="tabpane" id="tab-kaynak" hidden>
+      <div class="scroll">
+        <div class="group-h" data-i18n="refs.h">Kaynaklar</div>
+        <ul class="refs">
+          <li>Knosp E, Steiner E, Kitz K, Matula C. Pituitary adenomas with invasion of the cavernous sinus space: a magnetic resonance imaging classification compared with surgical findings. <i>Neurosurgery</i>. 1993;33(4):610–618.</li>
+          <li>Micko ASG, Wöhrer A, Wolfsberger S, Knosp E. Invasion of the cavernous sinus space in pituitary adenomas: endoscopic verification and its correlation with an MRI-based classification. <i>J Neurosurg</i>. 2015;122(4):803–811. <a href="https://thejns.org/view/journals/j-neurosurg/122/4/article-p803.xml" target="_blank" rel="noopener">thejns.org</a></li>
+          <li>Radiological Knosp, Revised-Knosp, and Hardy–Wilson classifications for the prediction of surgical outcomes in the endoscopic endonasal surgery of pituitary adenomas: study of 228 cases. <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC8810816/" target="_blank" rel="noopener">PMC8810816</a> <span data-i18n="refs.n1"></span></li>
+          <li>Automated assessment of Knosp grade from pituitary adenoma MRI: experimental comparison of a rule-based and a machine learning-based approach. <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC13262174/" target="_blank" rel="noopener">PMC13262174</a> <span data-i18n="refs.n2"></span></li>
+          <li>Bouthillier A, van Loveren HR, Keller JT. Segments of the internal carotid artery: a new classification. <i>Neurosurgery</i>. 1996;38(3):425–433.</li>
+          <li>Morphological analysis of the cavernous segment of the internal carotid artery: a retrospective, single center study of its clinical significance. <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC12691409/" target="_blank" rel="noopener">PMC12691409</a> <span data-i18n="refs.n4"></span></li>
+          <li>Rhoton AL Jr. The sellar region. <i>Neurosurgery</i>. 2002;51(4 Suppl):S335–S374. <span data-i18n="refs.n3"></span></li>
+        </ul>
+        <p class="note" data-i18n-html="refs.note"></p>
+      </div>
+    </section>
+  </aside>
+
+  <main class="stage" id="viewport">
+    <div class="hud hud-tl">
+      <div class="badge glass" aria-live="polite">
+        <div class="bg-num g-none" id="badgeGrade">—</div>
+        <div class="bt"><small data-i18n="badge.small">Knosp · sol</small><span id="badgeTxt"></span></div>
+      </div>
+      <div class="info glass" id="infoCard" hidden>
+        <h3 id="infoName"></h3>
+        <div class="lat" id="infoLatin"></div>
+        <p id="infoText"></p>
+        <div class="row"><button class="btn" id="infoFocus" type="button" data-i18n="info.focus"></button><button class="btn" id="infoClose" type="button" data-i18n="info.close"></button></div>
+      </div>
+    </div>
+    <div class="hud hud-tr">
+      <div class="views glass" role="group" data-i18n-aria="aria.views">
+        <button type="button" data-view="overview" data-i18n="view.overview"></button>
+        <button type="button" data-view="endonasal" data-i18n="view.endonasal"></button>
+        <button type="button" data-view="boneTop" data-i18n="view.boneTop"></button>
+        <button type="button" data-view="icaLat" data-i18n="view.icaLat"></button>
+        <button type="button" data-view="coronal" data-i18n="view.coronal"></button>
+      </div>
+      <button class="glass iconbtn" id="resetView" type="button" data-i18n-title="view.reset" data-i18n-aria="view.reset">↺</button>
+    </div>
+    <div class="hud hud-bottom">
+      <div class="gradebar glass" id="gradeBar" role="group" data-i18n-aria="aria.gb">
+        <span class="gl-l" data-i18n-html="gb.label">Knosp<br>sol</span>
+        <button type="button" data-g="none" class="on" data-i18n="gb.normal">Normal</button>
+        <button type="button" data-g="g0"><i class="g-g0"></i>0</button>
+        <button type="button" data-g="g1"><i class="g-g1"></i>1</button>
+        <button type="button" data-g="g2"><i class="g-g2"></i>2</button>
+        <button type="button" data-g="g3a"><i class="g-g3a"></i>3A</button>
+        <button type="button" data-g="g3b"><i class="g-g3b"></i>3B</button>
+        <button type="button" data-g="g4"><i class="g-g4"></i>4</button>
+      </div>
+      <div class="cutbar glass">
+        <label class="chk"><input type="checkbox" id="cutToggle"><span data-i18n="cut.label">Koronal kesit</span></label>
+        <input type="range" id="cutZ" min="-8" max="12" step="0.25" value="3.5" data-i18n-aria="aria.cut" disabled>
+        <output id="cutVal">+3.5 mm</output>
+        <span class="knote" id="kNote" data-i18n="cut.note" hidden></span>
+        <button class="iconbtn" id="insetBtn" type="button" aria-pressed="false" style="background:none;border:0">MR</button>
+      </div>
+    </div>
+    <div class="inset glass" id="inset" hidden>
+      <header id="insetHead" tabindex="0" data-i18n-title="inset.drag"><span class="grip" aria-hidden="true">⠿</span><b data-i18n="inset.title"></b><span class="ibtns"><button type="button" id="insetMin" aria-pressed="false" data-i18n-aria="aria.insetMin" data-i18n-title="aria.insetMin">–</button><button type="button" id="insetClose" data-i18n-aria="aria.insetClose" data-i18n-title="aria.insetClose">×</button></span></header>
+      <canvas id="mrInset" width="300" height="240"></canvas>
+      <div class="legend"><span><i class="k-med"></i><span data-i18n="leg.med"></span></span><span><i class="k-cen"></i><span data-i18n="leg.cen"></span></span><span><i class="k-lat"></i><span data-i18n="leg.lat"></span></span></div>
+    </div>
+    <div class="tip glass" id="tip" hidden></div>
+    <div class="loader" id="loader">
+      <div class="box">
+        <h2 data-i18n="load.title">Sellar bölge modelleniyor</h2>
+        <div class="bar"><i id="loadBar"></i></div>
+        <p id="loadTxt" data-i18n="load.init">Başlatılıyor…</p>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/",
+  "three-mesh-bvh": "https://cdn.jsdelivr.net/npm/three-mesh-bvh@0.8.3/build/index.module.js"
+} }
+</script>
+<script>
+// Anatomy core: signed-distance anatomy of the sellar region (units: mm).
+// Axes: +x = patient's LEFT (viewer's right in an anterior / coronal view), +y = superior, +z = anterior.
+window.Core = (function () {
+  'use strict';
+
+  // ---------- noise ----------
+  function hash(i, j, k) {
+    let h = Math.imul(i, 374761393) ^ Math.imul(j, 668265263) ^ Math.imul(k, 1274126177);
+    h = Math.imul(h ^ (h >>> 13), 1103515245);
+    h ^= h >>> 16;
+    return (h >>> 0) / 4294967296;
+  }
+  function noise3(x, y, z) {
+    const xi = Math.floor(x), yi = Math.floor(y), zi = Math.floor(z);
+    const xf = x - xi, yf = y - yi, zf = z - zi;
+    const u = xf * xf * (3 - 2 * xf), v = yf * yf * (3 - 2 * yf), w = zf * zf * (3 - 2 * zf);
+    const a = hash(xi, yi, zi), b = hash(xi + 1, yi, zi), c = hash(xi, yi + 1, zi), d = hash(xi + 1, yi + 1, zi);
+    const e = hash(xi, yi, zi + 1), f = hash(xi + 1, yi, zi + 1), g = hash(xi, yi + 1, zi + 1), h = hash(xi + 1, yi + 1, zi + 1);
+    const x1 = a + (b - a) * u, x2 = c + (d - c) * u, x3 = e + (f - e) * u, x4 = g + (h - g) * u;
+    const y1 = x1 + (x2 - x1) * v, y2 = x3 + (x4 - x3) * v;
+    return (y1 + (y2 - y1) * w) * 2 - 1;
+  }
+  function fbm(x, y, z) {
+    return noise3(x, y, z) * 0.62 + noise3(x * 2.13 + 5.1, y * 2.13, z * 2.13) * 0.28 + noise3(x * 4.7, y * 4.7 + 3.3, z * 4.7) * 0.1;
+  }
+
+  // ---------- SDF primitives ----------
+  const sqrt = Math.sqrt, abs = Math.abs, max = Math.max, min = Math.min;
+  function sdEll(px, py, pz, cx, cy, cz, rx, ry, rz) {
+    const x = px - cx, y = py - cy, z = pz - cz;
+    const k0 = sqrt((x / rx) * (x / rx) + (y / ry) * (y / ry) + (z / rz) * (z / rz));
+    const k1 = sqrt((x / (rx * rx)) ** 2 + (y / (ry * ry)) ** 2 + (z / (rz * rz)) ** 2);
+    return k1 > 1e-9 ? (k0 * (k0 - 1)) / k1 : -min(rx, ry, rz);
+  }
+  function sdRBox(px, py, pz, cx, cy, cz, hx, hy, hz, r) {
+    const qx = abs(px - cx) - hx + r, qy = abs(py - cy) - hy + r, qz = abs(pz - cz) - hz + r;
+    const mx = max(qx, 0), my = max(qy, 0), mz = max(qz, 0);
+    return sqrt(mx * mx + my * my + mz * mz) + min(max(qx, qy, qz), 0) - r;
+  }
+  function sdCone(px, py, pz, ax, ay, az, bx, by, bz, ra, rb) {
+    const pax = px - ax, pay = py - ay, paz = pz - az, bax = bx - ax, bay = by - ay, baz = bz - az;
+    let h = (pax * bax + pay * bay + paz * baz) / (bax * bax + bay * bay + baz * baz);
+    h = h < 0 ? 0 : h > 1 ? 1 : h;
+    const dx = pax - bax * h, dy = pay - bay * h, dz = paz - baz * h;
+    return sqrt(dx * dx + dy * dy + dz * dz) - (ra + (rb - ra) * h);
+  }
+  function smin(a, b, k) {
+    const h = max(k - abs(a - b), 0) / k;
+    return min(a, b) - h * h * k * 0.25;
+  }
+  function smax(a, b, k) { return -smin(-a, -b, k); }
+
+  // ---------- centripetal Catmull-Rom paths with per-control radius ----------
+  function crDense(P, per) {
+    const n = P.length;
+    const g0 = P[0].map((v, i) => 2 * v - P[1][i]);
+    const g1 = P[n - 1].map((v, i) => 2 * v - P[n - 2][i]);
+    const pts = [g0, ...P, g1];
+    const out = [];
+    const d = (a, b) => Math.pow(Math.hypot(b[0] - a[0], b[1] - a[1], b[2] - a[2]), 0.5) || 1e-4;
+    for (let i = 1; i < pts.length - 2; i++) {
+      const p0 = pts[i - 1], p1 = pts[i], p2 = pts[i + 1], p3 = pts[i + 2];
+      const t0 = 0, t1 = d(p0, p1), t2 = t1 + d(p1, p2), t3 = t2 + d(p2, p3);
+      for (let s = 0; s < per; s++) {
+        const t = t1 + ((t2 - t1) * s) / per;
+        const q = [0, 0, 0];
+        for (let k = 0; k < 3; k++) {
+          const A1 = ((t1 - t) / (t1 - t0)) * p0[k] + ((t - t0) / (t1 - t0)) * p1[k];
+          const A2 = ((t2 - t) / (t2 - t1)) * p1[k] + ((t - t1) / (t2 - t1)) * p2[k];
+          const A3 = ((t3 - t) / (t3 - t2)) * p2[k] + ((t - t2) / (t3 - t2)) * p3[k];
+          const B1 = ((t2 - t) / (t2 - t0)) * A1 + ((t - t0) / (t2 - t0)) * A2;
+          const B2 = ((t3 - t) / (t3 - t1)) * A2 + ((t - t1) / (t3 - t1)) * A3;
+          q[k] = ((t2 - t) / (t2 - t1)) * B1 + ((t - t1) / (t2 - t1)) * B2;
+        }
+        out.push([q[0], q[1], q[2], i - 1 + s / per]);
+      }
+    }
+    const L = P[n - 1];
+    out.push([L[0], L[1], L[2], n - 1]);
+    return out;
+  }
+
+  // Path: resampled polyline carrying radius and control parameter c (0..nCtrl-1).
+  function makePath(ctrl, radii, ds) {
+    const dense = crDense(ctrl, 24);
+    const cum = [0];
+    for (let i = 1; i < dense.length; i++) {
+      const a = dense[i - 1], b = dense[i];
+      cum.push(cum[i - 1] + Math.hypot(b[0] - a[0], b[1] - a[1], b[2] - a[2]));
+    }
+    const length = cum[cum.length - 1];
+    const n = Math.max(2, Math.ceil(length / ds) + 1);
+    const X = new Float64Array(n), Y = new Float64Array(n), Z = new Float64Array(n), R = new Float64Array(n), C = new Float64Array(n);
+    let j = 0;
+    for (let i = 0; i < n; i++) {
+      const s = (length * i) / (n - 1);
+      while (j < cum.length - 2 && cum[j + 1] < s) j++;
+      const f = (s - cum[j]) / (cum[j + 1] - cum[j] || 1);
+      const a = dense[j], b = dense[j + 1];
+      X[i] = a[0] + (b[0] - a[0]) * f; Y[i] = a[1] + (b[1] - a[1]) * f; Z[i] = a[2] + (b[2] - a[2]) * f;
+      const c = a[3] + (b[3] - a[3]) * f;
+      C[i] = c;
+      const ci = Math.min(Math.floor(c), radii.length - 2), cf = c - ci;
+      R[i] = radii[ci] + (radii[ci + 1] - radii[ci]) * cf;
+    }
+    let rmax = 0; for (let i = 0; i < n; i++) rmax = Math.max(rmax, R[i]);
+    // segment boxes (expanded by radius) and groups of 8 segments
+    const ns = n - 1, sb = new Float64Array(ns * 6);
+    for (let i = 0; i < ns; i++) {
+      const r = Math.max(R[i], R[i + 1]);
+      sb[i * 6] = Math.min(X[i], X[i + 1]) - r; sb[i * 6 + 1] = Math.max(X[i], X[i + 1]) + r;
+      sb[i * 6 + 2] = Math.min(Y[i], Y[i + 1]) - r; sb[i * 6 + 3] = Math.max(Y[i], Y[i + 1]) + r;
+      sb[i * 6 + 4] = Math.min(Z[i], Z[i + 1]) - r; sb[i * 6 + 5] = Math.max(Z[i], Z[i + 1]) + r;
+    }
+    const G = 8, ng = Math.ceil(ns / G), gb = new Float64Array(ng * 6);
+    for (let g = 0; g < ng; g++) {
+      gb[g * 6] = gb[g * 6 + 2] = gb[g * 6 + 4] = 1e9; gb[g * 6 + 1] = gb[g * 6 + 3] = gb[g * 6 + 5] = -1e9;
+      for (let i = g * G; i < Math.min(ns, (g + 1) * G); i++) {
+        for (let k = 0; k < 6; k += 2) { gb[g * 6 + k] = Math.min(gb[g * 6 + k], sb[i * 6 + k]); gb[g * 6 + k + 1] = Math.max(gb[g * 6 + k + 1], sb[i * 6 + k + 1]); }
+      }
+    }
+    const path = { ctrl, radii, n, X, Y, Z, R, C, length, rmax, lastC: 0 };
+    // distance to the tube surface (negative inside). Returns 1e3 when farther than `margin`.
+    path.dist = function (px, py, pz, margin) {
+      const m = margin === undefined ? 4 : margin;
+      let best = 1e3, bi = -1, bh = 0;
+      for (let g = 0; g < ng; g++) {
+        const o = g * 6;
+        if (px < gb[o] - m || px > gb[o + 1] + m || py < gb[o + 2] - m || py > gb[o + 3] + m || pz < gb[o + 4] - m || pz > gb[o + 5] + m) continue;
+        const e = Math.min(ns, (g + 1) * G);
+        for (let i = g * G; i < e; i++) {
+          const q = i * 6;
+          if (px < sb[q] - m || px > sb[q + 1] + m || py < sb[q + 2] - m || py > sb[q + 3] + m || pz < sb[q + 4] - m || pz > sb[q + 5] + m) continue;
+          const ax = X[i], ay = Y[i], az = Z[i];
+          const bx = X[i + 1] - ax, by = Y[i + 1] - ay, bz = Z[i + 1] - az;
+          const qx = px - ax, qy = py - ay, qz = pz - az;
+          let h = (qx * bx + qy * by + qz * bz) / (bx * bx + by * by + bz * bz);
+          h = h < 0 ? 0 : h > 1 ? 1 : h;
+          const dx = qx - bx * h, dy = qy - by * h, dz = qz - bz * h;
+          const d = sqrt(dx * dx + dy * dy + dz * dz) - (R[i] + (R[i + 1] - R[i]) * h);
+          if (d < best) { best = d; bi = i; bh = h; }
+        }
+      }
+      if (bi >= 0) path.lastC = C[bi] + (C[bi + 1] - C[bi]) * bh;
+      return best;
+    };
+    return path;
+  }
+  const mirror = (P) => P.map((p) => [-p[0], p[1], p[2]]);
+
+  // ---------- anatomy definitions (left side, x > 0) ----------
+  const A = {};
+  A.ica = {
+    ctrl: [[25, -16, -28], [18, -15, -19], [13, -13.5, -12.5], [11.3, -9.5, -9.5], [10.8, -6.3, -6.8], [10.5, -5.4, -2.5], [10.5, -5.0, 3.5],
+      [11.0, -3.6, 7.3], [11.0, -0.4, 8.9], [10.4, 2.6, 7.8], [9.6, 4.8, 5.2], [9.5, 6.0, 1.8], [10.2, 7.2, -1.2], [11.4, 8.6, -2.4]],
+    radii: [3.0, 3.0, 2.9, 2.7, 2.6, 2.55, 2.5, 2.45, 2.4, 2.3, 2.2, 2.15, 2.1, 2.0],
+    // Bouthillier segment by control-parameter range
+    segments: [[0, 2, 'C2 · petröz'], [2, 3, 'C3 · laserum'], [3, 8, 'C4 · kavernöz'], [8, 9, 'C5 · klinoid'], [9, 11, 'C6 · oftalmik'], [11, 13, 'C7 · komünikan']]
+  };
+  A.vessels = {
+    mca: { ctrl: [[11.4, 8.6, -2.4], [15, 9.2, -1.8], [20, 9.8, -0.4], [25, 11.0, 0.8]], radii: [1.45, 1.4, 1.35, 1.3] },
+    a1: { ctrl: [[11.4, 8.6, -2.4], [8, 9.8, 0.6], [4, 10.6, 3.8], [1.0, 11.0, 5.2]], radii: [1.2, 1.15, 1.1, 1.05] },
+    a2: { ctrl: [[1.0, 11.0, 5.2], [1.1, 14.5, 6.4], [1.3, 21, 6.8]], radii: [1.0, 1.0, 0.95] },
+    pcom: { ctrl: [[10.2, 7.2, -1.2], [9.4, 6.8, -5.2], [7.6, 6.2, -9.8]], radii: [0.75, 0.7, 0.72] },
+    pca: { ctrl: [[0.4, 4, -14], [3.6, 5.2, -12.9], [7.6, 6.2, -10.2], [11.2, 7.1, -12.4], [15.5, 7.8, -16.5]], radii: [1.3, 1.25, 1.25, 1.2, 1.15] },
+    sca: { ctrl: [[0.4, 2.6, -14.6], [4, 2.2, -14], [8, 1.8, -15], [12.5, 2.4, -17.5]], radii: [0.95, 0.9, 0.9, 0.85] },
+    oph: { ctrl: [[9.5, 4.0, 6.0], [8.7, 1.4, 8.6], [10.4, 0.2, 12.5], [11.6, 0.2, 19]], radii: [0.6, 0.55, 0.5, 0.5] }
+  };
+  A.midline = {
+    basilar: { ctrl: [[0, -24, -30], [0, -14, -23.5], [0, -4, -17], [0, 2.6, -14.6], [0, 4, -14]], radii: [1.7, 1.65, 1.6, 1.6, 1.5] },
+    acom: { ctrl: [[-1.1, 11, 5.2], [0, 11.1, 5.4], [1.1, 11, 5.2]], radii: [0.7, 0.65, 0.7] }
+  };
+  A.nerves = {
+    cn3: { ctrl: [[3, 3.5, -16.5], [5.8, 3.5, -12.4], [9, 2.6, -7.8], [12.6, 0.4, -4], [15.1, -1.0, 0], [15.3, -1.4, 4], [15.4, -1.5, 8.5], [16.4, -1.8, 12], [16.6, -1.6, 14], [18, -1.4, 20]], r: 1.1, name: 'cn3' },
+    cn4: { ctrl: [[8, 5.5, -19], [11.5, 3.6, -12.5], [14.2, 0.4, -6.5], [16.0, -2.7, -1.5], [16.2, -2.9, 4], [17.1, -1.0, 9], [16.3, 0.0, 10.6], [15.6, -0.2, 12.2], [15.4, -0.2, 14], [16.2, 0.1, 20]], r: 0.55, name: 'cn4' },
+    v1: { ctrl: [[16, -7.0, -6], [15.5, -4.9, -1.5], [15.6, -4.7, 4], [16.3, -4.0, 9], [18.6, -2.9, 12.5], [18.8, -1.9, 14], [20.5, -1.5, 20]], r: 1.05, name: 'v1' },
+    v2: { ctrl: [[17.5, -8.4, -5.5], [16, -7.4, -0.5], [15.9, -7.3, 4.5], [15.6, -7.9, 9.5], [15.6, -8.5, 15], [16.4, -9.2, 21]], r: 1.25, name: 'v2' },
+    cn6: { ctrl: [[2.5, -22, -28], [4, -15, -23], [6, -10, -19], [8.6, -8.6, -12.8], [11.8, -8.0, -7.5], [13.4, -7.4, -2], [13.6, -7.0, 4], [14.6, -5.6, 9], [16.2, -3.6, 12.5], [16.6, -3.4, 14], [18, -3.6, 20]], r: 0.62, name: 'cn6' }
+  };
+  A.nervesStatic = {
+    v3: { ctrl: [[20, -10, -7.5], [20.8, -13.5, -5], [21.2, -18, -3.5], [21.5, -24, -2]], r: 1.5 },
+    cn5: { ctrl: [[5, -5.2, -19], [10, -5.6, -15], [14.8, -6.8, -11.2]], r: 2.1 }
+  };
+  A.ganglion = { c: [18, -8.2, -8.8], r: [4.6, 1.45, 3.0], yaw: -0.62 };
+  A.optic = {
+    nerve: { ctrl: [[12.5, 1.4, 19], [9.56, 1.4, 12.5], [7.6, 1.8, 8], [5.2, 5.0, 4.6], [2.8, 6.6, 3.2]], radii: [1.55, 1.55, 1.75, 1.95, 2.0] },
+    tract: { ctrl: [[2.5, 7.1, 0.2], [6.8, 7.8, -4.4], [10.8, 8.5, -9], [14, 9, -13]], radii: [1.8, 1.8, 1.9, 2.0] }
+  };
+  A.stalkTop = [0, 6.3, -2.8];
+
+  // Coarse paths for SDF queries (left side; mirror queries with |x|).
+  const P = {};
+  P.ica = makePath(A.ica.ctrl, A.ica.radii, 0.9);
+  P.icaCav = makePath(A.ica.ctrl.slice(3, 10), A.ica.ctrl.slice(3, 10).map(() => 4.2), 1.0);
+  P.opticN = makePath(A.optic.nerve.ctrl, A.optic.nerve.radii, 0.8);
+  P.opticT = makePath(A.optic.tract.ctrl, A.optic.tract.radii, 0.9);
+
+  // ---------- bone ----------
+  const CLV = (function () { const d = [0, -22, -15], l = Math.hypot(...d); const dir = d.map((v) => v / l); return { dir, perp: [0, -dir[2], dir[1]] }; })();
+  // perp = (0,-dir.z, dir.y) → (0,-0.564,0.827)*-1? keep orthogonal; sign irrelevant for a symmetric box.
+  function fossaSDF(x, y, z) { return sdEll(x, y, z, 0, -1.5, 0.3, 7.2, 4.2, 5.8); }
+  function sinusSDF(x, y, z, icaD) {
+    let d = sdRBox(x, y, z, 0, -13.5, 2.5, 8.3, 7.2, 10.3, 3);
+    d = smax(d, -(fossaSDF(x, y, z) - 1.4), 1.0);
+    d = smax(d, -(icaD - 2.0), 1.0);
+    return d;
+  }
+  // Low-frequency domain warp: bends the solid bone organically without thinning walls.
+  function warp(x, y, z) {
+    return [x + 0.9 * noise3(x * 0.075 + 3.1, y * 0.075, z * 0.075), y + 0.6 * noise3(x * 0.075, y * 0.075 + 7.7, z * 0.075), z + 0.9 * noise3(x * 0.075, y * 0.075, z * 0.075 + 1.9)];
+  }
+  function boneSolid(x, y, z) {
+    const ax = abs(x);
+    let d = sdRBox(x, y, z, 0, -12, 1, 10, 10, 13, 4.5); // sphenoid body
+    d = smin(d, sdRBox(x, y, z, 0, -1.4, 13, 9.5, 2.4, 7, 2.2), 2.5); // tuberculum / limbus
+    d = smin(d, sdRBox(x, y, z, 0, -1.0, 24, 10.5, 1.8, 6.5, 1.6), 2.0); // planum sphenoidale
+    {
+      const e = sdEll(ax, y, z, 20, -9, 21, 11.5, 11, 11);
+      let sh = abs(e + 0.9) - 0.9;
+      sh = smax(sh, -(y + 1.0), 1.2);
+      d = smin(d, sh, 2.0); // orbital roof (domed)
+    }
+    {
+      // lesser wing: flattened tapered blade sweeping posterolaterally
+      const k = 2.1, yy = 1.3 + (y - 1.3) * k;
+      d = smin(d, sdCone(ax, yy, z, 11.5, 1.3, 13, 31, 1.3, 3.5, 4.2, 1.4) / k, 1.6);
+    }
+    d = smin(d, sdRBox(ax, y, z, 10.8, 1.4, 13.5, 3.6, 3.4, 4.2, 1.8), 1.4); // optic strut / lesser-wing root
+    d = smin(d, sdCone(ax, y, z, 13.2, 1.2, 11, 14.2, 1.8, 1.5, 2.8, 1.1), 1.0); // anterior clinoid
+    {
+      const lz = z + 7.4 - (y - 1.5) * 0.22;
+      const wx = 6.4 + (y - 1.5) * 0.12; // dorsum widens slightly upward
+      d = smin(d, sdRBox(x, y, lz, 0, 1.5, 0, wx, 6, 1.25, 1.2), 1.6); // dorsum sellae
+    }
+    d = smin(d, sdEll(ax, y, z, 5.8, 7.2, -6.3, 2.0, 1.7, 1.8), 1.0); // posterior clinoid
+    {
+      const qy = y + 15, qz = z + 17.5;
+      const la = qy * CLV.dir[1] + qz * CLV.dir[2];
+      const lb = qy * CLV.perp[1] + qz * CLV.perp[2];
+      d = smin(d, sdRBox(x, la, lb, 0, 0, 0, 7.5, 13.3, 2.8, 2.4), 2.4); // clivus
+    }
+    d = smin(d, sdCone(ax, y, z, 12.5, -10.5, -13.5, 32, -9, -30, 3.4, 6.5), 2.4); // petrous apex / ridge
+    {
+      const e = sdEll(ax, y, z, 24, -3, -1, 13, 14.5, 16);
+      let sh = abs(e + 1.2) - 1.1;
+      sh = smax(sh, y + 4.5, 1.2);
+      sh = smax(sh, 11.5 - ax, 1.2);
+      d = smin(d, sh, 2.0); // middle cranial fossa floor (greater wing)
+    }
+    return d;
+  }
+  function boneSDF(x, y, z) {
+    const ax = abs(x);
+    // cheap bound: far above everything
+    if (y > 12) return y - 10;
+    const w = warp(x, y, z);
+    let d = boneSolid(w[0], w[1], w[2]);
+    // hollows (unwarped: they must match the soft tissue exactly)
+    d = smax(d, -fossaSDF(x, y, z), 0.8);
+    const icaD = P.ica.dist(ax, y, z, 5);
+    d = smax(d, -(icaD - 0.9), 0.6); // carotid sulcus / canal
+    d = smax(d, -sinusSDF(w[0], w[1], w[2], icaD), 0.6);
+    d = smax(d, -sdRBox(x, y, z, 0, -13, 14.2, 6.5, 5, 2.6, 2), 0.6); // sphenoidotomy (anterior wall opened)
+    d = smin(d, max(sdRBox(x, y, z, 1.4, -13.5, -0.4, 0.6, 7.4, 7.4, 0.3), -sdRBox(x, y, z, 0, -13, 14.2, 6.5, 5, 2.6, 2)), 0.4); // intersinus septum
+    d = smax(d, -sdCone(ax, y, z, 7.0, 1.4, 7.2, 12.8, 1.4, 19.5, 2.0, 2.0), 0.5); // optic canal
+    d = smax(d, -sdCone(ax, y, z, 15.5, -8.2, 8, 15.9, -8.9, 19, 1.8, 1.8), 0.4); // foramen rotundum
+    d = smax(d, -sdCone(ax, y, z, 20.7, -11, -5.4, 21.3, -21, -3, 2.3, 2.3), 0.4); // foramen ovale
+    d = smax(d, -sdEll(ax, y, z, 16.5, -7.3, -10, 5.2, 2.6, 4.2), 0.8); // Meckel cave / trigeminal impression
+    // specimen bounds: an irregular dissection edge rather than a clean box cut
+    d = smax(d, sdEll(x, y, z, 0, -8, 0.5, 34, 22, 30) + 1.6 * noise3(x * 0.12, y * 0.12 + 4, z * 0.12), 1.0);
+    if (d < 2.2 && d > -2.2) d += 0.12 * fbm(x * 0.45, y * 0.45, z * 0.45) + 0.05 * noise3(x * 2.2, y * 2.2, z * 2.2);
+    return d;
+  }
+  // air in sphenoid sinus (for MR slice)
+  function airSDF(x, y, z) {
+    const icaD = P.ica.dist(abs(x), y, z, 5);
+    let d = sinusSDF(x, y, z, icaD);
+    d = max(d, -max(sdRBox(x, y, z, 1.4, -13.5, -0.4, 0.6, 7.4, 7.4, 0.3), -sdRBox(x, y, z, 0, -13, 14.2, 6.5, 5, 2.6, 2)));
+    return d;
+  }
+
+  // ---------- cavernous sinus (push shifts the lateral wall of the left side) ----------
+  function pushW(z) { const t = (z - 1.5) / 7; return Math.exp(-t * t); }
+  function csStatic(ax, y, z) {
+    let d = P.icaCav.dist(ax, y, z, 6);
+    d = smin(d, sdEll(ax, y, z, 14.5, -6.2, -8.5, 4.2, 3.2, 3.8), 2.0);
+    d = smin(d, sdEll(ax, y, z, 15.8, -2.5, 11.5, 3.2, 2.8, 3.5), 2.0);
+    return d;
+  }
+  function csSDF(x, y, z, push, boneD, stat) {
+    const ax = abs(x), pu = x > 0 ? push : 0;
+    let d = stat !== undefined ? stat : csStatic(ax, y, z);
+    d = smin(d, sdRBox(ax, y, z, 12.4 + pu * pushW(z) * 0.9, -3.6, 1.8, 4.8, 4.2, 7.8, 2.6), 2.0);
+    d = smax(d, 7.3 - ax, 0.8);
+    d = smax(d, y - 1.6, 0.8);
+    d = smax(d, -(y + 9.5), 0.8);
+    if (boneD !== undefined) d = smax(d, -boneD, 0.5);
+    return d;
+  }
+
+  // ---------- optic apparatus ----------
+  function opticSDF(x, y, z) {
+    const ax = abs(x);
+    let d = P.opticN.dist(ax, y, z, 4);
+    d = smin(d, sdEll(x, y, z, 0, 6.9, 2.2, 6.2, 1.7, 3.9), 1.6);
+    d = smin(d, P.opticT.dist(ax, y, z, 4), 1.4);
+    return d;
+  }
+
+  // ---------- tumour & gland states ----------
+  const ZS = [0.4, -2.0, 1.0, 0.01, 0.01, 0.01];
+  const T_A = [0.3, -2.3, 0.8, 6.8, 4.0, 6.0];
+  const T_B = [0.2, 1.8, 0.2, 5.4, 3.4, 5.0];
+  const L1 = [5.8, -0.4, 2.4, 3.4, 3.0, 4.3];
+  const L2 = [7.6, 0.2, 2.4, 4.2, 2.7, 4.5];
+  const S3 = [12.4, -0.1, 2.4, 3.9, 2.1, 4.8];
+  const C3 = [8.8, -5.0, 2.4, 2.4, 2.6, 4.2];
+  const I3 = [12.2, -8.6, 2.4, 3.8, 2.1, 4.6];
+  const LC = [15.0, -3.8, 2.4, 2.5, 4.6, 4.8];
+  const EX = [11.8, -4.2, -3.2, 4.0, 4.4, 3.8];
+  // slots: A, B, lateral, superior, connector, inferior, lateral-closure, posterior
+  const GLAND_N = { a: [0, -3.5, 1.2, 6.3, 2.2, 4.0], p: [0, -3.5, -3.2, 3.6, 2.0, 2.2], mid: [0, 2.2, -2.2], bot: [0, -1.8, -1.4] };
+  const GLAND_M = { a: [-5.4, -1.6, 1.4, 2.3, 3.4, 4.2], p: [-3.2, -3.0, -5.0, 2.4, 1.8, 1.6], mid: [-3.5, 5.2, -4.2], bot: [-5.2, 1.2, -3.6] };
+  const STATES = {
+    none: { label: 'Tümör yok', slots: [ZS, ZS, ZS, ZS, ZS, ZS, ZS, ZS], gland: GLAND_N, push: 0 },
+    g0: { label: 'Derece 0', slots: [T_A, T_B, ZS, ZS, ZS, ZS, ZS, ZS], gland: GLAND_M, push: 0 },
+    g1: { label: 'Derece 1', slots: [T_A, T_B, L1, ZS, ZS, ZS, ZS, ZS], gland: GLAND_M, push: 0 },
+    g2: { label: 'Derece 2', slots: [T_A, T_B, L2, ZS, ZS, ZS, ZS, ZS], gland: GLAND_M, push: 0.3 },
+    g3a: { label: 'Derece 3A', slots: [T_A, T_B, L2, S3, ZS, ZS, ZS, ZS], gland: GLAND_M, push: 2.6 },
+    g3b: { label: 'Derece 3B', slots: [T_A, T_B, L2, ZS, C3, I3, ZS, ZS], gland: GLAND_M, push: 2.0 },
+    g4: { label: 'Derece 4', slots: [T_A, T_B, L2, S3, C3, I3, LC, EX], gland: GLAND_M, push: 3.2 }
+  };
+  // collapsed slots grow from the nearest active lobe so morphs look organic
+  function lerpArr(a, b, t) { return a.map((v, i) => v + (b[i] - v) * t); }
+  function lerpState(sa, sb, t) {
+    const slots = sa.slots.map((s, i) => {
+      let a = s, b = sb.slots[i];
+      if (a === ZS && b !== ZS) a = [b[0] * 0.6, b[1] * 0.6, b[2], 0.01, 0.01, 0.01];
+      if (b === ZS && a !== ZS) b = [a[0] * 0.6, a[1] * 0.6, a[2], 0.01, 0.01, 0.01];
+      return lerpArr(a, b, t);
+    });
+    const g = {};
+    for (const k of ['a', 'p', 'mid', 'bot']) g[k] = lerpArr(sa.gland[k], sb.gland[k], t);
+    return { slots, gland: g, push: sa.push + (sb.push - sa.push) * t };
+  }
+  function tumorRaw(x, y, z, slots) {
+    let d = 1e3;
+    for (let i = 0; i < slots.length; i++) {
+      const s = slots[i];
+      if (s[3] < 0.05) continue;
+      // cheap reject
+      const m = Math.max(s[3], s[4], s[5]) + 3;
+      if (abs(x - s[0]) > m || abs(y - s[1]) > m || abs(z - s[2]) > m) { d = smin(d, 3, 1.8); continue; }
+      d = smin(d, sdEll(x, y, z, s[0], s[1], s[2], s[3], s[4], s[5]), 1.8);
+    }
+    return d;
+  }
+  function tumorSDF(x, y, z, st, icaD, optD, nz) {
+    let d = tumorRaw(x, y, z, st.slots);
+    if (d > 4) return d;
+    d += 0.25 * nz;
+    d = smax(d, -(icaD - 0.35), 0.5);
+    d = smax(d, -(optD - 0.2), 0.5);
+    return d;
+  }
+  function glandSDF(x, y, z, st, tumD, icaD) {
+    const g = st.gland;
+    let d = sdEll(x, y, z, ...g.a);
+    d = smin(d, sdEll(x, y, z, ...g.p), 1.2);
+    const T = A.stalkTop;
+    d = smin(d, sdCone(x, y, z, T[0], T[1], T[2], g.mid[0], g.mid[1], g.mid[2], 1.6, 1.15), 1.0);
+    d = smin(d, sdCone(x, y, z, g.mid[0], g.mid[1], g.mid[2], g.bot[0], g.bot[1], g.bot[2], 1.15, 1.2), 1.0);
+    if (tumD < 3) d = smax(d, -(tumD - 0.25), 0.6);
+    if (icaD < 3) d = smax(d, -(icaD - 0.3), 0.5);
+    return d;
+  }
+
+  // ---------- Knosp lines at a coronal plane ----------
+  // Uses the dense ICA path; finds crossings of z = zc in the siphon (control params 3.5 .. 12).
+  function knospAt(icaPath, zc) {
+    const hits = [];
+    for (let i = 0; i < icaPath.n - 1; i++) {
+      const c = icaPath.C[i];
+      if (c < 3.6 || c > 12) continue;
+      const z0 = icaPath.Z[i] - zc, z1 = icaPath.Z[i + 1] - zc;
+      if ((z0 <= 0 && z1 > 0) || (z0 > 0 && z1 <= 0)) {
+        const t = z0 / (z0 - z1);
+        hits.push({ x: icaPath.X[i] + (icaPath.X[i + 1] - icaPath.X[i]) * t, y: icaPath.Y[i] + (icaPath.Y[i + 1] - icaPath.Y[i]) * t, r: icaPath.R[i] + (icaPath.R[i + 1] - icaPath.R[i]) * t, c });
+      }
+    }
+    if (hits.length < 2) return null;
+    hits.sort((a, b) => a.y - b.y);
+    const lo = hits[0], up = hits[hits.length - 1];
+    if (up.y - lo.y < 4) return null;
+    const dx = up.x - lo.x, dy = up.y - lo.y, L = Math.hypot(dx, dy);
+    const ux = dx / L, uy = dy / L;
+    let nx = uy, ny = -ux; if (nx < 0) { nx = -nx; ny = -ny; } // lateral normal (+x)
+    const ext = 4.5;
+    const mk = (off0, off1) => [[lo.x + nx * off0 - ux * ext, lo.y + ny * off0 - uy * ext], [up.x + nx * off1 + ux * ext, up.y + ny * off1 + uy * ext]];
+    return { lo, up, n: [nx, ny], u: [ux, uy], medial: mk(-lo.r, -up.r), central: mk(0, 0), lateral: mk(lo.r, up.r) };
+  }
+  // x of a Knosp line at height y (line given as two 2D points)
+  function lineX(line, y) { const [a, b] = line; const t = (y - a[1]) / (b[1] - a[1]); return a[0] + (b[0] - a[0]) * t; }
+
+  function tumorNoise(x, y, z) { return fbm(x * 0.32 + 11.3, y * 0.32, z * 0.32); }
+
+  return { noise3, fbm, sdEll, sdRBox, sdCone, smin, smax, makePath, mirror, A, P, boneSDF, airSDF, fossaSDF, csStatic, csSDF, pushW, opticSDF, tumorNoise,
+    STATES, lerpState, tumorRaw, tumorSDF, glandSDF, knospAt, lineX };
+})();
+
+</script>
+<script>
+// Bilingual content (tr / en). Step order must match STEP_DEFS in app.js.
+window.KC = (function () {
+  'use strict';
+  const GT = { none: '—', g0: '0', g1: '1', g2: '2', g3a: '3A', g3b: '3B', g4: '4' };
+  const INV = { g0: null, g1: 1.5, g2: 9.9, g3a: 26.5, g3b: 70.6, g4: 100 };
+  const pct = (v, lang) => (lang === 'tr' ? '%' + String(v).replace('.', ',') : v + '%');
+
+  // ------------------------------------------------------------------ TR
+  const tr = {
+    htmlLang: 'tr',
+    docTitle: 'Knosp Sellar Atlası',
+    ui: {
+      'brand.title': 'Knosp <span>Sellar</span> Atlası',
+      'brand.sub': 'Hipofiz adenomlarında kavernöz sinüs uzanımı · 3B etkileşimli ders',
+      'tab.ders': 'Ders', 'tab.katman': 'Katmanlar', 'tab.test': 'Kendini sına', 'tab.kaynak': 'Kaynaklar',
+      'nav.prev': '← Önceki', 'nav.next': 'Sonraki →', 'nav.restart': 'Başa dön', 'nav.stepAria': '{n}. adım: {t}',
+      'g.structures': 'Yapılar', 'g.coronal': 'Koronal kesit', 'g.labels': 'Etiketler', 'g.controls': 'Kontroller',
+      'ly.bone': 'Kemik (sfenoid, klinoidler, kafa tabanı)', 'ly.gland': 'Hipofiz bezi ve sap', 'ly.tumor': 'Adenom',
+      'ly.ica': 'İnternal karotis arter', 'ly.vessels': 'Willis halkası dalları, baziler arter', 'ly.nerves': 'Kraniyal sinirler III, IV, V, VI',
+      'ly.cs': 'Kavernöz sinüs', 'ly.optic': 'Optik sinir, kiazma, trakt', 'ly.dia': 'Diafragma sella',
+      'ly.lines': 'Knosp çizgileri', 'ly.mr': 'MR kesitini kesit düzlemine yerleştir',
+      'aria.boneOp': 'Kemik opaklığı', 'aria.mrOp': 'MR kesiti opaklığı',
+      'lbl.step': 'Ders adımı', 'lbl.all': 'Tümü', 'lbl.off': 'Kapalı', 'autorot': 'Otomatik döndür',
+      'help.1k': 'Sol sürükle', 'help.1v': 'Döndür', 'help.2k': 'Tekerlek / sıkıştır', 'help.2v': 'Yakınlaştır, uzaklaştır',
+      'help.3k': 'Sağ sürükle / 2 parmak', 'help.3v': 'Kaydır', 'help.4k': 'Tıkla', 'help.4v': 'Yapıyı tanımla',
+      'help.5k': 'Çift tıkla', 'help.5v': 'O noktaya odaklan', 'help.6k': '← →', 'help.6v': 'Ders adımları',
+      'quiz.kicker': 'Kendini sına', 'quiz.title': 'Bu adenom hangi derecede?',
+      'quiz.intro': 'Rastgele bir vaka yüklenir. Koronal kesiti döndürerek incele, MR kesitindeki çizgilere bak ve <b>sol</b> taraf (ekranın sağı) için Knosp derecesini seç.',
+      'quiz.hint': 'Koronal kesiti ve MR kesitini incele, sonra <b>sol</b> taraf için dereceyi seç.',
+      'quiz.next': 'Yeni vaka →', 'quiz.right': 'Doğru.', 'quiz.wrong': 'Yanlış. Doğru cevap: {g}.', 'quiz.score': 'Skor: {s} / {n}',
+      'refs.h': 'Kaynaklar',
+      'refs.n1': '(derece bazında cerrahi remisyon oranları)', 'refs.n2': '(çizgilerin kesit bazında tanımı)',
+      'refs.n3': '(Rhoton, sellar bölgenin mikrocerrahi anatomisi)', 'refs.n4': '(kavernöz ICA çapı ≈ 5,1 mm; interkarotid mesafe ≈ 17,4 mm)',
+      'refs.note': 'Model, literatürdeki ortalama ölçülere göre işaretli uzaklık alanlarıyla (SDF) üretilmiş şematik-gerçekçi bir eğitim modelidir; tek bir hastanın anatomisini temsil etmez. MR görüntüsü sentetiktir. Tümör <b>sol</b> tarafta derecelendirilir (radyolojik düzende ekranın sağı).',
+      'badge.small': 'Knosp · sol', 'badge.none': 'Tümör yok · normal anatomi', 'badge.grade': 'Knosp {g} · sol taraf', 'badge.ask': 'Bu vakanın derecesi ne?',
+      'view.overview': 'Genel', 'view.endonasal': 'Endonazal', 'view.boneTop': 'Üst', 'view.icaLat': 'Yan', 'view.coronal': 'Koronal',
+      'view.reset': 'Adımın görünümüne dön', 'aria.views': 'Hazır görünümler',
+      'gb.label': 'Knosp<br>sol', 'gb.normal': 'Normal', 'aria.gb': 'Knosp derecesi (sol taraf)',
+      'cut.label': 'Koronal kesit', 'cut.note': 'Bu kesitte sifonun iki kolu yok', 'aria.cut': 'Kesit düzlemi (ön-arka, mm)',
+      'inset.title': 'Koronal T1 + kontrast · sentetik', 'aria.insetClose': 'MR kesitini kapat',
+      'aria.insetMin': 'MR penceresini küçült / büyüt', 'inset.drag': 'Başlıktan sürükleyerek taşı · köşeden boyutlandır · çift tıkla: yerine döndür',
+      'leg.med': 'Medial tanjant', 'leg.cen': 'İnterkarotid çizgi', 'leg.lat': 'Lateral tanjant',
+      'info.focus': 'Odaklan', 'info.close': 'Kapat',
+      'load.title': 'Sellar bölge modelleniyor', 'load.init': 'Başlatılıyor…', 'load.optic': 'Optik aparat…', 'load.skull': 'Kafa tabanı modelleniyor…',
+      'load.bone': 'Kemik yüzeyi hesaplanıyor…', 'load.mesh': 'Kemik ağı oluşturuluyor…', 'load.cs': 'Kavernöz sinüs…', 'load.tumor': 'Hipofiz ve tümör alanı…',
+      'load.ready': 'Hazır', 'load.err': 'Model yüklenemedi: ',
+      'axis.ant': 'ANTERİOR', 'axis.left': 'SOL', 'axis.right': 'SAĞ', 'axis.sup': 'SUPERİOR',
+      'mr.R': 'SAĞ', 'mr.L': 'SOL'
+    },
+    icaSeg: ['C2 · petröz', 'C3 · laserum', 'C4 · kavernöz', 'C5 · klinoid', 'C6 · oftalmik', 'C7 · komünikan'],
+    labelText: { ica_c2: 'ICA · C2 petröz', ica_c4: 'ICA · C4 kavernöz', ica_c5: 'ICA · C5 klinoid', ica_c6: 'ICA · C6 oftalmik', ica_c7: 'ICA · C7 komünikan' },
+    grade: {
+      none: 'Normal sellar anatomi. Hipofiz bezi sella içinde, kavernöz sinüs medial duvarı sağlam.',
+      g0: 'Tümör medial tanjantı geçmez. Kavernöz sinüs invazyonu beklenmez.',
+      g1: 'Tümör medial tanjantı geçer, interkarotid çizgiye ulaşmaz.',
+      g2: 'Tümör interkarotid çizgiyi geçer, lateral tanjanta ulaşmaz.',
+      g3a: 'Tümör lateral tanjantı intrakavernöz ICA’nın ÜSTÜNDEN (superior kompartman) geçer.',
+      g3b: 'Tümör lateral tanjantı intrakavernöz ICA’nın ALTINDAN (inferior kompartman) geçer.',
+      g4: 'İntrakavernöz ICA tümörle tamamen (360°) sarılmıştır.'
+    },
+    quiz: {
+      g0: 'Tümörün lateral sınırı medial tanjantın (mavi) içinde kalıyor.',
+      g1: 'Tümör medial tanjantı (mavi) geçiyor ama interkarotid çizgiye (sarı) ulaşmıyor.',
+      g2: 'Tümör interkarotid çizgiyi (sarı) geçiyor, lateral tanjanta (pembe) ulaşmıyor.',
+      g3a: 'Tümör lateral tanjantı (pembe) ICA’nın ÜSTÜNDEN geçiyor: superior kompartman.',
+      g3b: 'Tümör lateral tanjantı (pembe) ICA’nın ALTINDAN geçiyor: inferior kompartman.',
+      g4: 'İntrakavernöz ICA’nın çevresi tümörle tamamen sarılmış.'
+    },
+    info: {
+      bone: ['Sfenoid kemik / kafa tabanı', 'Os sphenoidale', 'Sellar bölgenin kemik çerçevesi. Gövdesi sfenoid sinüsü içerir; küçük kanatlar ön, büyük kanatlar orta kraniyal fossanın tabanını oluşturur.'],
+      sella: ['Sella turcica (hipofiz çukuru)', 'Fossa hypophysialis', 'Hipofiz bezinin oturduğu çukur. Tabanı sfenoid sinüse doğru kabarır; lateral kemik duvarı yoktur, lateral sınır kavernöz sinüsün medial dural duvarıdır.'],
+      sellarfloor: ['Sellar taban (sinüs yüzü)', 'Sellar kabarıklık', 'Endoskopik endonazal yaklaşımda sfenoid sinüs içinden açılan ilk hedef. Kalınlığı genellikle 1 mm civarındadır.'],
+      dorsum: ['Dorsum sellae', 'Dorsum sellae', 'Sellanın arka duvarı; üst ucunda posterior klinoid çıkıntılar bulunur. Arkasında baziler arter ve beyin sapı yer alır.'],
+      pclin: ['Posterior klinoid çıkıntı', 'Processus clinoideus posterior', 'Dorsum sellaenin lateral ucu. Tentoryumun iç kenarı ve petroklinoid bağlar buraya tutunur.'],
+      aclin: ['Anterior klinoid çıkıntı', 'Processus clinoideus anterior', 'Küçük kanadın arkaya uzanan ucu. ICA’nın klinoid segmenti (C5) bu çıkıntının hemen medialinden ve altından geçer; kavernöz sinüs tavanının ön kısmını örter.'],
+      tuberculum: ['Tuberculum sellae', 'Tuberculum sellae', 'Sella çukurunun ön-üst kenarı. Genişletilmiş transtuberküler yaklaşımda rezeke edilir.'],
+      planum: ['Planum sphenoidale', 'Planum sphenoidale', 'Sfenoid gövdesinin düz üst yüzü; ön kraniyal fossanın orta-arka kısmı.'],
+      sinus: ['Sfenoid sinüs', 'Sinus sphenoidalis', 'Havalı sinüs; burada ön duvarı açılmış (sfenoidotomi) olarak gösterilmiştir. Endoskopik transsfenoidal cerrahinin koridoru.'],
+      septum: ['İntersinüs septumu', 'Septum sinuum sphenoidalium', 'Sıklıkla orta hattan sapar ve karotis çıkıntısına tutunabilir; kör kırılması ICA yaralanmasına yol açabilir.'],
+      carprom: ['Karotis çıkıntısı', 'Prominentia carotica', 'Kavernöz ICA’nın sfenoid sinüs lateral duvarında oluşturduğu kabarıklık. Kemik örtüsü bazen çok incedir ya da yoktur.'],
+      clivus: ['Klivus', 'Clivus', 'Dorsum sellaeden foramen magnuma inen kemik eğim. Arkasında baziler arter ve pons bulunur.'],
+      opticcanal: ['Optik kanal', 'Canalis opticus', 'Optik sinir ve oftalmik arteri orbitaya iletir; anterior klinoid çıkıntı ile optik strut arasında yer alır.'],
+      rotundum: ['Foramen rotundum', 'Foramen rotundum', 'Maksiller sinirin (V2) pterigopalatin fossaya çıkış yeri.'],
+      ovale: ['Foramen ovale', 'Foramen ovale', 'Mandibüler sinirin (V3) infratemporal fossaya çıkış yeri. V3 kavernöz sinüse girmez.'],
+      petrous: ['Petröz apeks', 'Apex partis petrosae', 'Temporal kemiğin petröz kısmının ucu. İçinden ICA’nın petröz segmenti geçer; üst yüzünde trigeminal çukur (Meckel mağarası) vardır.'],
+      mcf: ['Orta kraniyal fossa', 'Fossa cranii media', 'Temporal lobun oturduğu çukur; tabanını sfenoidin büyük kanadı oluşturur.'],
+      gland: ['Hipofiz bezi', 'Hypophysis', 'Ön lob (adenohipofiz), arka lob (nörohipofiz) ve hipofiz sapından oluşur.'],
+      gland_a: ['Adenohipofiz (ön lob)', 'Adenohypophysis', 'Bezin yaklaşık %75’i. Adenomların (PitNET) kaynağı. Makroadenomda genellikle karşı tarafa ve yukarı itilir, ince bir hilal halini alır.'],
+      gland_p: ['Nörohipofiz (arka lob)', 'Neurohypophysis', 'Hipotalamik aksonların sonlandığı lob; T1 ağırlıklı MR’da “parlak nokta” verir.'],
+      stalk: ['Hipofiz sapı', 'Infundibulum', 'Hipotalamusu hipofize bağlar; diafragma sellanın merkezî açıklığından geçer. Kitleler tarafından itilip gerilebilir.'],
+      diaphragma: ['Diafragma sella', 'Diaphragma sellae', 'Sellanın dural tavanı. Merkezî açıklığından sap geçer. Suprasellar uzanımda tümör tarafından kubbe şeklinde itilir.'],
+      chiasm: ['Optik kiazma', 'Chiasma opticum', 'Diafragmanın yaklaşık 5–10 mm üstünde. Aşağıdan bası çaprazlaşan nazal retina liflerini etkiler: bitemporal hemianopsi.'],
+      opticnerve: ['Optik sinir (II)', 'N. opticus', 'Optik kanaldan kiazmaya uzanır; supraklinoid ICA’nın üst-medialindedir.'],
+      optictract: ['Optik trakt', 'Tractus opticus', 'Kiazmadan lateral genikulat cisme uzanır.'],
+      cs: ['Kavernöz sinüs', 'Sinus cavernosus', 'Superior orbital fissürden petröz apekse uzanan dural venöz boşluk. Lateral duvarı iki tabakalıdır (III, IV, V1, V2); medial duvarı tek ve incedir. İçinde ICA ve VI. sinir seyreder.'],
+      ica: ['İnternal karotis arter', 'A. carotis interna', 'Kavernöz sinüs içinde sifon yapar. Knosp çizgileri intrakavernöz ve supraklinoid kesitleri arasına çizilir.'],
+      mca: ['Orta serebral arter (M1)', 'A. cerebri media', 'ICA terminalinden laterale, Silvian fissüre gider.'],
+      a1: ['Ön serebral arter (A1)', 'A. cerebri anterior', 'Optik sinir ve kiazmanın üstünden mediale geçer.'],
+      a2: ['Ön serebral arter (A2)', 'A. cerebri anterior', 'Anterior komünikan arterin distalinde yukarı yükselir.'],
+      acom: ['Anterior komünikan arter', 'A. communicans anterior', 'İki A1 segmentini birleştirir; kiazmanın üst-önünde yer alır.'],
+      pcom: ['Posterior komünikan arter', 'A. communicans posterior', 'ICA’nın C7 segmentinden çıkar, arkaya PCA’ya uzanır; okülomotor sinirin yakınında seyreder.'],
+      pca: ['Posterior serebral arter', 'A. cerebri posterior', 'Baziler tepeden çıkar. Okülomotor sinir PCA ile SCA arasından geçer.'],
+      sca: ['Süperior serebellar arter', 'A. superior cerebelli', 'Baziler arterin tepeye yakın dalı; III. sinirin altında seyreder.'],
+      basilar: ['Baziler arter', 'A. basilaris', 'Klivusun arkasında, prepontin sisternada.'],
+      oph: ['Oftalmik arter', 'A. ophthalmica', 'Genellikle distal dural halkanın üstünden (C6) çıkar ve optik kanaldan sinirin altında orbitaya girer.'],
+      cn3: ['Okülomotor sinir (III)', 'N. oculomotorius', 'Okülomotor üçgenden sinüs tavanına girer, lateral duvarın en üstünde seyreder ve superior orbital fissürden orbitaya geçer. Apopleksi ile ani pitoz ve midriyazis yapabilir.'],
+      cn4: ['Troklear sinir (IV)', 'N. trochlearis', 'Lateral duvarda III’ün altında ilerler; önde III’ün üstünden çaprazlayarak mediale geçer.'],
+      v1: ['Oftalmik sinir (V1)', 'N. ophthalmicus', 'Lateral duvarda IV’ün altında; superior orbital fissürden orbitaya girer.'],
+      v2: ['Maksiller sinir (V2)', 'N. maxillaris', 'Lateral duvarın en alt kısmında seyreder; foramen rotundumdan çıkar.'],
+      v3: ['Mandibüler sinir (V3)', 'N. mandibularis', 'Ganglionden doğrudan foramen ovaleye iner; kavernöz sinüse girmez.'],
+      cn5: ['Trigeminal sinir kökü', 'N. trigeminus', 'Ponstan çıkıp petröz apeksin üstünden Meckel mağarasına girer.'],
+      gg: ['Trigeminal (Gasser) ganglion', 'Ganglion trigeminale', 'Meckel mağarasında yer alır; V1, V2 ve V3 buradan ayrılır.'],
+      cn6: ['Abdusens sinir (VI)', 'N. abducens', 'Dorello kanalından geçip sinüsün İÇİNDE, ICA’nın inferolateralinde serbestçe seyreder. İnferior kompartmanı (3B) dolduran tümör bu siniri sarabilir.'],
+      tumor: ['Hipofiz makroadenomu', 'PitNET', 'Sellar kaynaklı, suprasellar ve lateral uzanımlı adenom. Lateral uzanımın ICA’ya göre konumu Knosp derecesini belirler.']
+    },
+    steps: [
+      {
+        kicker: 'Giriş', title: 'Sellar bölge',
+        body: `<p>Hipofiz adenomları (PitNET) büyüdükçe en sık laterale, <b>kavernöz sinüse</b> doğru yayılır. <b>Knosp sınıflaması</b> (Knosp 1993; Micko 2015 revizyonu) bu uzanımı koronal kontrastlı T1 ağırlıklı MR’da <b>internal karotis artere (ICA)</b> göre çizilen üç çizgiyle derecelendirir.</p>
+        <p>Model gerçek boyutlara yakın, milimetre ölçekli bir anatomi modelidir. Sürükleyerek döndür, tekerlekle yakınlaştır, sağ tık (veya iki parmak) ile kaydır. Bir yapıya tıklarsan açıklaması açılır.</p>`,
+        facts: [['Kavernöz ICA çapı', '≈ 5 mm'], ['İnterkarotid mesafe', '≈ 17 mm'], ['Sella genişliği', '12–15 mm']]
+      },
+      {
+        kicker: 'Kemik çerçeve', title: 'Sella turcica ve sfenoid kemik',
+        body: `<p>Sella turcica sfenoid gövdesinin üst yüzündeki çukurdur. Önünde <b>tuberculum sellae</b> ve <b>planum sphenoidale</b>, arkasında <b>dorsum sellae</b> ve posterior klinoid çıkıntılar bulunur.</p>
+        <p><b>Sellanın lateral kemik duvarı yoktur.</b> İki yanda ICA, sfenoid gövdesinin yan yüzündeki karotis oluğunda ilerler; lateral sınırı kavernöz sinüsün ince medial duvarı oluşturur. Adenomun laterale neden kolay yayıldığını bu açıklar.</p>
+        <p>Anterior klinoid çıkıntı, ICA’nın klinoid segmentini (C5) lateralden ve üstten örter.</p>`
+      },
+      {
+        kicker: 'Cerrahi koridor', title: 'Endonazal perspektif',
+        body: `<p>Endoskopik endonazal yaklaşımda sfenoid sinüsün ön duvarı açıldığında cerrah önce <b>sellar tabanı</b> (sellar kabarıklık), iki yanında da <b>karotis çıkıntılarını</b> görür.</p>
+        <p>İntersinüs septumu çoğunlukla orta hattan sapar ve karotis çıkıntısına uzanabilir. Kemiğin arkasındaki ICA seyrini görmek için <i>Katmanlar</i> sekmesinden kemik opaklığını azalt.</p>`
+      },
+      {
+        kicker: 'Sellar içerik', title: 'Hipofiz, sap ve diafragma',
+        body: `<p><b>Adenohipofiz</b> (ön lob) bezin yaklaşık %75’idir; adenomlar buradan köken alır. <b>Nörohipofiz</b> (arka lob) T1’de parlak nokta verir.</p>
+        <p><b>Hipofiz sapı</b>, sellanın dural tavanı olan <b>diafragma sellanın</b> merkezî açıklığından geçer. <b>Optik kiazma</b> diafragmanın yaklaşık 5–10 mm üstündedir. Suprasellar uzanım kiazmaya aşağıdan bası yaparak bitemporal hemianopsiye yol açar.</p>`
+      },
+      {
+        kicker: 'Venöz kompartman', title: 'Kavernöz sinüs',
+        body: `<p>Kavernöz sinüs sellanın iki yanında, superior orbital fissürden petröz apekse uzanan dural bir venöz boşluktur.</p>
+        <p><b>Lateral duvar</b> iki tabakalıdır ve sinirleri taşır. <b>Medial duvar</b> (sellar duvar) ise tek, ince bir dural tabakadır. Adenom sinüse bu ince duvar üzerinden girer.</p>
+        <p>Sinüsün içi ICA’ya göre venöz kompartmanlara ayrılır: <b>superior</b>, <b>posterior</b>, <b>inferior</b> ve <b>lateral</b>. Micko’nun 3A/3B ayrımı üst ve alt kompartman farkına dayanır.</p>`
+      },
+      {
+        kicker: 'Arteriyel iskelet', title: 'ICA: karotis sifonu',
+        body: `<p>ICA petröz kanaldan çıkıp foramen laserumun üstünde yükselir. Kavernöz sinüs içinde <b>arka dirsek → yatay segment → ön dirsek</b> yapar (<b>C4</b>, Bouthillier). İki dural halka arasındaki kısa kısım <b>klinoid</b> (C5), distal halkanın üstündeki kısımlar <b>oftalmik</b> (C6) ve <b>komünikan</b> (C7) segmentlerdir.</p>
+        <p>Koronal kesitte sifonun iki kolu birlikte görülür: altta <b>intrakavernöz</b>, üstte <b>supraklinoid</b> ICA. Knosp çizgileri bu iki kesitin arasına çizilir.</p>`,
+        facts: [['Kemik opaklığı', '%22 (ICA seyri görünür)']]
+      },
+      {
+        kicker: 'Lateral duvar', title: 'Kraniyal sinirler',
+        body: `<p>Lateral duvarda yukarıdan aşağıya <b>III</b> (okülomotor), <b>IV</b> (troklear), <b>V1</b> (oftalmik) ve <b>V2</b> (maksiller) sinirleri seyreder.</p>
+        <p><b>VI</b> (abdusens) Dorello kanalından geçer ve sinüsün <b>içinde</b>, ICA’nın inferolateralinde serbestçe ilerler. <b>V3</b> sinüse girmez; Meckel mağarasındaki ganglionden foramen ovaleye iner.</p>
+        <p>Adenomlarda kavernöz sinüs invazyonuna rağmen kraniyal sinir defisiti nadirdir. Ani oftalmopleji hipofiz apopleksisini düşündürür; en sık III. sinir etkilenir.</p>`
+      },
+      {
+        kicker: 'Ölçüm düzlemi', title: 'Koronal kesit ve Knosp çizgileri',
+        body: `<p>Derece, ICA sifonunun iki kolunun birlikte göründüğü <b>koronal kontrastlı T1</b> kesitlerde belirlenir. Her tarafta üç çizgi çizilir:</p>
+        <ul class="lines-key">
+          <li><i class="k-med"></i><span><b>Medial tanjant</b>: intrakavernöz ve supraklinoid ICA’nın medial duvarlarını birleştirir.</span></li>
+          <li><i class="k-cen"></i><span><b>İnterkarotid çizgi</b>: iki kesitin merkezlerini birleştirir.</span></li>
+          <li><i class="k-lat"></i><span><b>Lateral tanjant</b>: iki kesitin lateral duvarlarını birleştirir.</span></li>
+        </ul>
+        <p>Taraflar ayrı derecelendirilir; tümörün en fazla uzandığı kesit esas alınır. Alttaki kaydırıcıyla kesit düzlemini ileri-geri taşı.</p>`
+      },
+      null, null, null, null, null, null, // grade steps (generated)
+      {
+        kicker: 'Özet', title: 'Klinik önem',
+        body: summary('tr', 'Derece', 'Cerrahi invazyon', 'Cerrahi remisyon', '228 olgu', [
+          'Derece 3–4 genellikle invaziv kabul edilir. 3A ile 3B’nin ayrılması prognoz için önemlidir: 3A derece 2’ye, 3B derece 4’e benzer davranır.',
+          'Knosp yalnızca lateral uzanımı ölçer. Suprasellar ve sfenoid uzanım için Hardy–Wilson gibi sınıflamalarla birlikte kullanılır.',
+          'Özellikle 2–3A sınırında gözlemciler arası farklılık olabilir. Kuşkulu tarafta birkaç ardışık koronal kesite bak.'
+        ])
+      }
+    ],
+    gradeBodies: {
+      g0: `<p>Tümör sella içinde ve suprasellar alanda büyümüştür ama <b>medial tanjantı geçmez</b>. Normal bez karşı tarafa itilmiştir.</p><p>Kavernöz sinüs medial duvarı sağlamdır; invazyon beklenmez.</p>`,
+      g1: `<p>Tümör <b>medial tanjantı geçer</b> fakat <b>interkarotid çizgiye ulaşmaz</b>. Medial duvar çoğunlukla itilir (kompresyon), yırtılmaz.</p>`,
+      g2: `<p>Tümör <b>interkarotid çizgiyi geçer</b>, <b>lateral tanjanta ulaşmaz</b>. Tümör iki ICA kesiti arasına sokulur.</p><p>Gerçek invazyon oranı hâlâ düşüktür, ancak MR ile kompresyon–invazyon ayrımı her zaman yapılamaz.</p>`,
+      g3a: `<p>Tümör <b>lateral tanjantı</b>, intrakavernöz ICA’nın <b>üstünden</b> geçer ve <b>superior kompartmanı</b> doldurur. Lateral duvardaki III, IV ve V1 laterale itilir.</p><p>Davranışı derece 2’ye yakındır; cerrahi olarak daha erişilebilirdir.</p>`,
+      g3b: `<p>Tümör <b>lateral tanjantı</b>, intrakavernöz ICA’nın <b>altından</b> geçer ve <b>inferior kompartmanı</b> doldurur. Bu kompartmanda seyreden <b>VI. sinir</b> tümörle sarılabilir.</p><p>Gerçek invazyon çok olasıdır; davranışı derece 4’e yakındır.</p>`,
+      g4: `<p>İntrakavernöz ICA tümörle <b>tamamen (360°) sarılmıştır</b>. Kavernöz sinüs invazyonu kesindir.</p><p>Total rezeksiyon nadiren mümkündür. Kalan tümör için radyocerrahi ve (fonksiyonel adenomlarda) medikal tedavi gündeme gelir.</p>`
+    },
+    gradeKicker: 'Knosp derecesi', gradeTitle: 'Derece {g}',
+    gradeFacts: (g) => [['Cerrahi olarak doğrulanan invazyon', INV[g] == null ? 'beklenmez' : pct(INV[g], 'tr')], ['Kaynak', 'Micko ve ark. 2015']]
+  };
+
+  // ------------------------------------------------------------------ EN
+  const en = {
+    htmlLang: 'en',
+    docTitle: 'Knosp Sellar Atlas',
+    ui: {
+      'brand.title': 'Knosp <span>Sellar</span> Atlas',
+      'brand.sub': 'Cavernous sinus extension of pituitary adenomas · interactive 3D lesson',
+      'tab.ders': 'Lesson', 'tab.katman': 'Layers', 'tab.test': 'Self-test', 'tab.kaynak': 'References',
+      'nav.prev': '← Previous', 'nav.next': 'Next →', 'nav.restart': 'Start over', 'nav.stepAria': 'Step {n}: {t}',
+      'g.structures': 'Structures', 'g.coronal': 'Coronal section', 'g.labels': 'Labels', 'g.controls': 'Controls',
+      'ly.bone': 'Bone (sphenoid, clinoid processes, skull base)', 'ly.gland': 'Pituitary gland and stalk', 'ly.tumor': 'Adenoma',
+      'ly.ica': 'Internal carotid artery', 'ly.vessels': 'Circle of Willis branches, basilar artery', 'ly.nerves': 'Cranial nerves III, IV, V, VI',
+      'ly.cs': 'Cavernous sinus', 'ly.optic': 'Optic nerve, chiasm, tract', 'ly.dia': 'Diaphragma sellae',
+      'ly.lines': 'Knosp lines', 'ly.mr': 'Place the MRI slice in the section plane',
+      'aria.boneOp': 'Bone opacity', 'aria.mrOp': 'MRI slice opacity',
+      'lbl.step': 'Lesson step', 'lbl.all': 'All', 'lbl.off': 'Off', 'autorot': 'Auto-rotate',
+      'help.1k': 'Left drag', 'help.1v': 'Rotate', 'help.2k': 'Wheel / pinch', 'help.2v': 'Zoom in and out',
+      'help.3k': 'Right drag / 2 fingers', 'help.3v': 'Pan', 'help.4k': 'Click', 'help.4v': 'Identify a structure',
+      'help.5k': 'Double-click', 'help.5v': 'Focus on that point', 'help.6k': '← →', 'help.6v': 'Lesson steps',
+      'quiz.kicker': 'Self-test', 'quiz.title': 'What Knosp grade is this adenoma?',
+      'quiz.intro': 'A random case is loaded. Rotate the coronal section, check the lines on the MRI slice, and choose the Knosp grade for the <b>left</b> side (right side of the screen).',
+      'quiz.hint': 'Review the coronal section and the MRI slice, then choose the grade for the <b>left</b> side.',
+      'quiz.next': 'New case →', 'quiz.right': 'Correct.', 'quiz.wrong': 'Incorrect. The correct answer is {g}.', 'quiz.score': 'Score: {s} / {n}',
+      'refs.h': 'References',
+      'refs.n1': '(surgical remission rates by grade)', 'refs.n2': '(slice-based definition of the lines)',
+      'refs.n3': '(Rhoton, microsurgical anatomy of the sellar region)', 'refs.n4': '(cavernous ICA diameter ≈ 5.1 mm; intercarotid distance ≈ 17.4 mm)',
+      'refs.note': 'This is a schematic-realistic teaching model generated with signed distance fields (SDF) from mean dimensions reported in the literature; it does not represent any individual patient. The MRI image is synthetic. The tumor is graded on the <b>left</b> side (the right side of the screen in radiological convention).',
+      'badge.small': 'Knosp · left', 'badge.none': 'No tumor · normal anatomy', 'badge.grade': 'Knosp {g} · left side', 'badge.ask': 'What grade is this case?',
+      'view.overview': 'Overview', 'view.endonasal': 'Endonasal', 'view.boneTop': 'Superior', 'view.icaLat': 'Lateral', 'view.coronal': 'Coronal',
+      'view.reset': 'Return to this step’s view', 'aria.views': 'Preset views',
+      'gb.label': 'Knosp<br>left', 'gb.normal': 'Normal', 'aria.gb': 'Knosp grade (left side)',
+      'cut.label': 'Coronal section', 'cut.note': 'Both limbs of the siphon are not in this slice', 'aria.cut': 'Section plane (anteroposterior, mm)',
+      'inset.title': 'Coronal contrast-enhanced T1 · synthetic', 'aria.insetClose': 'Close the MRI slice',
+      'aria.insetMin': 'Minimize / restore the MRI window', 'inset.drag': 'Drag the title bar to move · drag the corner to resize · double-click to reset',
+      'leg.med': 'Medial tangent', 'leg.cen': 'Intercarotid line', 'leg.lat': 'Lateral tangent',
+      'info.focus': 'Focus', 'info.close': 'Close',
+      'load.title': 'Modeling the sellar region', 'load.init': 'Starting…', 'load.optic': 'Optic apparatus…', 'load.skull': 'Modeling the skull base…',
+      'load.bone': 'Computing the bone surface…', 'load.mesh': 'Building the bone mesh…', 'load.cs': 'Cavernous sinus…', 'load.tumor': 'Pituitary and tumor field…',
+      'load.ready': 'Ready', 'load.err': 'The model could not be loaded: ',
+      'axis.ant': 'ANTERIOR', 'axis.left': 'LEFT', 'axis.right': 'RIGHT', 'axis.sup': 'SUPERIOR',
+      'mr.R': 'R', 'mr.L': 'L'
+    },
+    icaSeg: ['C2 · petrous', 'C3 · lacerum', 'C4 · cavernous', 'C5 · clinoid', 'C6 · ophthalmic', 'C7 · communicating'],
+    labelText: { ica_c2: 'ICA · C2 petrous', ica_c4: 'ICA · C4 cavernous', ica_c5: 'ICA · C5 clinoid', ica_c6: 'ICA · C6 ophthalmic', ica_c7: 'ICA · C7 communicating' },
+    grade: {
+      none: 'Normal sellar anatomy. The pituitary gland lies within the sella; the medial wall of the cavernous sinus is intact.',
+      g0: 'The tumor does not cross the medial tangent. No cavernous sinus invasion is expected.',
+      g1: 'The tumor crosses the medial tangent but does not reach the intercarotid line.',
+      g2: 'The tumor crosses the intercarotid line but does not reach the lateral tangent.',
+      g3a: 'The tumor extends beyond the lateral tangent ABOVE the intracavernous ICA (superior compartment).',
+      g3b: 'The tumor extends beyond the lateral tangent BELOW the intracavernous ICA (inferior compartment).',
+      g4: 'The intracavernous ICA is totally (360°) encased by tumor.'
+    },
+    quiz: {
+      g0: 'The lateral margin of the tumor stays medial to the medial tangent (blue).',
+      g1: 'The tumor crosses the medial tangent (blue) but does not reach the intercarotid line (yellow).',
+      g2: 'The tumor crosses the intercarotid line (yellow) but does not reach the lateral tangent (pink).',
+      g3a: 'The tumor crosses the lateral tangent (pink) ABOVE the ICA: superior compartment.',
+      g3b: 'The tumor crosses the lateral tangent (pink) BELOW the ICA: inferior compartment.',
+      g4: 'The intracavernous ICA is completely surrounded by tumor.'
+    },
+    info: {
+      bone: ['Sphenoid bone / skull base', 'Os sphenoidale', 'The bony framework of the sellar region. The body contains the sphenoid sinus; the lesser wings form part of the anterior cranial fossa and the greater wings the floor of the middle cranial fossa.'],
+      sella: ['Sella turcica (hypophyseal fossa)', 'Fossa hypophysialis', 'The fossa that houses the pituitary gland. Its floor bulges into the sphenoid sinus. It has no lateral bony wall; the lateral boundary is the medial dural wall of the cavernous sinus.'],
+      sellarfloor: ['Sellar floor (sinus aspect)', 'Sellar bulge', 'The first target opened from within the sphenoid sinus in the endoscopic endonasal approach. It is typically about 1 mm thick.'],
+      dorsum: ['Dorsum sellae', 'Dorsum sellae', 'The posterior wall of the sella, capped by the posterior clinoid processes. The basilar artery and brainstem lie behind it.'],
+      pclin: ['Posterior clinoid process', 'Processus clinoideus posterior', 'The lateral tip of the dorsum sellae. The free edge of the tentorium and the petroclinoid ligaments attach here.'],
+      aclin: ['Anterior clinoid process', 'Processus clinoideus anterior', 'The posterior projection of the lesser wing. The clinoid segment of the ICA (C5) passes immediately medial and inferior to it; it roofs the anterior part of the cavernous sinus.'],
+      tuberculum: ['Tuberculum sellae', 'Tuberculum sellae', 'The anterosuperior margin of the sella. It is removed in the extended transtuberculum approach.'],
+      planum: ['Planum sphenoidale', 'Planum sphenoidale', 'The flat superior surface of the sphenoid body; the posterior midline part of the anterior cranial fossa.'],
+      sinus: ['Sphenoid sinus', 'Sinus sphenoidalis', 'Air-containing sinus, shown here with its anterior wall opened (sphenoidotomy). The corridor for endoscopic transsphenoidal surgery.'],
+      septum: ['Intersinus septum', 'Septum sinuum sphenoidalium', 'Frequently off the midline and may insert onto the carotid prominence; fracturing it blindly risks ICA injury.'],
+      carprom: ['Carotid prominence', 'Prominentia carotica', 'The bulge produced by the cavernous ICA on the lateral wall of the sphenoid sinus. Its bony covering may be very thin or dehiscent.'],
+      clivus: ['Clivus', 'Clivus', 'The bony slope from the dorsum sellae to the foramen magnum. The basilar artery and pons lie behind it.'],
+      opticcanal: ['Optic canal', 'Canalis opticus', 'Transmits the optic nerve and ophthalmic artery into the orbit; bounded by the anterior clinoid process and the optic strut.'],
+      rotundum: ['Foramen rotundum', 'Foramen rotundum', 'Exit of the maxillary nerve (V2) into the pterygopalatine fossa.'],
+      ovale: ['Foramen ovale', 'Foramen ovale', 'Exit of the mandibular nerve (V3) into the infratemporal fossa. V3 does not enter the cavernous sinus.'],
+      petrous: ['Petrous apex', 'Apex partis petrosae', 'The tip of the petrous temporal bone. It transmits the petrous ICA; its superior surface bears the trigeminal impression (Meckel’s cave).'],
+      mcf: ['Middle cranial fossa', 'Fossa cranii media', 'Houses the temporal lobe; its floor is formed by the greater wing of the sphenoid.'],
+      gland: ['Pituitary gland', 'Hypophysis', 'Comprises the anterior lobe (adenohypophysis), the posterior lobe (neurohypophysis) and the pituitary stalk.'],
+      gland_a: ['Adenohypophysis (anterior lobe)', 'Adenohypophysis', 'About 75% of the gland and the origin of adenomas (PitNETs). In macroadenomas it is usually displaced contralaterally and superiorly into a thin crescent.'],
+      gland_p: ['Neurohypophysis (posterior lobe)', 'Neurohypophysis', 'Terminal field of hypothalamic axons; produces the “bright spot” on T1-weighted MRI.'],
+      stalk: ['Pituitary stalk', 'Infundibulum', 'Connects the hypothalamus to the pituitary and passes through the central opening of the diaphragma sellae. Masses may displace and stretch it.'],
+      diaphragma: ['Diaphragma sellae', 'Diaphragma sellae', 'The dural roof of the sella; the stalk passes through its central opening. With suprasellar extension it is pushed up into a dome.'],
+      chiasm: ['Optic chiasm', 'Chiasma opticum', 'Lies about 5–10 mm above the diaphragma. Compression from below affects the crossing nasal retinal fibers: bitemporal hemianopia.'],
+      opticnerve: ['Optic nerve (CN II)', 'N. opticus', 'Runs from the optic canal to the chiasm, superomedial to the supraclinoid ICA.'],
+      optictract: ['Optic tract', 'Tractus opticus', 'Runs from the chiasm to the lateral geniculate body.'],
+      cs: ['Cavernous sinus', 'Sinus cavernosus', 'A dural venous space extending from the superior orbital fissure to the petrous apex. Its lateral wall has two layers (CN III, IV, V1, V2); its medial wall is a single thin layer. The ICA and CN VI run within it.'],
+      ica: ['Internal carotid artery', 'A. carotis interna', 'Forms the carotid siphon within the cavernous sinus. The Knosp lines are drawn between its intracavernous and supraclinoid cross-sections.'],
+      mca: ['Middle cerebral artery (M1)', 'A. cerebri media', 'Runs laterally from the ICA terminus toward the Sylvian fissure.'],
+      a1: ['Anterior cerebral artery (A1)', 'A. cerebri anterior', 'Passes medially above the optic nerve and chiasm.'],
+      a2: ['Anterior cerebral artery (A2)', 'A. cerebri anterior', 'Ascends distal to the anterior communicating artery.'],
+      acom: ['Anterior communicating artery', 'A. communicans anterior', 'Joins the two A1 segments, anterosuperior to the chiasm.'],
+      pcom: ['Posterior communicating artery', 'A. communicans posterior', 'Arises from the C7 segment of the ICA and runs posteriorly to the PCA, close to the oculomotor nerve.'],
+      pca: ['Posterior cerebral artery', 'A. cerebri posterior', 'Arises from the basilar apex. The oculomotor nerve passes between the PCA and the SCA.'],
+      sca: ['Superior cerebellar artery', 'A. superior cerebelli', 'Arises near the basilar apex and runs below CN III.'],
+      basilar: ['Basilar artery', 'A. basilaris', 'Lies behind the clivus in the prepontine cistern.'],
+      oph: ['Ophthalmic artery', 'A. ophthalmica', 'Usually arises above the distal dural ring (C6) and enters the orbit through the optic canal, inferior to the nerve.'],
+      cn3: ['Oculomotor nerve (CN III)', 'N. oculomotorius', 'Enters the roof of the sinus through the oculomotor triangle, runs highest in the lateral wall and reaches the orbit through the superior orbital fissure. Apoplexy can cause sudden ptosis and mydriasis.'],
+      cn4: ['Trochlear nerve (CN IV)', 'N. trochlearis', 'Runs in the lateral wall below CN III; anteriorly it crosses above CN III to reach the medial side.'],
+      v1: ['Ophthalmic nerve (V1)', 'N. ophthalmicus', 'Runs in the lateral wall below CN IV and enters the orbit through the superior orbital fissure.'],
+      v2: ['Maxillary nerve (V2)', 'N. maxillaris', 'Runs in the lowest part of the lateral wall and exits through the foramen rotundum.'],
+      v3: ['Mandibular nerve (V3)', 'N. mandibularis', 'Descends from the ganglion directly to the foramen ovale; it does not enter the cavernous sinus.'],
+      cn5: ['Trigeminal nerve root', 'N. trigeminus', 'Leaves the pons and passes over the petrous apex into Meckel’s cave.'],
+      gg: ['Trigeminal (Gasserian) ganglion', 'Ganglion trigeminale', 'Lies in Meckel’s cave; V1, V2 and V3 arise from it.'],
+      cn6: ['Abducens nerve (CN VI)', 'N. abducens', 'Passes through Dorello’s canal and runs free WITHIN the sinus, inferolateral to the ICA. Tumor filling the inferior compartment (grade 3B) can encase it.'],
+      tumor: ['Pituitary macroadenoma', 'PitNET', 'A sellar adenoma with suprasellar and lateral extension. The position of its lateral extension relative to the ICA determines the Knosp grade.']
+    },
+    steps: [
+      {
+        kicker: 'Introduction', title: 'The sellar region',
+        body: `<p>As pituitary adenomas (PitNETs) enlarge, they most often extend laterally into the <b>cavernous sinus</b>. The <b>Knosp classification</b> (Knosp 1993; modified by Micko 2015) grades this extension on coronal contrast-enhanced T1-weighted MRI, using three lines drawn in relation to the <b>internal carotid artery (ICA)</b>.</p>
+        <p>The model approximates real dimensions on a millimeter scale. Drag to rotate, scroll to zoom, right-drag (or use two fingers) to pan. Click any structure for a description.</p>`,
+        facts: [['Cavernous ICA diameter', '≈ 5 mm'], ['Intercarotid distance', '≈ 17 mm'], ['Sellar width', '12–15 mm']]
+      },
+      {
+        kicker: 'Bony framework', title: 'Sella turcica and sphenoid bone',
+        body: `<p>The sella turcica is a depression on the superior surface of the sphenoid body. Anteriorly lie the <b>tuberculum sellae</b> and <b>planum sphenoidale</b>; posteriorly, the <b>dorsum sellae</b> and posterior clinoid processes.</p>
+        <p><b>The sella has no lateral bony wall.</b> On each side the ICA runs in the carotid sulcus on the lateral surface of the sphenoid body, and the lateral boundary is the thin medial wall of the cavernous sinus. This is why adenomas extend laterally so readily.</p>
+        <p>The anterior clinoid process covers the clinoid segment of the ICA (C5) laterally and superiorly.</p>`
+      },
+      {
+        kicker: 'Surgical corridor', title: 'Endonasal perspective',
+        body: `<p>In the endoscopic endonasal approach, once the anterior wall of the sphenoid sinus is opened, the surgeon first identifies the <b>sellar floor</b> (sellar bulge) and, on either side, the <b>carotid prominences</b>.</p>
+        <p>The intersinus septum is often off the midline and may insert onto a carotid prominence. To see the course of the ICA behind the bone, lower the bone opacity in the <i>Layers</i> tab.</p>`
+      },
+      {
+        kicker: 'Sellar contents', title: 'Pituitary gland, stalk and diaphragma',
+        body: `<p>The <b>adenohypophysis</b> (anterior lobe) makes up about 75% of the gland and is the origin of adenomas. The <b>neurohypophysis</b> (posterior lobe) produces the T1 bright spot.</p>
+        <p>The <b>pituitary stalk</b> passes through the central opening of the <b>diaphragma sellae</b>, the dural roof of the sella. The <b>optic chiasm</b> lies about 5–10 mm above the diaphragma; suprasellar extension compresses it from below and causes bitemporal hemianopia.</p>`
+      },
+      {
+        kicker: 'Venous compartment', title: 'Cavernous sinus',
+        body: `<p>The cavernous sinus is a dural venous space on each side of the sella, extending from the superior orbital fissure to the petrous apex.</p>
+        <p>The <b>lateral wall</b> has two layers and carries the cranial nerves. The <b>medial wall</b> (sellar wall) is a single thin dural layer, and adenomas enter the sinus through it.</p>
+        <p>Relative to the ICA, the sinus is divided into <b>superior</b>, <b>posterior</b>, <b>inferior</b> and <b>lateral</b> venous compartments. Micko’s 3A/3B distinction is based on the superior versus the inferior compartment.</p>`
+      },
+      {
+        kicker: 'Arterial framework', title: 'ICA: the carotid siphon',
+        body: `<p>The ICA leaves the petrous canal and ascends above the foramen lacerum. Within the cavernous sinus it forms a <b>posterior bend → horizontal segment → anterior bend</b> (<b>C4</b>, Bouthillier). The short part between the two dural rings is the <b>clinoid</b> segment (C5); above the distal ring follow the <b>ophthalmic</b> (C6) and <b>communicating</b> (C7) segments.</p>
+        <p>A coronal section shows both limbs of the siphon: the <b>intracavernous</b> ICA below and the <b>supraclinoid</b> ICA above. The Knosp lines are drawn between these two cross-sections.</p>`,
+        facts: [['Bone opacity', '22% (ICA course visible)']]
+      },
+      {
+        kicker: 'Lateral wall', title: 'Cranial nerves',
+        body: `<p>From superior to inferior, the lateral wall contains the <b>oculomotor (III)</b>, <b>trochlear (IV)</b>, <b>ophthalmic (V1)</b> and <b>maxillary (V2)</b> nerves.</p>
+        <p>The <b>abducens nerve (VI)</b> passes through Dorello’s canal and runs free <b>within</b> the sinus, inferolateral to the ICA. <b>V3</b> does not enter the sinus; it descends from the ganglion in Meckel’s cave to the foramen ovale.</p>
+        <p>Cranial nerve deficits are uncommon in adenomas despite cavernous sinus invasion. Sudden ophthalmoplegia suggests pituitary apoplexy, most often affecting CN III.</p>`
+      },
+      {
+        kicker: 'Measurement plane', title: 'Coronal section and Knosp lines',
+        body: `<p>The grade is assigned on <b>coronal contrast-enhanced T1</b> slices in which both limbs of the carotid siphon are visible. Three lines are drawn on each side:</p>
+        <ul class="lines-key">
+          <li><i class="k-med"></i><span><b>Medial tangent</b>: connects the medial walls of the intracavernous and supraclinoid ICA.</span></li>
+          <li><i class="k-cen"></i><span><b>Intercarotid line</b>: connects the centers of the two cross-sections.</span></li>
+          <li><i class="k-lat"></i><span><b>Lateral tangent</b>: connects their lateral walls.</span></li>
+        </ul>
+        <p>Each side is graded separately, and the slice with the greatest extension is decisive. Use the slider below to move the section plane anteriorly and posteriorly.</p>`
+      },
+      null, null, null, null, null, null,
+      {
+        kicker: 'Summary', title: 'Clinical significance',
+        body: summary('en', 'Grade', 'Surgical invasion', 'Surgical remission', '228 cases', [
+          'Grades 3–4 are generally considered invasive. Separating 3A from 3B matters for prognosis: grade 3A behaves like grade 2, and grade 3B like grade 4.',
+          'The Knosp grade measures lateral extension only. Combine it with classifications such as Hardy–Wilson for suprasellar and sphenoid extension.',
+          'Interobserver variability is notable, especially at the grade 2–3A boundary. Review several consecutive coronal slices on the more doubtful side.'
+        ])
+      }
+    ],
+    gradeBodies: {
+      g0: `<p>The tumor has grown within the sella and into the suprasellar space but does <b>not cross the medial tangent</b>. The normal gland is displaced to the opposite side.</p><p>The medial wall of the cavernous sinus is intact, and invasion is not expected.</p>`,
+      g1: `<p>The tumor <b>crosses the medial tangent</b> but <b>does not reach the intercarotid line</b>. The medial wall is usually displaced (compressed) rather than breached.</p>`,
+      g2: `<p>The tumor <b>crosses the intercarotid line</b> but <b>does not reach the lateral tangent</b>, insinuating between the two ICA cross-sections.</p><p>True invasion is still uncommon, but MRI cannot always distinguish compression from invasion.</p>`,
+      g3a: `<p>The tumor extends beyond the <b>lateral tangent</b> <b>above</b> the intracavernous ICA, filling the <b>superior compartment</b>. CN III, IV and V1 in the lateral wall are displaced laterally.</p><p>Its behavior resembles grade 2, and it is more accessible surgically.</p>`,
+      g3b: `<p>The tumor extends beyond the <b>lateral tangent</b> <b>below</b> the intracavernous ICA, filling the <b>inferior compartment</b>. The <b>abducens nerve</b>, which runs in this compartment, may be encased.</p><p>True invasion is very likely; its behavior resembles grade 4.</p>`,
+      g4: `<p>The intracavernous ICA is <b>totally (360°) encased</b> by tumor. Cavernous sinus invasion is certain.</p><p>Gross total resection is rarely achievable. Radiosurgery and, for functioning adenomas, medical therapy are considered for residual tumor.</p>`
+    },
+    gradeKicker: 'Knosp grade', gradeTitle: 'Grade {g}',
+    gradeFacts: (g) => [['Surgically confirmed invasion', INV[g] == null ? 'not expected' : pct(INV[g], 'en')], ['Source', 'Micko et al. 2015']]
+  };
+
+  function summary(lang, hG, hInv, hRem, nRem, bullets) {
+    const rem = { g0: 86.5, g1: 88.6, g2: 77.1, g3a: 56.0, g3b: 30.0, g4: 14.0 };
+    const rows = ['g0', 'g1', 'g2', 'g3a', 'g3b', 'g4'].map((g) =>
+      `<tr><td><span class="gchip g-${g}">${GT[g]}</span></td><td>${INV[g] == null ? '—' : pct(INV[g], lang)}</td><td>${pct(rem[g].toFixed(1), lang)}</td></tr>`).join('');
+    return `<table class="sum"><thead><tr><th>${hG}</th><th>${hInv}<br><small>Micko 2015</small></th><th>${hRem}<br><small>${nRem}</small></th></tr></thead><tbody>${rows}</tbody></table>
+    <ul class="bul">${bullets.map((b) => `<li>${b}</li>`).join('')}</ul>`;
+  }
+
+  // fill generated grade steps (indices 8–13)
+  for (const L of [tr, en]) {
+    ['g0', 'g1', 'g2', 'g3a', 'g3b', 'g4'].forEach((g, i) => {
+      L.steps[8 + i] = {
+        kicker: L.gradeKicker, title: L.gradeTitle.replace('{g}', GT[g]),
+        body: `<p class="def"><span class="gchip g-${g}">${GT[g]}</span><span>${L.grade[g]}</span></p>` + L.gradeBodies[g],
+        facts: L.gradeFacts(g)
+      };
+    });
+  }
+  return { tr, en, GT };
+})();
+
+</script>
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+import { CSS2DRenderer, CSS2DObject } from 'three/addons/renderers/CSS2DRenderer.js';
+import { computeBoundsTree, disposeBoundsTree, acceleratedRaycast } from 'three-mesh-bvh';
+
+THREE.BufferGeometry.prototype.computeBoundsTree = computeBoundsTree;
+THREE.BufferGeometry.prototype.disposeBoundsTree = disposeBoundsTree;
+THREE.Mesh.prototype.raycast = acceleratedRaycast;
+
+const C = window.Core;
+const $ = (id) => document.getElementById(id);
+const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+const sleep = () => new Promise((r) => setTimeout(r, 0));
+const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+// =====================================================================
+// Content & language (texts live in content.js → window.KC)
+// =====================================================================
+const KC = window.KC;
+let LANG = 'tr';
+try { const s = localStorage.getItem('knosp-lang'); if (s === 'tr' || s === 'en') LANG = s; } catch (e) { /* storage unavailable */ }
+const T = () => KC[LANG];
+const t = (key, vars) => {
+  let s = KC[LANG].ui[key] ?? KC.tr.ui[key] ?? key;
+  if (vars) for (const k in vars) s = s.replace(`{${k}}`, vars[k]);
+  return s;
+};
+const infoOf = (id) => KC[LANG].info[id];
+const GRADE_TXT = KC.GT;
+
+// Bone landmarks (left side; mirrored automatically when x < 0)
+const BONE_LM = {
+  sella: [0, -5.2, 0.5], sellarfloor: [0, -7.4, 1], dorsum: [0, 6.5, -6.3], pclin: [5.8, 8.6, -6.3], aclin: [14.2, 2.8, 2.5], tuberculum: [0, 1.1, 6.6],
+  planum: [0, 0.9, 19], sinus: [0, -13, 9], septum: [1.4, -13, 5], carprom: [7.2, -9.2, 5], clivus: [0, -16, -15], opticcanal: [10.8, 1.4, 16],
+  rotundum: [15.7, -8.6, 13.5], ovale: [21, -15.5, -4.3], petrous: [22, -6.5, -22], mcf: [25, -16, 0]
+};
+
+// Labels: id (info key), optional key (step-label key with its own text), layer, anchor (fn of dynamic state)
+const LABELS = [
+  ...Object.entries(BONE_LM).map(([id, p]) => ({ id, layer: 'bone', pos: () => p })),
+  { id: 'gland_a', layer: 'gland', pos: () => { const a = cur.gland.a; return [a[0], a[1] + 0.8, a[2] + a[5] * 0.8]; } },
+  { id: 'gland_p', layer: 'gland', pos: () => { const p = cur.gland.p; return [p[0], p[1] + p[4] * 0.7, p[2] - p[5] * 0.4]; } },
+  { id: 'stalk', layer: 'gland', pos: () => { const m = cur.gland.mid; return [m[0] / 2, (m[1] + 6.3) / 2, (m[2] - 2.8) / 2]; } },
+  { id: 'diaphragma', layer: 'diaphragma', pos: () => [-6.8, diaEdgeY(), 2.5] },
+  { id: 'chiasm', layer: 'optic', pos: () => [0, 8.7, 2.4] },
+  { id: 'opticnerve', layer: 'optic', pos: () => [7.4, 3.6, 8.2] },
+  { id: 'optictract', layer: 'optic', pos: () => [10.8, 10.4, -9] },
+  { id: 'cs', layer: 'cs', pos: () => [16.5 + cur.push * 0.8, 0.8, -4.5] },
+  { id: 'ica', key: 'ica_c2', layer: 'ica', pos: () => [18.5, -12.2, -19] },
+  { id: 'ica', key: 'ica_c4', layer: 'ica', pos: () => [10.5, -2.6, -0.5] },
+  { id: 'ica', key: 'ica_c5', layer: 'ica', pos: () => [13.2, -0.9, 8.7] },
+  { id: 'ica', key: 'ica_c6', layer: 'ica', pos: () => [9.7, 6.9, 3.8] },
+  { id: 'ica', key: 'ica_c7', layer: 'ica', pos: () => [11.9, 8.6, -1.4] },
+  { id: 'mca', layer: 'vessels', pos: () => [22, 11.3, -0.2] },
+  { id: 'a1', layer: 'vessels', pos: () => [5, 11.8, 3] },
+  { id: 'pcom', layer: 'vessels', pos: () => [9.2, 7.7, -6] },
+  { id: 'basilar', layer: 'vessels', pos: () => [0, -6, -18.6] },
+  { id: 'pca', layer: 'vessels', pos: () => [12, 8.5, -13.2] },
+  { id: 'sca', layer: 'vessels', pos: () => [9.5, 2.9, -15.6] },
+  { id: 'oph', layer: 'vessels', pos: () => [8.6, 1.6, 8.4] },
+  { id: 'cn3', layer: 'nerves', pos: () => [15.2 + cur.push, 0.1, 1] },
+  { id: 'cn4', layer: 'nerves', pos: () => [16.8 + cur.push, -2.9, 4] },
+  { id: 'v1', layer: 'nerves', pos: () => [16.6 + cur.push, -4.7, 4] },
+  { id: 'v2', layer: 'nerves', pos: () => [17.1 + cur.push, -7.3, 4.5] },
+  { id: 'cn6', layer: 'nerves', pos: () => [13.6 + cur.push * 0.4, -7.7, 4] },
+  { id: 'v3', layer: 'nerves', pos: () => [22.8, -18, -3.5] },
+  { id: 'gg', layer: 'nerves', pos: () => [20, -6.8, -10] },
+  { id: 'cn5', layer: 'nerves', pos: () => [10, -3.6, -15] },
+  { id: 'tumor', layer: 'tumor', pos: () => [0.4, 5.4, 1.2] }
+];
+const labelText = (L) => (L.key && T().labelText[L.key]) || infoOf(L.id)[0];
+
+const V = {
+  overview: { pos: [60, 60, 30], tgt: [4, -3, -1] },
+  boneTop: { pos: [18, 88, 36], tgt: [2, -4, 1] },
+  endonasal: { pos: [0, -19, 56], tgt: [0, -8.5, 0] },
+  glandTop: { pos: [-24, 46, 40], tgt: [0, -0.5, 0] },
+  csLat: { pos: [66, 20, 34], tgt: [10, -4, 0] },
+  icaLat: { pos: [74, 6, 16], tgt: [9, -2, -3] },
+  nerves: { pos: [60, 4, 44], tgt: [13, -3, 2] },
+  coronal: { pos: [5, 0, 72], tgt: [5, -1, 0] },
+  grade: { pos: [30, 16, 60], tgt: [7, -2, 1] },
+  summary: { pos: [-40, 58, 56], tgt: [3, -3, 0] }
+};
+
+// Scene state for each lesson step; texts come from KC[LANG].steps[i]
+const gradeDef = (g) => ({
+  grade: g, isGrade: true, view: 'grade', cut: true, zc: 3.5, inset: true, layers: { lines: true },
+  labels: g === 'g3b' || g === 'g4' ? ['tumor', 'cn6', 'v2', 'ica_c4'] : ['tumor', 'ica_c4', 'ica_c6', 'cn3']
+});
+const STEPS = [
+  { view: 'overview', grade: 'none', labels: ['gland_a', 'chiasm', 'cs', 'ica_c4', 'ica_c6', 'dorsum', 'aclin', 'sinus'] },
+  { view: 'boneTop', grade: 'none', layers: { gland: false, diaphragma: false, optic: false, vessels: false, nerves: false, cs: false },
+    labels: ['sella', 'tuberculum', 'planum', 'dorsum', 'pclin', 'aclin', 'opticcanal', 'rotundum', 'ovale', 'petrous', 'clivus', 'ica_c4'] },
+  { view: 'endonasal', grade: 'none', bone: 1, layers: { cs: false, optic: false, vessels: false },
+    labels: ['sellarfloor', 'carprom', 'septum', 'sinus', 'clivus', 'planum'] },
+  { view: 'glandTop', grade: 'none', layers: { cs: false, nerves: false, vessels: true },
+    labels: ['gland_a', 'gland_p', 'stalk', 'diaphragma', 'chiasm', 'opticnerve', 'a1', 'ica_c6'] },
+  { view: 'csLat', grade: 'none', layers: { vessels: false }, labels: ['cs', 'ica_c4', 'cn3', 'v1', 'v2', 'gland_a', 'aclin', 'petrous'] },
+  { view: 'icaLat', grade: 'none', bone: 0.22, layers: { cs: false, nerves: false, diaphragma: false },
+    labels: ['ica_c2', 'ica_c4', 'ica_c5', 'ica_c6', 'ica_c7', 'oph', 'pcom', 'mca', 'aclin'] },
+  { view: 'nerves', grade: 'none', bone: 0.55, layers: { vessels: false, diaphragma: false, optic: false },
+    labels: ['cn3', 'cn4', 'v1', 'v2', 'cn6', 'v3', 'gg', 'ica_c4'] },
+  { view: 'coronal', grade: 'none', cut: true, zc: 3.5, inset: true, layers: { lines: true },
+    labels: ['ica_c4', 'ica_c6', 'gland_a', 'sinus', 'cn3', 'v2', 'cn6'] },
+  gradeDef('g0'), gradeDef('g1'), gradeDef('g2'), gradeDef('g3a'), gradeDef('g3b'), gradeDef('g4'),
+  { view: 'summary', grade: 'g3b', cut: false, inset: false, autorotate: true, labels: ['tumor', 'ica_c4', 'cn6', 'v2', 'chiasm'] }
+];
+
+// =====================================================================
+// Renderer / scene
+// =====================================================================
+const viewport = $('viewport');
+const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' });
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.08;
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.localClippingEnabled = true;
+renderer.domElement.className = 'gl';
+viewport.prepend(renderer.domElement);
+const labelRenderer = new CSS2DRenderer();
+labelRenderer.domElement.className = 'labels';
+renderer.domElement.after(labelRenderer.domElement);
+
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(32, 1, 0.5, 1200);
+camera.position.set(...V.overview.pos);
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.target.set(...V.overview.tgt);
+controls.enableDamping = true; controls.dampingFactor = 0.08;
+controls.minDistance = 14; controls.maxDistance = 240;
+controls.rotateSpeed = 0.75; controls.zoomSpeed = 0.9; controls.screenSpacePanning = true;
+controls.autoRotateSpeed = 0.6;
+
+const pmrem = new THREE.PMREMGenerator(renderer);
+scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+scene.environmentIntensity = 0.75;
+const key = new THREE.DirectionalLight(0xfff0dc, 2.3);
+key.position.set(38, 78, 58); key.castShadow = true;
+key.shadow.mapSize.set(2048, 2048);
+Object.assign(key.shadow.camera, { left: -48, right: 48, top: 48, bottom: -48, near: 1, far: 260 });
+key.shadow.bias = -0.0004; key.shadow.normalBias = 0.04; key.shadow.radius = 3;
+key.target.position.set(0, -5, 0);
+scene.add(key, key.target);
+const fill = new THREE.DirectionalLight(0xb9ccff, 0.55); fill.position.set(-60, 18, -20); scene.add(fill);
+const rim = new THREE.DirectionalLight(0xffe2d0, 0.7); rim.position.set(10, -30, -70); scene.add(rim);
+scene.add(new THREE.HemisphereLight(0xdfe8ff, 0x2a1f1a, 0.35));
+
+const clipPlane = new THREE.Plane(new THREE.Vector3(0, 0, -1), 1e4);
+
+// ---------- shader patching: cut caps, micro-relief, fresnel veil ----------
+const NOISE_GLSL = `
+float h3n(vec3 p){ p = fract(p*0.3183099 + 0.1); p *= 17.0; return fract(p.x*p.y*p.z*(p.x+p.y+p.z)); }
+float vnoise(vec3 x){ vec3 i=floor(x); vec3 f=fract(x); f=f*f*(3.0-2.0*f);
+  return mix(mix(mix(h3n(i),h3n(i+vec3(1,0,0)),f.x), mix(h3n(i+vec3(0,1,0)),h3n(i+vec3(1,1,0)),f.x),f.y),
+             mix(mix(h3n(i+vec3(0,0,1)),h3n(i+vec3(1,0,1)),f.x), mix(h3n(i+vec3(0,1,1)),h3n(i+vec3(1,1,1)),f.x),f.y), f.z); }`;
+function patch(m, kind, cap, bump = 0) {
+  m.clippingPlanes = [clipPlane];
+  m.clipShadows = true;
+  if (cap) { m.side = THREE.DoubleSide; m.shadowSide = THREE.BackSide; }
+  const capColor = new THREE.Color(cap || '#000000');
+  m.userData.kind = kind;
+  m.onBeforeCompile = (sh) => {
+    sh.uniforms.uCap = { value: capColor };
+    sh.vertexShader = sh.vertexShader
+      .replace('#include <common>', '#include <common>\nvarying vec3 vW;')
+      .replace('#include <project_vertex>', '#include <project_vertex>\nvW = (modelMatrix * vec4(transformed, 1.0)).xyz;');
+    let fs = sh.fragmentShader.replace('#include <common>', '#include <common>\nvarying vec3 vW;\nuniform vec3 uCap;\n' + NOISE_GLSL);
+    if (bump > 0) {
+      fs = fs.replace('#include <normal_fragment_maps>', `#include <normal_fragment_maps>
+        normal = normalize(normal + ${bump.toFixed(3)} * faceDirection * (vec3(vnoise(vW*3.1), vnoise(vW*3.1+7.7), vnoise(vW*3.1+13.3)) - 0.5)
+                                  + ${(bump * 0.5).toFixed(3)} * faceDirection * (vec3(vnoise(vW*9.0), vnoise(vW*9.0+3.1), vnoise(vW*9.0+5.3)) - 0.5));`);
+    }
+    if (cap) {
+      fs = fs.replace('#include <opaque_fragment>', `#include <opaque_fragment>
+        if (!gl_FrontFacing) {
+          float n = vnoise(vW*1.4);
+          vec3 c = uCap * (0.82 + 0.3*n);
+          ${kind === 'bone' ? 'float tr = smoothstep(0.52,0.74, vnoise(vW*3.4)); c = mix(c, uCap*0.5, tr*0.75);' : ''}
+          ${kind === 'tumor' ? 'c *= 0.9 + 0.2*vnoise(vW*2.6);' : ''}
+          gl_FragColor = vec4(c, 1.0);
+        }`);
+    }
+    if (kind === 'veil') {
+      fs = fs.replace('#include <opaque_fragment>', `#include <opaque_fragment>
+        float fr = pow(1.0 - abs(dot(normal, normalize(vViewPosition))), 2.0);
+        gl_FragColor.a = clamp(gl_FragColor.a * (0.45 + 2.2*fr), 0.0, 0.88);`);
+    }
+    sh.fragmentShader = fs;
+  };
+  m.customProgramCacheKey = () => `${kind}|${cap ? 1 : 0}|${bump}`;
+  return m;
+}
+
+// nerve fibre texture
+function fibreTexture() {
+  const cv = document.createElement('canvas'); cv.width = 256; cv.height = 64;
+  const g = cv.getContext('2d');
+  g.fillStyle = '#e9dcb4'; g.fillRect(0, 0, 256, 64);
+  for (let i = 0; i < 90; i++) {
+    const y = Math.random() * 64, a = 0.05 + Math.random() * 0.12;
+    g.strokeStyle = Math.random() < 0.5 ? `rgba(120,95,40,${a})` : `rgba(255,250,230,${a * 1.4})`;
+    g.lineWidth = 0.6 + Math.random() * 1.4;
+    g.beginPath(); g.moveTo(0, y);
+    for (let x = 0; x <= 256; x += 32) g.lineTo(x, y + Math.sin(x * 0.05 + i) * 0.8);
+    g.stroke();
+  }
+  const t = new THREE.CanvasTexture(cv);
+  t.wrapS = t.wrapT = THREE.RepeatWrapping; t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 8;
+  return t;
+}
+const FIBRE = fibreTexture();
+
+const MAT = {
+  bone: () => patch(new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 0.8, metalness: 0 }), 'bone', '#cdb88f', 0.22),
+  artery: () => patch(new THREE.MeshPhysicalMaterial({ color: '#a8141f', roughness: 0.38, clearcoat: 0.85, clearcoatRoughness: 0.16, sheen: 0.12, sheenColor: new THREE.Color('#ff6a60') }), 'artery', '#6e0d15', 0.03),
+  nerve: () => patch(new THREE.MeshPhysicalMaterial({ color: '#ecd394', map: FIBRE, bumpMap: FIBRE, bumpScale: 0.6, roughness: 0.55, sheen: 0.6, sheenColor: new THREE.Color('#fff4cc'), clearcoat: 0.2 }), 'nerve', '#cdb27a'),
+  optic: () => patch(new THREE.MeshPhysicalMaterial({ color: '#dccaa2', roughness: 0.6, sheen: 0.35, sheenColor: new THREE.Color('#fff0cc'), clearcoat: 0.15 }), 'optic', '#cdb98f', 0.12),
+  gland: () => patch(new THREE.MeshPhysicalMaterial({ vertexColors: true, roughness: 0.42, clearcoat: 0.45, clearcoatRoughness: 0.3, sheen: 0.3, sheenColor: new THREE.Color('#ffd0c0') }), 'gland', '#b85e48', 0.06),
+  tumor: () => patch(new THREE.MeshPhysicalMaterial({ vertexColors: true, roughness: 0.5, clearcoat: 0.35, clearcoatRoughness: 0.35, sheen: 0.35, sheenColor: new THREE.Color('#ecc8e0') }), 'tumor', '#7d5a70', 0.1),
+  cs: () => patch(new THREE.MeshPhysicalMaterial({ color: '#6a5cc8', roughness: 0.25, transparent: true, opacity: 0.3, depthWrite: false, clearcoat: 0.4 }), 'veil', null),
+  dia: () => patch(new THREE.MeshPhysicalMaterial({ color: '#d8c6b4', roughness: 0.45, transparent: true, opacity: 0.55, depthWrite: false, side: THREE.DoubleSide, sheen: 0.4 }), 'dia', null)
+};
+
+// =====================================================================
+// Geometry builders
+// =====================================================================
+const EDGES = [[0, 1], [2, 3], [4, 5], [6, 7], [0, 2], [1, 3], [4, 6], [5, 7], [0, 4], [1, 5], [2, 6], [3, 7]];
+function surfaceNets(G) {
+  const { f, nx, ny, nz, ox, oy, oz, h } = G;
+  const nxy = nx * ny;
+  const cell = new Int32Array(nx * ny * nz);
+  let pos = new Float32Array(3 * 32768), vc = 0;
+  let idx = new Uint32Array(6 * 32768), ic = 0;
+  const g = new Float64Array(8), co = [0, 0, 0], R = [1, nx, nxy];
+  for (let k = 0; k < nz - 1; k++) {
+    for (let j = 0; j < ny - 1; j++) {
+      let ci = j * nx + k * nxy;
+      for (let i = 0; i < nx - 1; i++, ci++) {
+        g[0] = f[ci]; g[1] = f[ci + 1]; g[2] = f[ci + nx]; g[3] = f[ci + nx + 1];
+        g[4] = f[ci + nxy]; g[5] = f[ci + nxy + 1]; g[6] = f[ci + nxy + nx]; g[7] = f[ci + nxy + nx + 1];
+        let mask = 0;
+        for (let c = 0; c < 8; c++) if (g[c] < 0) mask |= 1 << c;
+        if (mask === 0 || mask === 255) continue;
+        let sx = 0, sy = 0, sz = 0, cnt = 0;
+        for (let e = 0; e < 12; e++) {
+          const a = EDGES[e][0], b = EDGES[e][1];
+          if (((mask >> a) & 1) === ((mask >> b) & 1)) continue;
+          const t = g[a] / (g[a] - g[b]);
+          const ax = a & 1, ay = (a >> 1) & 1, az = (a >> 2) & 1;
+          sx += ax + ((b & 1) - ax) * t; sy += ay + (((b >> 1) & 1) - ay) * t; sz += az + (((b >> 2) & 1) - az) * t; cnt++;
+        }
+        if (vc * 3 + 3 > pos.length) { const n = new Float32Array(pos.length * 2); n.set(pos); pos = n; }
+        pos[vc * 3] = ox + (i + sx / cnt) * h; pos[vc * 3 + 1] = oy + (j + sy / cnt) * h; pos[vc * 3 + 2] = oz + (k + sz / cnt) * h;
+        cell[ci] = vc++;
+        co[0] = i; co[1] = j; co[2] = k;
+        for (let d = 0; d < 3; d++) {
+          const s0 = mask & 1, s1 = (mask >> (1 << d)) & 1;
+          if (s0 === s1) continue;
+          const u = (d + 1) % 3, v = (d + 2) % 3;
+          if (co[u] === 0 || co[v] === 0) continue;
+          const A = cell[ci], B = cell[ci - R[u]], Cc = cell[ci - R[u] - R[v]], D = cell[ci - R[v]];
+          if (ic + 6 > idx.length) { const n = new Uint32Array(idx.length * 2); n.set(idx); idx = n; }
+          if (s0) { idx[ic++] = A; idx[ic++] = B; idx[ic++] = Cc; idx[ic++] = A; idx[ic++] = Cc; idx[ic++] = D; }
+          else { idx[ic++] = A; idx[ic++] = Cc; idx[ic++] = B; idx[ic++] = A; idx[ic++] = D; idx[ic++] = Cc; }
+        }
+      }
+    }
+  }
+  const geo = new THREE.BufferGeometry();
+  geo.setAttribute('position', new THREE.BufferAttribute(pos.slice(0, vc * 3), 3));
+  geo.setIndex(new THREE.BufferAttribute(idx.slice(0, ic), 1));
+  geo.computeVertexNormals();
+  return geo;
+}
+function makeGrid(b, h) {
+  const nx = Math.round((b[1] - b[0]) / h) + 1, ny = Math.round((b[3] - b[2]) / h) + 1, nz = Math.round((b[5] - b[4]) / h) + 1;
+  return { nx, ny, nz, ox: b[0], oy: b[2], oz: b[4], h, f: new Float32Array(nx * ny * nz) };
+}
+function fillGrid(G, fn) {
+  const { nx, ny, nz, ox, oy, oz, h, f } = G;
+  let i = 0;
+  for (let k = 0; k < nz; k++) for (let j = 0; j < ny; j++) for (let x = 0; x < nx; x++) f[i++] = fn(ox + x * h, oy + j * h, oz + k * h, i - 1);
+}
+function trilinear(G, x, y, z) {
+  const fx = (x - G.ox) / G.h, fy = (y - G.oy) / G.h, fz = (z - G.oz) / G.h;
+  if (fx < 0 || fy < 0 || fz < 0 || fx >= G.nx - 1 || fy >= G.ny - 1 || fz >= G.nz - 1) return 5;
+  const i = fx | 0, j = fy | 0, k = fz | 0, u = fx - i, v = fy - j, w = fz - k;
+  const nx = G.nx, nxy = G.nx * G.ny, o = i + j * nx + k * nxy, f = G.f;
+  const c00 = f[o] + (f[o + 1] - f[o]) * u, c10 = f[o + nx] + (f[o + nx + 1] - f[o + nx]) * u;
+  const c01 = f[o + nxy] + (f[o + nxy + 1] - f[o + nxy]) * u, c11 = f[o + nxy + nx] + (f[o + nxy + nx + 1] - f[o + nxy + nx]) * u;
+  const c0 = c00 + (c10 - c00) * v, c1 = c01 + (c11 - c01) * v;
+  return c0 + (c1 - c0) * w;
+}
+
+// Tube with per-point radius, parallel-transport frames and rounded ends
+function tubeGeometry(path, radial = 14) {
+  const n = path.n, { X, Y, Z, R } = path;
+  const ds = path.length / (n - 1);
+  const pos = new Float32Array(n * (radial + 1) * 3), nor = new Float32Array(n * (radial + 1) * 3), uv = new Float32Array(n * (radial + 1) * 2);
+  const T = new THREE.Vector3(), N = new THREE.Vector3(), B = new THREE.Vector3(), tmp = new THREE.Vector3(), rd = new THREE.Vector3();
+  for (let i = 0; i < n; i++) {
+    const a = Math.max(0, i - 1), b = Math.min(n - 1, i + 1);
+    T.set(X[b] - X[a], Y[b] - Y[a], Z[b] - Z[a]).normalize();
+    if (i === 0) { tmp.set(0, 1, 0); if (Math.abs(T.dot(tmp)) > 0.9) tmp.set(1, 0, 0); N.crossVectors(T, tmp).normalize(); }
+    else { N.addScaledVector(T, -N.dot(T)).normalize(); }
+    B.crossVectors(T, N).normalize();
+    const s = Math.min(i, n - 1 - i) * ds, r0 = R[i];
+    let r = r0, tilt = 0;
+    if (s < r0) { const q = 1 - s / r0; r = r0 * Math.sqrt(Math.max(0, 1 - q * q)); tilt = (i < n / 2 ? -1 : 1) * q; }
+    for (let j = 0; j <= radial; j++) {
+      const ang = (j / radial) * Math.PI * 2, c = Math.cos(ang), sn = Math.sin(ang);
+      rd.set(N.x * c + B.x * sn, N.y * c + B.y * sn, N.z * c + B.z * sn);
+      const o = (i * (radial + 1) + j);
+      pos[o * 3] = X[i] + rd.x * r; pos[o * 3 + 1] = Y[i] + rd.y * r; pos[o * 3 + 2] = Z[i] + rd.z * r;
+      tmp.copy(rd).multiplyScalar(Math.sqrt(1 - tilt * tilt)).addScaledVector(T, tilt).normalize();
+      nor[o * 3] = tmp.x; nor[o * 3 + 1] = tmp.y; nor[o * 3 + 2] = tmp.z;
+      uv[o * 2] = (i * ds) / 5; uv[o * 2 + 1] = j / radial;
+    }
+  }
+  const index = [];
+  for (let i = 0; i < n - 1; i++) for (let j = 0; j < radial; j++) {
+    const a = i * (radial + 1) + j, b = a + radial + 1;
+    index.push(a, a + 1, b, b, a + 1, b + 1);
+  }
+  const geo = new THREE.BufferGeometry();
+  geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+  geo.setAttribute('normal', new THREE.BufferAttribute(nor, 3));
+  geo.setAttribute('uv', new THREE.BufferAttribute(uv, 2));
+  geo.setIndex(index);
+  return geo;
+}
+
+// =====================================================================
+// Scene graph
+// =====================================================================
+const layers = {};
+['bone', 'gland', 'tumor', 'ica', 'vessels', 'nerves', 'cs', 'optic', 'diaphragma', 'lines', 'mrplane'].forEach((k) => {
+  layers[k] = new THREE.Group(); layers[k].name = k; scene.add(layers[k]);
+});
+const pickables = [];
+function addMesh(layer, geo, mat, id, opts = {}) {
+  const m = new THREE.Mesh(geo, mat);
+  m.userData.id = id;
+  m.castShadow = opts.cast !== false; m.receiveShadow = true;
+  layers[layer].add(m);
+  if (opts.pick !== false) pickables.push(m);
+  return m;
+}
+function replaceGeo(mesh, geo, bvh) {
+  if (mesh.geometry.boundsTree) mesh.geometry.disposeBoundsTree();
+  mesh.geometry.dispose();
+  mesh.geometry = geo;
+  if (bvh && geo.index && geo.index.count > 0) geo.computeBoundsTree();
+}
+
+// ---------- tubes: ICA, arteries, nerves ----------
+const icaDense = C.makePath(C.A.ica.ctrl, C.A.ica.radii, 0.3);
+const icaDenseR = C.makePath(C.mirror(C.A.ica.ctrl), C.A.ica.radii, 0.3);
+for (const [p, side] of [[icaDense, 1], [icaDenseR, -1]]) {
+  const m = addMesh('ica', tubeGeometry(p, 22), MAT.artery(), 'ica');
+  m.userData.path = p; m.userData.side = side;
+}
+const vesselCoarse = [];
+for (const [id, v] of Object.entries(C.A.vessels)) {
+  for (const ctrl of [v.ctrl, C.mirror(v.ctrl)]) {
+    addMesh('vessels', tubeGeometry(C.makePath(ctrl, v.radii, 0.3), 12), MAT.artery(), id);
+    vesselCoarse.push(C.makePath(ctrl, v.radii, 0.8));
+  }
+}
+for (const [id, v] of Object.entries(C.A.midline)) {
+  addMesh('vessels', tubeGeometry(C.makePath(v.ctrl, v.radii, 0.3), 14), MAT.artery(), id);
+  vesselCoarse.push(C.makePath(v.ctrl, v.radii, 0.8));
+}
+// nerves
+const nerveMeshL = {}, nerveCoarseL = {}, nerveCoarseStatic = [];
+function pushedCtrl(ctrl, push, factor) { return ctrl.map((p) => [p[0] + push * factor * C.pushW(p[2]), p[1], p[2]]); }
+for (const [id, nv] of Object.entries(C.A.nerves)) {
+  const radii = nv.ctrl.map(() => nv.r);
+  const pR = C.makePath(C.mirror(nv.ctrl), radii, 0.3);
+  addMesh('nerves', tubeGeometry(pR, 12), MAT.nerve(), id);
+  nerveCoarseStatic.push(C.makePath(C.mirror(nv.ctrl), radii, 0.8));
+  nerveMeshL[id] = addMesh('nerves', tubeGeometry(C.makePath(nv.ctrl, radii, 0.3), 12), MAT.nerve(), id);
+  nerveCoarseL[id] = C.makePath(nv.ctrl, radii, 0.8);
+}
+for (const [id, nv] of Object.entries(C.A.nervesStatic)) {
+  const radii = nv.ctrl.map(() => nv.r);
+  for (const ctrl of [nv.ctrl, C.mirror(nv.ctrl)]) {
+    addMesh('nerves', tubeGeometry(C.makePath(ctrl, radii, 0.3), 14), MAT.nerve(), id);
+    nerveCoarseStatic.push(C.makePath(ctrl, radii, 0.8));
+  }
+}
+for (const s of [1, -1]) {
+  const g = new THREE.SphereGeometry(1, 40, 24);
+  const m = addMesh('nerves', g, MAT.nerve(), 'gg');
+  const a = C.A.ganglion;
+  m.scale.set(a.r[0], a.r[1], a.r[2]); m.position.set(a.c[0] * s, a.c[1], a.c[2]); m.rotation.y = a.yaw * s;
+}
+function updateNerves(push) {
+  for (const [id, nv] of Object.entries(C.A.nerves)) {
+    const radii = nv.ctrl.map(() => nv.r), f = id === 'cn6' ? 0.4 : 1;
+    const ctrl = pushedCtrl(nv.ctrl, push, f);
+    replaceGeo(nerveMeshL[id], tubeGeometry(C.makePath(ctrl, radii, 0.3), 12), false);
+    nerveCoarseL[id] = C.makePath(ctrl, radii, 0.8);
+  }
+}
+function nerveDist(x, y, z) {
+  let d = 1e3;
+  for (const p of nerveCoarseStatic) d = Math.min(d, p.dist(x, y, z, 2));
+  if (x > 0) for (const k in nerveCoarseL) d = Math.min(d, nerveCoarseL[k].dist(x, y, z, 2));
+  return d;
+}
+function vesselDist(x, y, z) { let d = 1e3; for (const p of vesselCoarse) d = Math.min(d, p.dist(x, y, z, 2)); return d; }
+
+// ---------- diaphragma ----------
+const diaGeo = new THREE.RingGeometry(0.24, 1, 72, 10);
+diaGeo.rotateX(-Math.PI / 2);
+const diaBase = diaGeo.attributes.position.array.slice();
+const DIA = { sx: 8.6, sz: 6.4, cz: -0.4, y: -1.3 };
+const diaMesh = addMesh('diaphragma', diaGeo, MAT.dia(), 'diaphragma', { cast: false });
+let diaEdge = DIA.y;
+function diaEdgeY() { return diaEdge + 0.2; }
+function updateDiaphragma(st) {
+  const p = diaGeo.attributes.position.array;
+  for (let i = 0; i < p.length; i += 3) {
+    const u = diaBase[i], w = diaBase[i + 2], rho = Math.hypot(u, w);
+    const x = u * DIA.sx, z = w * DIA.sz + DIA.cz;
+    let y = DIA.y;
+    for (let yy = 9; yy > DIA.y; yy -= 0.3) {
+      if (C.tumorRaw(x, yy, z, st.slots) < 0) { y = Math.max(y, yy + 0.45); break; }
+    }
+    const k = 1 - THREE.MathUtils.smoothstep(rho, 0.78, 1.0);
+    p[i] = x; p[i + 1] = DIA.y + (y - DIA.y) * k; p[i + 2] = z;
+  }
+  diaEdge = DIA.y;
+  diaGeo.attributes.position.needsUpdate = true;
+  diaGeo.computeVertexNormals();
+  diaGeo.computeBoundingSphere();
+}
+
+// ---------- Knosp line meshes ----------
+const LINE_COL = { medial: '#5fcbe3', central: '#f0c75e', lateral: '#ec7ba2' };
+const lineMats = Object.fromEntries(Object.entries(LINE_COL).map(([k, c]) => [k, new THREE.MeshBasicMaterial({ color: c, depthTest: false, transparent: true, opacity: 0.95, toneMapped: false })]));
+const ringMat = new THREE.MeshBasicMaterial({ color: '#ffffff', depthTest: false, transparent: true, opacity: 0.8, toneMapped: false });
+let knosp = null;
+const zoneLabels = [];
+function segMesh(a, b, mat, r = 0.16) {
+  const va = new THREE.Vector3(...a), vb = new THREE.Vector3(...b);
+  const len = va.distanceTo(vb);
+  const m = new THREE.Mesh(new THREE.CylinderGeometry(r, r, len, 8), mat);
+  m.position.copy(va).add(vb).multiplyScalar(0.5);
+  m.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), vb.clone().sub(va).normalize());
+  m.renderOrder = 20;
+  return m;
+}
+function rebuildLines() {
+  const grp = layers.lines;
+  grp.children.slice().forEach((c) => { grp.remove(c); c.geometry?.dispose(); });
+  zoneLabels.forEach((l) => { l.parent && l.parent.remove(l); });
+  zoneLabels.length = 0;
+  knosp = C.knospAt(icaDense, state.zc);
+  if (!knosp) return;
+  const z = state.zc + 0.06;
+  for (const s of [1, -1]) {
+    for (const k of ['medial', 'central', 'lateral']) {
+      const [a, b] = knosp[k];
+      grp.add(segMesh([a[0] * s, a[1], z], [b[0] * s, b[1], z], lineMats[k]));
+    }
+    for (const c of [knosp.lo, knosp.up]) {
+      const ring = new THREE.Mesh(new THREE.TorusGeometry(c.r, 0.07, 6, 48), ringMat);
+      ring.position.set(c.x * s, c.y, z); ring.renderOrder = 21; grp.add(ring);
+    }
+    // zone numbers
+    const ytop = knosp.up.y + knosp.up.r + 3.2;
+    const xs = [C.lineX(knosp.medial, ytop), C.lineX(knosp.central, ytop), C.lineX(knosp.lateral, ytop)];
+    const mids = [xs[0] - 1.6, (xs[0] + xs[1]) / 2, (xs[1] + xs[2]) / 2, xs[2] + 1.8];
+    mids.forEach((mx, i) => {
+      const el = document.createElement('div'); el.className = 'zone'; el.textContent = String(i);
+      const o = new CSS2DObject(el); o.position.set(mx * s, ytop, z); grp.add(o); zoneLabels.push(o);
+    });
+  }
+}
+
+// =====================================================================
+// State
+// =====================================================================
+const state = {
+  grade: 'none', step: 0, cut: false, zc: 3.5, boneOpacity: 1, labelMode: 'step', stepLabels: [],
+  layers: { bone: true, gland: true, tumor: true, ica: true, vessels: true, nerves: true, cs: true, optic: true, diaphragma: true, lines: true, mrplane: false },
+  inset: false, quiz: null
+};
+let cur = C.lerpState(C.STATES.none, C.STATES.none, 0);
+let morph = null;
+let meshes = {};
+
+// =====================================================================
+// Heavy builds (async with progress)
+// =====================================================================
+const loaderBar = $('loadBar'), loaderTxt = $('loadTxt');
+async function progress(t, p) { loaderTxt.textContent = t; loaderBar.style.width = `${Math.round(p * 100)}%`; await sleep(); }
+
+let boneG, tumG, glaG, csG;
+async function buildBone() {
+  const B = [-36, 36, -29, 11, -32, 32];
+  // coarse pass
+  const coarse = makeGrid(B, 1.1);
+  let i = 0;
+  for (let k = 0; k < coarse.nz; k++) {
+    for (let j = 0; j < coarse.ny; j++) for (let x = 0; x < coarse.nx; x++) coarse.f[i++] = C.boneSDF(coarse.ox + x * coarse.h, coarse.oy + j * coarse.h, coarse.oz + k * coarse.h);
+    if (k % 6 === 0) await progress(t('load.skull'), 0.05 + 0.2 * (k / coarse.nz));
+  }
+  const G = makeGrid(B, 0.55);
+  i = 0;
+  for (let k = 0; k < G.nz; k++) {
+    const z = G.oz + k * G.h;
+    for (let j = 0; j < G.ny; j++) {
+      const y = G.oy + j * G.h;
+      for (let x = 0; x < G.nx; x++) {
+        const xx = G.ox + x * G.h;
+        const c = trilinear(coarse, xx, y, z);
+        G.f[i++] = Math.abs(c) > 2.4 ? c : C.boneSDF(xx, y, z);
+      }
+    }
+    if (k % 8 === 0) await progress(t('load.bone'), 0.25 + 0.45 * (k / G.nz));
+  }
+  await progress(t('load.mesh'), 0.72);
+  const geo = surfaceNets(G);
+  // vertex colours: ivory, marbling and SDF ambient occlusion
+  const p = geo.attributes.position.array, nrm = geo.attributes.normal.array;
+  const col = new Float32Array(p.length);
+  const base = new THREE.Color('#e2d4b6'), warm = new THREE.Color('#c9b088'), grey = new THREE.Color('#b9b2a3'), tmp = new THREE.Color();
+  const steps = [0.7, 1.5, 3.0, 5.5], wts = [0.34, 0.3, 0.22, 0.14];
+  for (let v = 0; v < p.length; v += 3) {
+    const x = p[v], y = p[v + 1], z = p[v + 2];
+    let occ = 0;
+    for (let s = 0; s < 4; s++) {
+      const d = trilinear(G, x + nrm[v] * steps[s], y + nrm[v + 1] * steps[s], z + nrm[v + 2] * steps[s]);
+      occ += wts[s] * Math.max(0, steps[s] - d) / steps[s];
+    }
+    const ao = clamp(1 - 1.6 * occ, 0.12, 1);
+    const m = 0.5 + 0.5 * C.noise3(x * 0.16, y * 0.16, z * 0.16), m2 = 0.5 + 0.5 * C.noise3(x * 0.07 + 9, y * 0.07, z * 0.07);
+    tmp.copy(base).lerp(warm, m * 0.75).lerp(grey, m2 * 0.35);
+    const g = Math.pow(ao, 1.4) * (0.9 + 0.12 * C.noise3(x * 0.9, y * 0.9, z * 0.9));
+    col[v] = tmp.r * g; col[v + 1] = tmp.g * g; col[v + 2] = tmp.b * g;
+  }
+  geo.setAttribute('color', new THREE.BufferAttribute(col, 3));
+  geo.computeBoundsTree();
+  meshes.bone = addMesh('bone', geo, MAT.bone(), 'bone');
+  boneG = G;
+}
+function buildOptic() {
+  const G = makeGrid([-18, 18, -1.5, 12.5, -17, 22], 0.45);
+  fillGrid(G, (x, y, z) => C.opticSDF(x, y, z));
+  const geo = surfaceNets(G); geo.computeBoundsTree();
+  meshes.optic = addMesh('optic', geo, MAT.optic(), 'optic');
+}
+function buildCS() {
+  // right side static
+  const GR = makeGrid([-23, -5, -12, 4, -15, 17], 0.5);
+  fillGrid(GR, (x, y, z) => C.csSDF(x, y, z, 0, trilinear(boneG, x, y, z)));
+  const gR = surfaceNets(GR); gR.computeBoundsTree();
+  meshes.csR = addMesh('cs', gR, MAT.cs(), 'cs', { cast: false });
+  // left side: precompute static fields
+  csG = makeGrid([5, 23, -12, 4, -15, 17], 0.5);
+  const n = csG.f.length;
+  csG.bone = new Float32Array(n); csG.stat = new Float32Array(n);
+  fillGrid(csG, (x, y, z, i) => { csG.bone[i] = trilinear(boneG, x, y, z); csG.stat[i] = C.csStatic(x, y, z); return 0; });
+  meshes.csL = addMesh('cs', new THREE.BufferGeometry(), MAT.cs(), 'cs', { cast: false });
+}
+// fine grids for the resting shape, coarse grids while morphing between grades
+function buildTumorGrids() {
+  tumG = {};
+  for (const [q, h] of [['fine', 0.5], ['coarse', 0.9]]) {
+    const G = makeGrid([-11, 21, -13, 9.5, -10, 12.5], h), n = G.f.length;
+    G.ica = new Float32Array(n); G.opt = new Float32Array(n); G.noise = new Float32Array(n);
+    fillGrid(G, (x, y, z, i) => { G.ica[i] = C.P.ica.dist(Math.abs(x), y, z, 3); G.opt[i] = C.opticSDF(x, y, z); G.noise[i] = C.tumorNoise(x, y, z); return 0; });
+    tumG[q] = G;
+  }
+  glaG = {};
+  for (const [q, h] of [['fine', 0.4], ['coarse', 0.7]]) {
+    const G = makeGrid([-11, 9, -8.5, 9.5, -9, 7.5], h);
+    G.ica = new Float32Array(G.f.length);
+    fillGrid(G, (x, y, z, i) => { G.ica[i] = C.P.ica.dist(Math.abs(x), y, z, 3); return 0; });
+    glaG[q] = G;
+  }
+  meshes.tumor = addMesh('tumor', new THREE.BufferGeometry(), MAT.tumor(), 'tumor');
+  meshes.gland = addMesh('gland', new THREE.BufferGeometry(), MAT.gland(), 'gland');
+}
+
+const TUM_COL = [new THREE.Color('#b596a8'), new THREE.Color('#8f6f86'), new THREE.Color('#c8a9b0')];
+const GL_COL = { a: new THREE.Color('#d98a6c'), p: new THREE.Color('#f0d2b8'), s: new THREE.Color('#e3b193') };
+let lastPush = -1;
+function rebuildDynamic(st, final) {
+  const q = final ? 'fine' : 'coarse';
+  // tumour
+  let has = st.slots.some((s) => s[3] > 0.05);
+  if (has) {
+    const G = tumG[q];
+    fillGrid(G, (x, y, z, i) => C.tumorSDF(x, y, z, st, G.ica[i], G.opt[i], G.noise[i]));
+    const geo = surfaceNets(G);
+    has = geo.index.count > 0;
+    const p = geo.attributes.position.array, col = new Float32Array(p.length), t = new THREE.Color();
+    for (let v = 0; v < p.length; v += 3) {
+      const n1 = 0.5 + 0.5 * C.noise3(p[v] * 0.5, p[v + 1] * 0.5, p[v + 2] * 0.5), n2 = 0.5 + 0.5 * C.noise3(p[v] * 1.7 + 4, p[v + 1] * 1.7, p[v + 2] * 1.7);
+      t.copy(TUM_COL[0]).lerp(TUM_COL[1], n1 * 0.6).lerp(TUM_COL[2], n2 * 0.35);
+      col[v] = t.r; col[v + 1] = t.g; col[v + 2] = t.b;
+    }
+    geo.setAttribute('color', new THREE.BufferAttribute(col, 3));
+    replaceGeo(meshes.tumor, geo, final);
+  } else replaceGeo(meshes.tumor, new THREE.BufferGeometry(), false);
+  meshes.tumor.visible = has;
+  // gland
+  {
+    const G = glaG[q];
+    fillGrid(G, (x, y, z, i) => C.glandSDF(x, y, z, st, has ? C.tumorRaw(x, y, z, st.slots) : 1e3, G.ica[i]));
+    const geo = surfaceNets(G);
+    const p = geo.attributes.position.array, col = new Float32Array(p.length), t = new THREE.Color();
+    const g = st.gland;
+    for (let v = 0; v < p.length; v += 3) {
+      const x = p[v], y = p[v + 1], z = p[v + 2];
+      const da = C.sdEll(x, y, z, ...g.a), dp = C.sdEll(x, y, z, ...g.p);
+      const wa = Math.exp(-Math.max(0, da) * 1.2), wp = Math.exp(-Math.max(0, dp) * 1.2) * 1.1, ws = y > g.a[1] + g.a[4] * 0.9 ? 1.4 : 0.15;
+      const s = wa + wp + ws;
+      t.setRGB((GL_COL.a.r * wa + GL_COL.p.r * wp + GL_COL.s.r * ws) / s, (GL_COL.a.g * wa + GL_COL.p.g * wp + GL_COL.s.g * ws) / s, (GL_COL.a.b * wa + GL_COL.p.b * wp + GL_COL.s.b * ws) / s);
+      const nn = 0.94 + 0.08 * C.noise3(x * 1.3, y * 1.3, z * 1.3);
+      col[v] = t.r * nn; col[v + 1] = t.g * nn; col[v + 2] = t.b * nn;
+    }
+    geo.setAttribute('color', new THREE.BufferAttribute(col, 3));
+    replaceGeo(meshes.gland, geo, final);
+  }
+  // left cavernous sinus + lateral-wall nerves (only when the wall moves)
+  if (final || Math.abs(st.push - lastPush) > 0.04) {
+    const G = csG;
+    fillGrid(G, (x, y, z, i) => C.csSDF(x, y, z, st.push, G.bone[i], G.stat[i]));
+    replaceGeo(meshes.csL, surfaceNets(G), final);
+    updateNerves(st.push);
+    lastPush = st.push;
+  }
+  updateDiaphragma(st);
+}
+
+// =====================================================================
+// Synthetic coronal MR slice
+// =====================================================================
+const mrCanvas = document.createElement('canvas'); mrCanvas.width = 600; mrCanvas.height = 480;
+const mrCtx = mrCanvas.getContext('2d');
+const mrTmp = document.createElement('canvas');
+const MRB = { x0: -25, x1: 25, y0: -20, y1: 20 };
+const mrTex = new THREE.CanvasTexture(mrCanvas); mrTex.colorSpace = THREE.SRGBColorSpace;
+const mrPlane = new THREE.Mesh(new THREE.PlaneGeometry(50, 40), new THREE.MeshBasicMaterial({ map: mrTex, toneMapped: false, transparent: true, opacity: 0.96, side: THREE.DoubleSide }));
+mrPlane.position.set(0, 0, 3.5); mrPlane.renderOrder = 5;
+layers.mrplane.add(mrPlane);
+const insetCanvas = $('mrInset'), insetCtx = insetCanvas.getContext('2d');
+
+function mrValue(x, y, z) {
+  const ax = Math.abs(x);
+  const cov = (d) => (d <= -0.2 ? 1 : d >= 0.2 ? 0 : 0.5 - d / 0.4);
+  const mix = (a, b, t) => a + (b - a) * t;
+  let v;
+  const csf = (x / 9.5) ** 2 + ((y - 7) / 5.5) ** 2 + 0.35 * C.noise3(x * 0.3, y * 0.3, z * 0.3);
+  if (y > -3) v = csf < 1 ? 0.12 : 0.4; else v = 0.31;
+  if (ax > 15 && y > -19) { const e = ((ax - 24) / 13) ** 2 + ((y + 3) / 14.5) ** 2 + ((z + 1) / 16) ** 2; if (e < 1) v = 0.4; }
+  if (v > 0.35) v += 0.035 * C.noise3(x * 0.45, y * 0.45, z * 0.45);
+  const bd = C.boneSDF(x, y, z);
+  if (bd < 0.2) v = mix(v, bd < -1.4 ? 0.56 + 0.1 * C.noise3(x * 0.9, y * 0.9, z) : 0.07, cov(bd));
+  if (bd < 1.5) { const ad = C.airSDF(x, y, z); if (ad < 0.2) v = mix(v, 0.02, cov(ad)); }
+  const csd = C.csSDF(x, y, z, cur.push, bd); if (csd < 0.2) v = mix(v, 0.74 + 0.05 * C.noise3(x, y * 1.3, z), cov(csd));
+  const icad = C.P.ica.dist(ax, y, z, 3); if (icad < 0.2) v = mix(v, 0.03, cov(icad));
+  const vd = vesselDist(x, y, z); if (vd < 0.2) v = mix(v, 0.05, cov(vd));
+  const nd = nerveDist(x, y, z); if (nd < 0.2) v = mix(v, 0.25, cov(nd));
+  const od = C.opticSDF(x, y, z); if (od < 0.2) v = mix(v, 0.45, cov(od));
+  const tr = C.tumorRaw(x, y, z, cur.slots);
+  let td = 1e3;
+  if (tr < 3) { td = C.tumorSDF(x, y, z, cur, icad, od, C.tumorNoise(x, y, z)); if (td < 0.2) v = mix(v, 0.52 + 0.08 * C.noise3(x * 0.8, y * 0.8, z * 0.8), cov(td)); }
+  const gd = C.glandSDF(x, y, z, cur, tr, icad);
+  if (gd < 0.2) { const post = C.sdEll(x, y, z, ...cur.gland.p) < 0; v = mix(v, post ? 0.96 : 0.86, cov(gd)); }
+  return v;
+}
+let mrLowTimer = 0;
+function renderMR(low) {
+  const sc = low ? 0.42 : 1, W = Math.round(300 * sc), H = Math.round(240 * sc);
+  mrTmp.width = W; mrTmp.height = H;
+  const tctx = mrTmp.getContext('2d'), img = tctx.createImageData(W, H), d = img.data;
+  const z = state.zc;
+  let seed = 7;
+  const rnd = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
+  for (let j = 0; j < H; j++) {
+    const y = MRB.y1 - ((j + 0.5) / H) * (MRB.y1 - MRB.y0);
+    for (let i = 0; i < W; i++) {
+      const x = MRB.x0 + ((i + 0.5) / W) * (MRB.x1 - MRB.x0);
+      let v = mrValue(x, y, z) + (rnd() - 0.5) * 0.05;
+      v = Math.pow(clamp(v, 0, 1), 0.92) * 255;
+      const o = (j * W + i) * 4;
+      d[o] = v; d[o + 1] = v; d[o + 2] = v * 1.01; d[o + 3] = 255;
+    }
+  }
+  tctx.putImageData(img, 0, 0);
+  const cw = mrCanvas.width, ch = mrCanvas.height;
+  mrCtx.imageSmoothingEnabled = true; mrCtx.imageSmoothingQuality = 'high';
+  mrCtx.drawImage(mrTmp, 0, 0, cw, ch);
+  // overlay: Knosp lines
+  const X = (x) => ((x - MRB.x0) / (MRB.x1 - MRB.x0)) * cw, Y = (y) => ((MRB.y1 - y) / (MRB.y1 - MRB.y0)) * ch;
+  if (knosp && state.layers.lines) {
+    mrCtx.lineWidth = 2.2; mrCtx.setLineDash([]);
+    for (const s of [1, -1]) {
+      for (const k of ['medial', 'central', 'lateral']) {
+        const [a, b] = knosp[k];
+        mrCtx.strokeStyle = LINE_COL[k];
+        mrCtx.beginPath(); mrCtx.moveTo(X(a[0] * s), Y(a[1])); mrCtx.lineTo(X(b[0] * s), Y(b[1])); mrCtx.stroke();
+      }
+      mrCtx.strokeStyle = 'rgba(255,255,255,0.55)'; mrCtx.lineWidth = 1.2;
+      for (const c of [knosp.lo, knosp.up]) { mrCtx.beginPath(); mrCtx.arc(X(c.x * s), Y(c.y), (c.r / 50) * cw, 0, Math.PI * 2); mrCtx.stroke(); }
+      mrCtx.lineWidth = 2.2;
+    }
+  }
+  // annotations
+  mrCtx.font = '600 17px "IBM Plex Sans Condensed", "Arial Narrow", sans-serif';
+  mrCtx.fillStyle = 'rgba(240,200,120,0.95)';
+  mrCtx.textBaseline = 'top';
+  mrCtx.fillText(t('mr.R'), 12, 10); mrCtx.textAlign = 'right'; mrCtx.fillText(t('mr.L'), cw - 12, 10); mrCtx.textAlign = 'left';
+  mrCtx.font = '500 14px "IBM Plex Mono", ui-monospace, monospace';
+  mrCtx.fillStyle = 'rgba(230,236,240,0.85)';
+  mrCtx.fillText(`COR  T1+C   z ${state.zc >= 0 ? '+' : ''}${state.zc.toFixed(1)} mm`, 12, ch - 26);
+  // 10 mm scale bar
+  const px10 = (10 / 50) * cw;
+  mrCtx.fillRect(cw - 20 - px10, ch - 18, px10, 3);
+  mrCtx.textAlign = 'right'; mrCtx.fillText('10 mm', cw - 20, ch - 38); mrCtx.textAlign = 'left';
+  mrTex.needsUpdate = true;
+  insetCtx.drawImage(mrCanvas, 0, 0, insetCanvas.width, insetCanvas.height);
+}
+// quick low-res preview on the next frame, full resolution once input settles
+let mrPending = false, mrLast = 0;
+function scheduleMR() {
+  if (!state.inset && !(state.layers.mrplane && state.cut)) return;
+  mrPending = true;
+  clearTimeout(mrLowTimer);
+  mrLowTimer = setTimeout(() => { mrPending = false; renderMR(false); }, 280);
+}
+function mrTick(now) {
+  if (mrPending && now - mrLast > 140) { mrLast = now; mrPending = false; renderMR(true); }
+}
+
+// =====================================================================
+// Labels
+// =====================================================================
+const labelObjs = [];
+for (const L of LABELS) {
+  const el = document.createElement('div');
+  el.className = 'lbl';
+  el.innerHTML = `<span class="dot"></span><span class="txt">${labelText(L)}</span>`;
+  const o = new CSS2DObject(el);
+  o.userData = { L, key: L.key || L.id };
+  scene.add(o);
+  labelObjs.push(o);
+}
+const axisLabels = [['axis.ant', [0, -4, 34]], ['axis.left', [38, -8, 0]], ['axis.right', [-38, -8, 0]], ['axis.sup', [0, 22, -6]]].map(([k, p]) => {
+  const el = document.createElement('div'); el.className = 'axis'; el.dataset.key = k; el.textContent = t(k);
+  const o = new CSS2DObject(el); o.position.set(...p); scene.add(o); return o;
+});
+function relabel() {
+  for (const o of labelObjs) o.element.querySelector('.txt').textContent = labelText(o.userData.L);
+  for (const o of axisLabels) o.element.textContent = t(o.element.dataset.key);
+}
+function updateLabels() {
+  const mode = state.labelMode;
+  for (const o of labelObjs) {
+    const { L, key } = o.userData;
+    let show = mode !== 'off' && state.layers[L.layer] && (mode === 'all' ? true : state.stepLabels.includes(key));
+    if (L.layer === 'tumor' && !meshes.tumor?.visible) show = false;
+    if (show && state.cut && L.pos()[2] > state.zc + 0.5) show = false;
+    o.visible = show;
+    if (show) { const p = L.pos(); o.position.set(p[0], p[1], p[2]); o.element.classList.toggle('left', p[0] < -0.5); }
+  }
+}
+function meshIdOf(id) {
+  if (BONE_LM[id]) return 'bone';
+  if (id === 'gland_a' || id === 'gland_p' || id === 'stalk') return 'gland';
+  if (id === 'chiasm' || id === 'opticnerve' || id === 'optictract') return 'optic';
+  return id;
+}
+// occlusion test (round-robin) against opaque meshes
+const occRay = new THREE.Raycaster(); occRay.firstHitOnly = false;
+let occIdx = 0;
+function occlusionTick() {
+  const vis = labelObjs.filter((o) => o.visible);
+  if (!vis.length) return;
+  const targets = pickables.filter((m) => m.visible && m.parent.visible && m.material.opacity >= 0.99 && !m.material.transparent);
+  for (let n = 0; n < 4; n++) {
+    const o = vis[occIdx++ % vis.length];
+    const dir = o.position.clone().sub(camera.position); const dist = dir.length(); dir.normalize();
+    occRay.set(camera.position, dir); occRay.far = dist - 0.8;
+    const hits = occRay.intersectObjects(targets, false).filter((h) => !(state.cut && h.point.z > state.zc));
+    const own = meshIdOf(o.userData.L.id);
+    const blocked = hits.some((h) => h.object.userData.id !== own || h.distance < dist - 3);
+    o.element.classList.toggle('occ', blocked);
+  }
+}
+
+// =====================================================================
+// Controls: layers, grades, cut, steps
+// =====================================================================
+function applyLayerVis() {
+  for (const k of ['bone', 'gland', 'tumor', 'ica', 'vessels', 'nerves', 'cs', 'optic', 'diaphragma']) layers[k].visible = state.layers[k];
+  layers.lines.visible = state.layers.lines && state.cut && !state.layers.mrplane;
+  layers.mrplane.visible = state.layers.mrplane && state.cut;
+  zoneLabels.forEach((o) => { o.visible = layers.lines.visible; });
+}
+function setLayer(k, on) {
+  state.layers[k] = on;
+  const cb = document.querySelector(`[data-layer="${k}"]`); if (cb) cb.checked = on;
+  applyLayerVis();
+  if (k === 'mrplane' || k === 'lines') scheduleMR();
+  updateLabels();
+}
+function setBoneOpacity(v) {
+  state.boneOpacity = v;
+  $('boneOp').value = Math.round(v * 100); $('boneOpVal').textContent = `${Math.round(v * 100)}%`;
+  const m = meshes.bone?.material; if (!m) return;
+  const tr = v < 0.99;
+  if (m.transparent !== tr) { m.transparent = tr; m.depthWrite = !tr; m.side = tr ? THREE.FrontSide : THREE.DoubleSide; m.needsUpdate = true; }
+  m.opacity = v; meshes.bone.castShadow = !tr;
+}
+function setCut(on, zc) {
+  state.cut = on;
+  if (zc !== undefined) state.zc = zc;
+  clipPlane.constant = on ? state.zc : 1e4;
+  mrPlane.position.z = state.zc + 0.04;
+  $('cutToggle').checked = on; $('cutZ').value = state.zc; $('cutZ').disabled = !on;
+  $('cutVal').textContent = `${state.zc >= 0 ? '+' : ''}${state.zc.toFixed(1)} mm`;
+  rebuildLines();
+  applyLayerVis();
+  $('kNote').hidden = !(on && !knosp);
+  updateLabels();
+  scheduleMR();
+}
+function setInset(on) {
+  state.inset = on; $('inset').hidden = !on; $('insetBtn').setAttribute('aria-pressed', String(on));
+  if (on) { placeInset(); scheduleMR(); }
+}
+
+// ---------- MR window: drag, resize, minimise; the 3D view shifts away from it ----------
+const insetEl = $('inset'), insetHead = $('insetHead');
+let insetPos = null, insetMin = false, insetW = null, insetDrag = null;
+try {
+  const s = JSON.parse(localStorage.getItem('knosp-inset') || 'null');
+  if (s) { insetPos = s.pos || null; insetMin = !!s.min; insetW = s.w || null; }
+} catch (e) { /* storage unavailable */ }
+function saveInset() { try { localStorage.setItem('knosp-inset', JSON.stringify({ pos: insetPos, min: insetMin, w: insetW })); } catch (e) { /* storage unavailable */ } }
+function placeInset() {
+  insetEl.classList.toggle('min', insetMin);
+  $('insetMin').setAttribute('aria-pressed', String(insetMin));
+  $('insetMin').textContent = insetMin ? '▢' : '–';
+  insetEl.style.width = insetW ? `${insetW}px` : '';
+  if (insetEl.hidden) return;
+  const vw = viewport.clientWidth, vh = viewport.clientHeight, phone = vw < 860 && matchMedia('(max-width: 860px)').matches;
+  const r = insetEl.getBoundingClientRect();
+  // default dock: bottom-right above the controls (desktop), top-right (phone)
+  const def = phone ? [vw - r.width - 12, 12] : [vw - r.width - 16, vh - r.height - 76];
+  const p = insetPos || def;
+  insetEl.style.left = `${clamp(p[0], 4, Math.max(4, vw - r.width - 4))}px`;
+  insetEl.style.top = `${clamp(p[1], 4, Math.max(4, vh - r.height - 4))}px`;
+  insetEl.style.right = 'auto'; insetEl.style.bottom = 'auto';
+}
+function wireInset() {
+  insetHead.addEventListener('pointerdown', (e) => {
+    if (e.target.closest('button') || e.button > 0) return;
+    const r = insetEl.getBoundingClientRect(), vr = viewport.getBoundingClientRect();
+    insetDrag = { dx: e.clientX - r.left, dy: e.clientY - r.top, vl: vr.left, vt: vr.top };
+    insetHead.setPointerCapture(e.pointerId);
+    insetEl.classList.add('dragging');
+    e.preventDefault();
+  });
+  insetHead.addEventListener('pointermove', (e) => {
+    if (!insetDrag) return;
+    insetPos = [e.clientX - insetDrag.vl - insetDrag.dx, e.clientY - insetDrag.vt - insetDrag.dy];
+    placeInset();
+  });
+  const end = () => { if (!insetDrag) return; insetDrag = null; insetEl.classList.remove('dragging'); saveInset(); };
+  insetHead.addEventListener('pointerup', end);
+  insetHead.addEventListener('pointercancel', end);
+  insetHead.addEventListener('dblclick', (e) => {
+    if (e.target.closest('button')) return;
+    insetPos = null; insetW = null; placeInset(); saveInset();
+  });
+  insetHead.addEventListener('keydown', (e) => {
+    const d = { ArrowLeft: [-20, 0], ArrowRight: [20, 0], ArrowUp: [0, -20], ArrowDown: [0, 20] }[e.key];
+    if (!d) return;
+    e.preventDefault(); e.stopPropagation();
+    const r = insetEl.getBoundingClientRect(), vr = viewport.getBoundingClientRect();
+    insetPos = [r.left - vr.left + d[0], r.top - vr.top + d[1]];
+    placeInset(); saveInset();
+  });
+  $('insetMin').addEventListener('click', () => { insetMin = !insetMin; placeInset(); saveInset(); });
+  // user resize via the CSS corner handle writes an inline width
+  new ResizeObserver(() => {
+    if (insetEl.hidden || insetMin) return;
+    const w = parseFloat(insetEl.style.width);
+    if (w && w !== insetW) { insetW = Math.round(w); saveInset(); placeInset(); }
+  }).observe(insetEl);
+}
+let viewShift = 0;
+function shiftTarget() {
+  const vw = viewport.clientWidth;
+  if (insetEl.hidden || insetMin || vw < 700) return 0;
+  const r = insetEl.getBoundingClientRect(), vr = viewport.getBoundingClientRect();
+  const cx = r.left - vr.left + r.width / 2;
+  const s = Math.min(r.width / 2 + 8, vw * 0.24);
+  return cx > vw / 2 ? s : -s; // positive: scene moves left, away from a right-hand window
+}
+let lastViewKey = '';
+function shiftTick() {
+  const tgt = shiftTarget();
+  viewShift = reduceMotion ? tgt : viewShift + (tgt - viewShift) * 0.12;
+  if (Math.abs(tgt - viewShift) < 0.3) viewShift = tgt;
+  const w = viewport.clientWidth, h = viewport.clientHeight;
+  const key = `${viewShift.toFixed(1)}|${w}|${h}`;
+  if (key === lastViewKey) return;
+  lastViewKey = key;
+  if (viewShift === 0) camera.clearViewOffset();
+  else camera.setViewOffset(w, h, viewShift, 0, w, h);
+}
+function setGrade(g, instant) {
+  const same = g === state.grade && !morph;
+  state.grade = g;
+  document.querySelectorAll('#gradeBar button').forEach((b) => b.classList.toggle('on', b.dataset.g === g));
+  if (same) { updateBadge(); return; }
+  const from = cur, to = C.STATES[g];
+  if (instant || reduceMotion) { cur = C.lerpState(to, to, 0); rebuildDynamic(cur, true); afterMorph(); return; }
+  morph = { from, to, t0: performance.now(), dur: 950 };
+  updateBadge();
+}
+function afterMorph() { updateBadge(); updateLabels(); scheduleMR(); }
+function morphTick(now) {
+  if (!morph) return;
+  const k = clamp((now - morph.t0) / morph.dur, 0, 1), e = k < 0.5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2;
+  cur = lerpFrom(morph.from, morph.to, e);
+  rebuildDynamic(cur, k >= 1);
+  if (k >= 1) { morph = null; afterMorph(); }
+}
+function lerpFrom(a, b, t) { // a is an interpolated state, b a named state
+  const slots = a.slots.map((s, i) => {
+    let bs = b.slots[i];
+    if (bs[3] < 0.05) bs = [s[0] * 0.6, s[1] * 0.6, s[2], 0.01, 0.01, 0.01];
+    let as = s;
+    if (as[3] < 0.05) as = [bs[0] * 0.6, bs[1] * 0.6, bs[2], 0.01, 0.01, 0.01];
+    return as.map((v, j) => v + (bs[j] - v) * t);
+  });
+  const gl = {}; for (const k of ['a', 'p', 'mid', 'bot']) gl[k] = a.gland[k].map((v, j) => v + (b.gland[k][j] - v) * t);
+  return { slots, gland: gl, push: a.push + (b.push - a.push) * t };
+}
+function updateBadge() {
+  const g = state.grade, q = !!state.quiz;
+  $('badgeGrade').textContent = q ? '?' : GRADE_TXT[g];
+  $('badgeGrade').className = 'bg-num g-' + (q ? 'q' : g);
+  $('badgeTxt').textContent = q ? t('badge.ask') : g === 'none' ? t('badge.none') : t('badge.grade', { g: GRADE_TXT[g] });
+}
+
+// ---------- camera fly ----------
+let fly = null;
+function flyTo(v, dur = 1400) {
+  const view = typeof v === 'string' ? V[v] : v;
+  if (reduceMotion) { camera.position.set(...view.pos); controls.target.set(...view.tgt); return; }
+  fly = { p0: camera.position.clone(), t0: controls.target.clone(), p1: new THREE.Vector3(...view.pos), t1: new THREE.Vector3(...view.tgt), start: performance.now(), dur };
+}
+controls.addEventListener('start', () => { fly = null; });
+function flyTick(now) {
+  if (!fly) return;
+  const k = clamp((now - fly.start) / fly.dur, 0, 1), e = k < 0.5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2;
+  const tg = fly.t0.clone().lerp(fly.t1, e);
+  const s0 = new THREE.Spherical().setFromVector3(fly.p0.clone().sub(fly.t0)), s1 = new THREE.Spherical().setFromVector3(fly.p1.clone().sub(fly.t1));
+  let dth = s1.theta - s0.theta; if (dth > Math.PI) dth -= 2 * Math.PI; if (dth < -Math.PI) dth += 2 * Math.PI;
+  const s = new THREE.Spherical(s0.radius + (s1.radius - s0.radius) * e, s0.phi + (s1.phi - s0.phi) * e, s0.theta + dth * e);
+  camera.position.copy(tg).add(new THREE.Vector3().setFromSpherical(s));
+  controls.target.copy(tg);
+  if (k >= 1) fly = null;
+}
+
+// ---------- lesson ----------
+const DEFAULT_LAYERS = { bone: true, gland: true, tumor: true, ica: true, vessels: true, nerves: true, cs: true, optic: true, diaphragma: true, lines: true, mrplane: false };
+function applyStep(i) {
+  i = clamp(i, 0, STEPS.length - 1);
+  const s = STEPS[i];
+  state.step = i;
+  if (state.quiz) endQuiz(true);
+  const L = { ...DEFAULT_LAYERS, ...(s.layers || {}) };
+  for (const k in L) setLayer(k, L[k]);
+  setBoneOpacity(s.bone ?? 1);
+  setCut(!!s.cut, s.zc ?? state.zc);
+  setInset(!!s.inset);
+  state.stepLabels = s.labels || [];
+  state.labelMode = state.labelMode === 'off' ? 'off' : 'step';
+  syncLabelMode();
+  setGrade(s.grade || 'none');
+  controls.autoRotate = !!s.autorotate; $('autoRot').checked = controls.autoRotate;
+  flyTo(s.view);
+  renderStep();
+  $('stepScroll').scrollTop = 0;
+  updateLabels();
+}
+function renderStep() {
+  const s = T().steps[state.step];
+  $('stepKicker').textContent = s.kicker;
+  $('stepTitle').textContent = s.title;
+  $('stepBody').innerHTML = s.body + (s.facts ? `<dl class="facts">${s.facts.map(([a, b]) => `<div><dt>${a}</dt><dd>${b}</dd></div>`).join('')}</dl>` : '');
+  $('stepCount').textContent = `${state.step + 1} / ${STEPS.length}`;
+  $('prev').disabled = state.step === 0;
+  $('prev').textContent = t('nav.prev');
+  $('next').textContent = state.step === STEPS.length - 1 ? t('nav.restart') : t('nav.next');
+  document.querySelectorAll('#stepDots button').forEach((b, i) => {
+    const title = T().steps[i].title;
+    b.title = `${i + 1}. ${title}`; b.setAttribute('aria-label', t('nav.stepAria', { n: i + 1, t: title }));
+    b.classList.toggle('on', i === state.step); b.classList.toggle('done', i < state.step); b.setAttribute('aria-current', i === state.step ? 'step' : 'false');
+  });
+}
+function buildStepDots() {
+  const wrap = $('stepDots');
+  STEPS.forEach((s, i) => {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.textContent = s.isGrade ? GRADE_TXT[s.grade] : String(i + 1);
+    if (s.isGrade) b.classList.add('gdot', 'g-' + s.grade);
+    b.addEventListener('click', () => { applyStep(i); $('stepScroll').scrollTop = 0; });
+    wrap.appendChild(b);
+  });
+}
+
+// ---------- quiz ----------
+function renderQuizFeedback() {
+  const q = state.quiz;
+  if (!q) { $('quizFeedback').innerHTML = ''; return; }
+  if (!q.done) { $('quizFeedback').innerHTML = `<p class="muted">${t('quiz.hint')}</p>`; return; }
+  const ok = q.last === q.answer;
+  $('quizFeedback').innerHTML = `<p class="${ok ? 'ok' : 'bad'}"><b>${ok ? t('quiz.right') : t('quiz.wrong', { g: GRADE_TXT[q.answer] })}</b> ${T().quiz[q.answer]}</p><p class="muted">${t('quiz.score', { s: q.score, n: q.n })}</p>`;
+}
+function newCase() {
+  const pool = ['g0', 'g1', 'g2', 'g3a', 'g3b', 'g4'].filter((g) => g !== state.quiz?.answer);
+  const g = pool[Math.floor(Math.random() * pool.length)];
+  state.quiz = { answer: g, done: false, score: state.quiz?.score || 0, n: state.quiz?.n || 0 };
+  $('app').classList.add('quiz');
+  for (const k in DEFAULT_LAYERS) setLayer(k, DEFAULT_LAYERS[k]);
+  setBoneOpacity(1); setCut(true, 3.5); setInset(true);
+  state.stepLabels = []; updateLabels();
+  setGrade(g);
+  const vs = [V.coronal, V.grade, { pos: [-24, 12, 64], tgt: [5, -2, 1] }];
+  flyTo(vs[Math.floor(Math.random() * vs.length)]);
+  renderQuizFeedback();
+  document.querySelectorAll('#quizAnswers button').forEach((b) => { b.disabled = false; b.classList.remove('right', 'wrong'); });
+  $('quizNext').hidden = true;
+  updateBadge();
+}
+function answer(g) {
+  const q = state.quiz; if (!q || q.done) return;
+  q.done = true; q.n++; q.last = g; if (g === q.answer) q.score++;
+  document.querySelectorAll('#quizAnswers button').forEach((b) => { b.disabled = true; if (b.dataset.g === q.answer) b.classList.add('right'); else if (b.dataset.g === g) b.classList.add('wrong'); });
+  renderQuizFeedback();
+  $('quizNext').hidden = false;
+  $('app').classList.remove('quiz');
+  updateBadge();
+  document.querySelectorAll('#gradeBar button').forEach((b) => b.classList.toggle('on', b.dataset.g === state.grade));
+}
+function endQuiz(silent) {
+  state.quiz = null; $('app').classList.remove('quiz'); updateBadge();
+  if (!silent) $('quizFeedback').innerHTML = '';
+}
+
+// ---------- picking / hover ----------
+const ray = new THREE.Raycaster();
+const ndc = new THREE.Vector2();
+let hoverDirty = false, lastHover = 0, hovered = null, selected = null, downAt = null;
+function pick() {
+  ray.setFromCamera(ndc, camera);
+  const targets = pickables.filter((m) => m.visible && m.parent.visible);
+  let hits = ray.intersectObjects(targets, false);
+  if (state.cut) hits = hits.filter((h) => h.point.z <= state.zc + 0.01);
+  if (state.boneOpacity < 0.6) hits = hits.filter((h, i) => h.object.userData.id !== 'bone' || hits.every((o) => o.object.userData.id === 'bone'));
+  if (!hits.length) return null;
+  let h = hits[0];
+  if (h.object.userData.id === 'cs') { const nxt = hits.find((o) => o.object.userData.id !== 'cs' && o.object.userData.id !== 'bone'); if (nxt && nxt.distance - h.distance < 9) h = nxt; }
+  return h;
+}
+function resolve(h) {
+  const id = h.object.userData.id, p = h.point;
+  if (id === 'bone') {
+    let best = 'bone', bd = 7.5;
+    for (const [k, q] of Object.entries(BONE_LM)) { const d = Math.hypot(Math.abs(p.x) - q[0], p.y - q[1], p.z - q[2]); if (d < bd) { bd = d; best = k; } }
+    return { key: best };
+  }
+  if (id === 'ica') {
+    const c = nearestC(h.object.userData.path, p);
+    const si = C.A.ica.segments.findIndex((s) => c >= s[0] && c <= s[1]);
+    return { key: 'ica', seg: si };
+  }
+  if (id === 'gland') {
+    const g = cur.gland; const da = C.sdEll(p.x, p.y, p.z, ...g.a), dp = C.sdEll(p.x, p.y, p.z, ...g.p);
+    if (p.y > g.a[1] + g.a[4] + 0.3 && da > 0.4 && dp > 0.4) return { key: 'stalk' };
+    return { key: dp < da ? 'gland_p' : 'gland_a' };
+  }
+  if (id === 'optic') {
+    if (Math.abs(p.x) < 5 && p.y > 5.2 && p.z > -1) return { key: 'chiasm' };
+    return { key: p.z > 3 ? 'opticnerve' : 'optictract' };
+  }
+  return { key: id };
+}
+function nearestC(path, p) {
+  let bi = 0, bd = 1e9;
+  for (let i = 0; i < path.n; i++) { const d = (path.X[i] - p.x) ** 2 + (path.Y[i] - p.y) ** 2 + (path.Z[i] - p.z) ** 2; if (d < bd) { bd = d; bi = i; } }
+  return path.C[bi];
+}
+function highlight(mesh, on, strength) {
+  if (!mesh || mesh.userData.id === 'bone') return;
+  const m = mesh.material; if (!m.emissive) return;
+  if (on) { m.emissive.set(mesh.userData.id === 'cs' ? '#8f86ff' : '#ffb24d'); m.emissiveIntensity = strength; }
+  else { m.emissive.set('#000000'); m.emissiveIntensity = 0; }
+}
+const tip = $('tip');
+renderer.domElement.addEventListener('pointermove', (e) => {
+  const r = renderer.domElement.getBoundingClientRect();
+  ndc.set(((e.clientX - r.left) / r.width) * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1);
+  tip.style.transform = `translate(${e.clientX - r.left + 14}px, ${e.clientY - r.top + 12}px)`;
+  hoverDirty = e.pointerType === 'mouse';
+});
+renderer.domElement.addEventListener('pointerleave', () => { tip.hidden = true; if (hovered && hovered !== selected?.mesh) highlight(hovered, false); hovered = null; });
+renderer.domElement.addEventListener('pointerdown', (e) => { downAt = [e.clientX, e.clientY]; });
+renderer.domElement.addEventListener('pointerup', (e) => {
+  if (!downAt || Math.hypot(e.clientX - downAt[0], e.clientY - downAt[1]) > 5) return;
+  const r = renderer.domElement.getBoundingClientRect();
+  ndc.set(((e.clientX - r.left) / r.width) * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1);
+  const h = pick();
+  if (selected) highlight(selected.mesh, false);
+  if (!h) { selected = null; $('infoCard').hidden = true; return; }
+  const res = resolve(h);
+  selected = { mesh: h.object, point: h.point.clone(), ...res };
+  highlight(h.object, true, 0.55);
+  showInfo(res);
+});
+renderer.domElement.addEventListener('dblclick', () => {
+  const h = pick(); if (!h) return;
+  const off = camera.position.clone().sub(controls.target);
+  const dist = Math.max(24, off.length() * 0.55);
+  flyTo({ pos: h.point.clone().add(off.normalize().multiplyScalar(dist)).toArray(), tgt: h.point.toArray() }, 900);
+});
+function hoverTick(now) {
+  if (!hoverDirty || now - lastHover < 60 || morph) return;
+  hoverDirty = false; lastHover = now;
+  const h = pick();
+  if (hovered && hovered !== selected?.mesh) highlight(hovered, false);
+  hovered = h ? h.object : null;
+  if (!h) { tip.hidden = true; renderer.domElement.style.cursor = ''; return; }
+  if (hovered !== selected?.mesh) highlight(hovered, true, 0.28);
+  const res = resolve(h), info = infoOf(res.key), extra = segText(res);
+  tip.innerHTML = `<b>${info[0]}</b>${extra ? `<span>${extra}</span>` : ''}`;
+  tip.hidden = false; renderer.domElement.style.cursor = 'pointer';
+}
+function segText(res) { return res.seg >= 0 ? T().icaSeg[res.seg] : ''; }
+function showInfo(res) {
+  const info = infoOf(res.key), extra = segText(res);
+  $('infoName').textContent = info[0] + (extra ? ` · ${extra.split(' · ')[0]}` : '');
+  $('infoLatin').textContent = extra ? `${info[1]} · ${extra}` : info[1];
+  $('infoText').textContent = info[2];
+  $('infoCard').hidden = false;
+}
+$('infoClose').addEventListener('click', () => { $('infoCard').hidden = true; if (selected) highlight(selected.mesh, false); selected = null; });
+$('infoFocus').addEventListener('click', () => {
+  if (!selected) return;
+  const off = camera.position.clone().sub(controls.target);
+  flyTo({ pos: selected.point.clone().add(off.normalize().multiplyScalar(30)).toArray(), tgt: selected.point.toArray() }, 900);
+});
+
+// ---------- language ----------
+function applyStaticI18n() {
+  document.documentElement.lang = T().htmlLang;
+  document.title = T().docTitle;
+  document.querySelectorAll('[data-i18n]').forEach((el) => { el.textContent = t(el.dataset.i18n); });
+  document.querySelectorAll('[data-i18n-html]').forEach((el) => { el.innerHTML = t(el.dataset.i18nHtml); });
+  document.querySelectorAll('[data-i18n-aria]').forEach((el) => { el.setAttribute('aria-label', t(el.dataset.i18nAria)); });
+  document.querySelectorAll('[data-i18n-title]').forEach((el) => { el.title = t(el.dataset.i18nTitle); });
+  document.querySelectorAll('[data-lang]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.lang === LANG)));
+}
+function setLanguage(l) {
+  if (l === LANG) return;
+  LANG = l;
+  try { localStorage.setItem('knosp-lang', l); } catch (e) { /* storage unavailable */ }
+  applyStaticI18n(); relabel(); renderStep(); updateBadge(); renderQuizFeedback();
+  if (selected && !$('infoCard').hidden) showInfo(selected);
+  scheduleMR();
+}
+
+// ---------- UI wiring ----------
+function wireUI() {
+  applyStaticI18n();
+  document.querySelectorAll('[data-lang]').forEach((b) => b.addEventListener('click', () => setLanguage(b.dataset.lang)));
+  buildStepDots();
+  $('prev').addEventListener('click', () => applyStep(state.step - 1));
+  $('next').addEventListener('click', () => applyStep(state.step === STEPS.length - 1 ? 0 : state.step + 1));
+  document.addEventListener('keydown', (e) => {
+    if (e.target.closest('input, textarea, select')) return;
+    if (e.key === 'ArrowRight') applyStep(state.step + 1);
+    if (e.key === 'ArrowLeft') applyStep(state.step - 1);
+  });
+  document.querySelectorAll('.tabs button').forEach((b) => b.addEventListener('click', () => {
+    document.querySelectorAll('.tabs button').forEach((o) => o.setAttribute('aria-selected', String(o === b)));
+    document.querySelectorAll('.tabpane').forEach((p) => { p.hidden = p.id !== b.dataset.tab; });
+    if (b.dataset.tab === 'tab-test' && !state.quiz) newCase();
+    if (b.dataset.tab !== 'tab-test' && state.quiz) endQuiz();
+  }));
+  document.querySelectorAll('[data-layer]').forEach((cb) => cb.addEventListener('change', () => setLayer(cb.dataset.layer, cb.checked)));
+  $('boneOp').addEventListener('input', (e) => setBoneOpacity(e.target.value / 100));
+  $('mrOp').addEventListener('input', (e) => { mrPlane.material.opacity = e.target.value / 100; $('mrOpVal').textContent = `${e.target.value}%`; });
+  $('autoRot').addEventListener('change', (e) => { controls.autoRotate = e.target.checked; });
+  document.querySelectorAll('[name="lblmode"]').forEach((r) => r.addEventListener('change', () => { state.labelMode = r.value; updateLabels(); }));
+  document.querySelectorAll('#gradeBar button').forEach((b) => b.addEventListener('click', () => {
+    if (state.quiz && !state.quiz.done) return;
+    setGrade(b.dataset.g);
+    if (b.dataset.g !== 'none' && !state.inset) setInset(true);
+    if (!state.stepLabels.includes('tumor')) state.stepLabels = [...state.stepLabels, 'tumor'];
+  }));
+  $('cutToggle').addEventListener('change', (e) => { setCut(e.target.checked); if (e.target.checked && !state.inset) setInset(true); });
+  $('cutZ').addEventListener('input', (e) => setCut(true, parseFloat(e.target.value)));
+  $('insetBtn').addEventListener('click', () => setInset(!state.inset));
+  $('insetClose').addEventListener('click', () => setInset(false));
+  wireInset();
+  document.querySelectorAll('[data-view]').forEach((b) => b.addEventListener('click', () => {
+    const v = b.dataset.view;
+    if (v === 'coronal') { setCut(true, state.zc); setInset(true); }
+    flyTo(v);
+  }));
+  $('resetView').addEventListener('click', () => flyTo(STEPS[state.step].view));
+  document.querySelectorAll('#quizAnswers button').forEach((b) => b.addEventListener('click', () => answer(b.dataset.g)));
+  $('quizNext').addEventListener('click', newCase);
+}
+function syncLabelMode() { document.querySelectorAll('[name="lblmode"]').forEach((r) => { r.checked = r.value === state.labelMode; }); }
+
+// ---------- resize ----------
+function resize() {
+  const w = viewport.clientWidth, h = viewport.clientHeight;
+  renderer.setSize(w, h, false); labelRenderer.setSize(w, h);
+  camera.aspect = w / Math.max(1, h);
+  camera.fov = w < 560 ? 42 : 32;
+  camera.updateProjectionMatrix();
+  lastViewKey = '';
+  if (!insetEl.hidden) placeInset();
+}
+new ResizeObserver(resize).observe(viewport);
+
+// ---------- loop ----------
+let lastOcc = 0;
+function loop(now) {
+  requestAnimationFrame(loop);
+  flyTick(now); morphTick(now); mrTick(now); shiftTick();
+  controls.update();
+  hoverTick(now);
+  if (!morph && now - lastOcc > 120) { lastOcc = now; occlusionTick(); }
+  renderer.render(scene, camera);
+  labelRenderer.render(scene, camera);
+}
+
+// ---------- boot ----------
+(async function boot() {
+  try {
+    resize();
+    wireUI();
+    await progress(t('load.optic'), 0.03);
+    buildOptic();
+    await buildBone();
+    await progress(t('load.cs'), 0.82);
+    buildCS();
+    await progress(t('load.tumor'), 0.9);
+    buildTumorGrids();
+    rebuildDynamic(cur, true);
+    await progress(t('load.ready'), 1);
+    camera.position.set(90, 70, 130);
+    applyStep(0);
+    $('loader').classList.add('done');
+    setTimeout(() => { $('loader').hidden = true; }, 700);
+    requestAnimationFrame(loop);
+  } catch (err) {
+    console.error(err);
+    loaderTxt.textContent = t('load.err') + err.message;
+  }
+})();
+
+</script>
+
+</body>
+</html>

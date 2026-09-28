@@ -1,0 +1,6 @@
+# Windows shortcut with machine-specific absolute paths
+*.lnk
+node_modules/
+.DS_Store
+Thumbs.db
+desktop.ini

@@ -1,0 +1,184 @@
+<div class="app" id="app">
+  <aside class="panel">
+    <header class="brand">
+      <div class="brand-row">
+        <h1 data-i18n-html="brand.title">Knosp <span>Sellar</span> Atlası</h1>
+        <div class="lang" role="group" aria-label="Dil / Language">
+          <button type="button" data-lang="tr" aria-pressed="true" lang="tr">TR</button>
+          <button type="button" data-lang="en" aria-pressed="false" lang="en">EN</button>
+        </div>
+      </div>
+      <p data-i18n="brand.sub">Hipofiz adenomlarında kavernöz sinüs uzanımı · 3B etkileşimli ders</p>
+    </header>
+    <nav class="tabs" role="tablist">
+      <button role="tab" aria-selected="true" data-tab="tab-ders" data-i18n="tab.ders">Ders</button>
+      <button role="tab" aria-selected="false" data-tab="tab-katman" data-i18n="tab.katman">Katmanlar</button>
+      <button role="tab" aria-selected="false" data-tab="tab-test" data-i18n="tab.test">Kendini sına</button>
+      <button role="tab" aria-selected="false" data-tab="tab-kaynak" data-i18n="tab.kaynak">Kaynaklar</button>
+    </nav>
+
+    <section class="tabpane" id="tab-ders">
+      <div class="steps" id="stepDots"></div>
+      <div class="scroll" id="stepScroll">
+        <div class="kicker" id="stepKicker"></div>
+        <h2 class="step-title" id="stepTitle"></h2>
+        <div class="stepbody" id="stepBody"></div>
+      </div>
+      <div class="stepnav">
+        <button class="btn" id="prev" type="button">← Önceki</button>
+        <span id="stepCount">1 / 15</span>
+        <button class="btn primary" id="next" type="button">Sonraki →</button>
+      </div>
+    </section>
+
+    <section class="tabpane" id="tab-katman" hidden>
+      <div class="scroll">
+        <div class="group-h" data-i18n="g.structures">Yapılar</div>
+        <div class="toggles">
+          <label class="tg"><input type="checkbox" id="ly-bone" data-layer="bone" checked><i class="sw" style="background:#e5d8bd"></i><span class="nm" data-i18n="ly.bone"></span></label>
+          <div class="range"><input type="range" id="boneOp" min="10" max="100" value="100" data-i18n-aria="aria.boneOp"><output id="boneOpVal">100%</output></div>
+          <label class="tg"><input type="checkbox" id="ly-gland" data-layer="gland" checked><i class="sw" style="background:#d98a6c"></i><span class="nm" data-i18n="ly.gland"></span></label>
+          <label class="tg"><input type="checkbox" id="ly-tumor" data-layer="tumor" checked><i class="sw" style="background:#a98aa0"></i><span class="nm" data-i18n="ly.tumor"></span></label>
+          <label class="tg"><input type="checkbox" id="ly-ica" data-layer="ica" checked><i class="sw" style="background:#b3262e"></i><span class="nm" data-i18n="ly.ica"></span></label>
+          <label class="tg"><input type="checkbox" id="ly-vessels" data-layer="vessels" checked><i class="sw" style="background:#8c2a30"></i><span class="nm" data-i18n="ly.vessels"></span></label>
+          <label class="tg"><input type="checkbox" id="ly-nerves" data-layer="nerves" checked><i class="sw" style="background:#efd9a0"></i><span class="nm" data-i18n="ly.nerves"></span></label>
+          <label class="tg"><input type="checkbox" id="ly-cs" data-layer="cs" checked><i class="sw" style="background:#6a5cc8"></i><span class="nm" data-i18n="ly.cs"></span></label>
+          <label class="tg"><input type="checkbox" id="ly-optic" data-layer="optic" checked><i class="sw" style="background:#efe6cf"></i><span class="nm" data-i18n="ly.optic"></span></label>
+          <label class="tg"><input type="checkbox" id="ly-dia" data-layer="diaphragma" checked><i class="sw" style="background:#c9b8a8"></i><span class="nm" data-i18n="ly.dia"></span></label>
+        </div>
+        <div class="group-h" data-i18n="g.coronal">Koronal kesit</div>
+        <div class="toggles">
+          <label class="tg"><input type="checkbox" id="ly-lines" data-layer="lines" checked><i class="sw" style="background:linear-gradient(90deg,var(--k-med) 33%,var(--k-cen) 33% 66%,var(--k-lat) 66%)"></i><span class="nm" data-i18n="ly.lines"></span></label>
+          <label class="tg"><input type="checkbox" id="ly-mr" data-layer="mrplane"><i class="sw" style="background:#9aa4ad"></i><span class="nm" data-i18n="ly.mr"></span></label>
+          <div class="range"><input type="range" id="mrOp" min="20" max="100" value="96" data-i18n-aria="aria.mrOp"><output id="mrOpVal">96%</output></div>
+        </div>
+        <div class="group-h" data-i18n="g.labels">Etiketler</div>
+        <div class="seg" role="radiogroup">
+          <label><input type="radio" name="lblmode" id="lbl-step" value="step" checked><span data-i18n="lbl.step"></span></label>
+          <label><input type="radio" name="lblmode" id="lbl-all" value="all"><span data-i18n="lbl.all"></span></label>
+          <label><input type="radio" name="lblmode" id="lbl-off" value="off"><span data-i18n="lbl.off"></span></label>
+        </div>
+        <div class="toggles">
+          <label class="tg"><input type="checkbox" id="autoRot"><span class="nm" data-i18n="autorot"></span></label>
+        </div>
+        <div class="group-h" data-i18n="g.controls">Kontroller</div>
+        <div class="help">
+          <kbd data-i18n="help.1k"></kbd><span data-i18n="help.1v"></span>
+          <kbd data-i18n="help.2k"></kbd><span data-i18n="help.2v"></span>
+          <kbd data-i18n="help.3k"></kbd><span data-i18n="help.3v"></span>
+          <kbd data-i18n="help.4k"></kbd><span data-i18n="help.4v"></span>
+          <kbd data-i18n="help.5k"></kbd><span data-i18n="help.5v"></span>
+          <kbd data-i18n="help.6k"></kbd><span data-i18n="help.6v"></span>
+        </div>
+      </div>
+    </section>
+
+    <section class="tabpane" id="tab-test" hidden>
+      <div class="scroll">
+        <div class="kicker" data-i18n="quiz.kicker"></div>
+        <h2 class="step-title" data-i18n="quiz.title"></h2>
+        <p class="quiz-intro" data-i18n-html="quiz.intro"></p>
+        <div class="answers" id="quizAnswers">
+          <button type="button" data-g="g0"><i class="gchip g-g0"></i>0</button>
+          <button type="button" data-g="g1"><i class="gchip g-g1"></i>1</button>
+          <button type="button" data-g="g2"><i class="gchip g-g2"></i>2</button>
+          <button type="button" data-g="g3a"><i class="gchip g-g3a"></i>3A</button>
+          <button type="button" data-g="g3b"><i class="gchip g-g3b"></i>3B</button>
+          <button type="button" data-g="g4"><i class="gchip g-g4"></i>4</button>
+        </div>
+        <div id="quizFeedback"></div>
+        <button class="btn primary" id="quizNext" type="button" data-i18n="quiz.next" hidden></button>
+      </div>
+    </section>
+
+    <section class="tabpane" id="tab-kaynak" hidden>
+      <div class="scroll">
+        <div class="group-h" data-i18n="refs.h">Kaynaklar</div>
+        <ul class="refs">
+          <li>Knosp E, Steiner E, Kitz K, Matula C. Pituitary adenomas with invasion of the cavernous sinus space: a magnetic resonance imaging classification compared with surgical findings. <i>Neurosurgery</i>. 1993;33(4):610–618.</li>
+          <li>Micko ASG, Wöhrer A, Wolfsberger S, Knosp E. Invasion of the cavernous sinus space in pituitary adenomas: endoscopic verification and its correlation with an MRI-based classification. <i>J Neurosurg</i>. 2015;122(4):803–811. <a href="https://thejns.org/view/journals/j-neurosurg/122/4/article-p803.xml" target="_blank" rel="noopener">thejns.org</a></li>
+          <li>Radiological Knosp, Revised-Knosp, and Hardy–Wilson classifications for the prediction of surgical outcomes in the endoscopic endonasal surgery of pituitary adenomas: study of 228 cases. <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC8810816/" target="_blank" rel="noopener">PMC8810816</a> <span data-i18n="refs.n1"></span></li>
+          <li>Automated assessment of Knosp grade from pituitary adenoma MRI: experimental comparison of a rule-based and a machine learning-based approach. <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC13262174/" target="_blank" rel="noopener">PMC13262174</a> <span data-i18n="refs.n2"></span></li>
+          <li>Bouthillier A, van Loveren HR, Keller JT. Segments of the internal carotid artery: a new classification. <i>Neurosurgery</i>. 1996;38(3):425–433.</li>
+          <li>Morphological analysis of the cavernous segment of the internal carotid artery: a retrospective, single center study of its clinical significance. <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC12691409/" target="_blank" rel="noopener">PMC12691409</a> <span data-i18n="refs.n4"></span></li>
+          <li>Rhoton AL Jr. The sellar region. <i>Neurosurgery</i>. 2002;51(4 Suppl):S335–S374. <span data-i18n="refs.n3"></span></li>
+        </ul>
+        <p class="note" data-i18n-html="refs.note"></p>
+      </div>
+    </section>
+  </aside>
+
+  <main class="stage" id="viewport">
+    <div class="hud hud-tl">
+      <div class="badge glass" aria-live="polite">
+        <div class="bg-num g-none" id="badgeGrade">—</div>
+        <div class="bt"><small data-i18n="badge.small">Knosp · sol</small><span id="badgeTxt"></span></div>
+      </div>
+      <div class="info glass" id="infoCard" hidden>
+        <h3 id="infoName"></h3>
+        <div class="lat" id="infoLatin"></div>
+        <p id="infoText"></p>
+        <div class="row"><button class="btn" id="infoFocus" type="button" data-i18n="info.focus"></button><button class="btn" id="infoClose" type="button" data-i18n="info.close"></button></div>
+      </div>
+    </div>
+    <div class="hud hud-tr">
+      <div class="views glass" role="group" data-i18n-aria="aria.views">
+        <button type="button" data-view="overview" data-i18n="view.overview"></button>
+        <button type="button" data-view="endonasal" data-i18n="view.endonasal"></button>
+        <button type="button" data-view="boneTop" data-i18n="view.boneTop"></button>
+        <button type="button" data-view="icaLat" data-i18n="view.icaLat"></button>
+        <button type="button" data-view="coronal" data-i18n="view.coronal"></button>
+      </div>
+      <button class="glass iconbtn" id="resetView" type="button" data-i18n-title="view.reset" data-i18n-aria="view.reset">↺</button>
+    </div>
+    <div class="hud hud-bottom">
+      <div class="gradebar glass" id="gradeBar" role="group" data-i18n-aria="aria.gb">
+        <span class="gl-l" data-i18n-html="gb.label">Knosp<br>sol</span>
+        <button type="button" data-g="none" class="on" data-i18n="gb.normal">Normal</button>
+        <button type="button" data-g="g0"><i class="g-g0"></i>0</button>
+        <button type="button" data-g="g1"><i class="g-g1"></i>1</button>
+        <button type="button" data-g="g2"><i class="g-g2"></i>2</button>
+        <button type="button" data-g="g3a"><i class="g-g3a"></i>3A</button>
+        <button type="button" data-g="g3b"><i class="g-g3b"></i>3B</button>
+        <button type="button" data-g="g4"><i class="g-g4"></i>4</button>
+      </div>
+      <div class="cutbar glass">
+        <label class="chk"><input type="checkbox" id="cutToggle"><span data-i18n="cut.label">Koronal kesit</span></label>
+        <input type="range" id="cutZ" min="-8" max="12" step="0.25" value="3.5" data-i18n-aria="aria.cut" disabled>
+        <output id="cutVal">+3.5 mm</output>
+        <span class="knote" id="kNote" data-i18n="cut.note" hidden></span>
+        <button class="iconbtn" id="insetBtn" type="button" aria-pressed="false" style="background:none;border:0">MR</button>
+      </div>
+    </div>
+    <div class="inset glass" id="inset" hidden>
+      <header id="insetHead" tabindex="0" data-i18n-title="inset.drag"><span class="grip" aria-hidden="true">⠿</span><b data-i18n="inset.title"></b><span class="ibtns"><button type="button" id="insetMin" aria-pressed="false" data-i18n-aria="aria.insetMin" data-i18n-title="aria.insetMin">–</button><button type="button" id="insetClose" data-i18n-aria="aria.insetClose" data-i18n-title="aria.insetClose">×</button></span></header>
+      <canvas id="mrInset" width="300" height="240"></canvas>
+      <div class="legend"><span><i class="k-med"></i><span data-i18n="leg.med"></span></span><span><i class="k-cen"></i><span data-i18n="leg.cen"></span></span><span><i class="k-lat"></i><span data-i18n="leg.lat"></span></span></div>
+    </div>
+    <div class="tip glass" id="tip" hidden></div>
+    <div class="loader" id="loader">
+      <div class="box">
+        <h2 data-i18n="load.title">Sellar bölge modelleniyor</h2>
+        <div class="bar"><i id="loadBar"></i></div>
+        <p id="loadTxt" data-i18n="load.init">Başlatılıyor…</p>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/",
+  "three-mesh-bvh": "https://cdn.jsdelivr.net/npm/three-mesh-bvh@0.8.3/build/index.module.js"
+} }
+</script>
+<script>
+/*CORE*/
+</script>
+<script>
+/*CONTENT*/
+</script>
+<script type="module">
+/*APP*/
+</script>
